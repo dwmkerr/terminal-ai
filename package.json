@@ -38,7 +38,8 @@
     "colors": "^1.4.0",
     "commander": "^11.1.0",
     "debug": "^4.3.4",
-    "open": "^9.1.0"
+    "open": "^9.1.0",
+    "openai": "^4.83.0"
   },
   "devDependencies": {
     "@aws-sdk/types": "3.10.0",
