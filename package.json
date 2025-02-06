@@ -34,10 +34,12 @@
   "dependencies": {
     "@aws-sdk/client-cost-explorer": "3.10.0",
     "@aws-sdk/client-ec2": "3.10.0",
+    "@types/js-yaml": "^4.0.9",
     "clipboardy": "^4.0.0",
     "colors": "^1.4.0",
     "commander": "^11.1.0",
     "debug": "^4.3.4",
+    "js-yaml": "^4.1.0",
     "open": "^9.1.0",
     "openai": "^4.83.0"
   },

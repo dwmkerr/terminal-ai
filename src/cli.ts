@@ -5,33 +5,36 @@ import { Command } from "commander";
 
 import { chat } from "./actions/chat";
 
-import { config } from "./commands/config";
 import { debug } from "./commands/debug";
 import { getCosts } from "./commands/getCosts";
 import { info } from "./commands/info";
 import { list } from "./commands/list";
 import { run } from "./commands/run";
 import { start } from "./commands/start";
-import { stop } from "./commands/stop";
 
 import theme from "./theme";
 import { TerminatingWarning } from "./lib/errors";
 import packageJson from "../package.json";
 import { BoxState } from "./box";
 import { assertConfirmation, execCommand } from "./lib/cli-helpers";
-import { BoxesConfiguration, getConfiguration } from "./lib/configuration";
 import { importBox } from "./commands/import";
+import { ExecutionContext } from "./lib/execution-context";
+import { Configuration, getConfiguration } from "./configuration/configuration";
 
 const ERROR_CODE_WARNING = 1;
 const ERROR_CODE_CONNECTION = 2;
 
-const cli = async (program: Command, configuration: BoxesConfiguration) => {
+const cli = async (
+  program: Command,
+  executionContext: ExecutionContext,
+  config: Configuration,
+) => {
   program
     .name("boxes")
     .description("CLI to control your cloud boxes")
     .version(packageJson.version)
     //  'chat' is the default action when no command is specified.
-    .action(chat);
+    .action(async () => chat(executionContext, config));
 
   program
     .command("list")
@@ -109,41 +112,6 @@ const cli = async (program: Command, configuration: BoxesConfiguration) => {
     });
 
   program
-    .command("stop")
-    .description("Stop a box")
-    .argument("<boxId>", 'id of the box, e.g: "steambox"')
-    .option("-w, --wait", "wait for box to complete startup", false)
-    .option(
-      "-a, --archive-volumes",
-      "[experimental] archive volumes",
-      configuration.archiveVolumesOnStop || false,
-    )
-    .option("-y, --yes", "confirm archive volumes", false)
-    .action(async (boxId, options) => {
-      console.log("archive is: ", configuration.archiveVolumesOnStop);
-
-      //  If archiving, demand confirmation.
-      if (options.archiveVolumes && !options.yes) {
-        await assertConfirmation(
-          options,
-          "yes",
-          `The '--archive-volumes' feature is experimental and may cause data loss.
-To accept this risk, re-run with the '--yes' parameter.`,
-        );
-      }
-      const { instanceId, currentState, previousState } = await stop({
-        boxId,
-        wait: options.wait,
-        archiveVolumes: options.archiveVolumes,
-      });
-      console.log(
-        `  ${theme.boxId(boxId)} (${instanceId}): ${theme.state(
-          previousState,
-        )} -> ${theme.state(currentState)}`,
-      );
-    });
-
-  program
     .command("costs")
     .description("Check box costs")
     .option("-y, --yes", "accept AWS charges", false)
@@ -192,8 +160,7 @@ To accept charges, re-run with the '--yes' parameter.`,
     .command("config")
     .description("Show current configuration")
     .action(async () => {
-      const configuration = await config();
-      console.log(JSON.stringify(configuration, null, 2));
+      console.log(JSON.stringify(config, null, 2));
     });
 
   program
@@ -225,22 +192,22 @@ To accept charges, re-run with the '--yes' parameter.`,
 };
 
 async function main() {
+  //  Create an initial execution context. This may evolve as we run various commands etc.
+  //  Make a guess at the interactive mode based on whether the output is a TTY.
+  const executionContext: ExecutionContext = {
+    isInteractive: process.stdout.isTTY,
+    isTTY: process.stdout.isTTY,
+  };
+
+  //  Load our configuration, best effort. Enable debug tracing if configured.
+  const config = await getConfiguration();
+  if (config.debug.enable) {
+    dbg.enable(config.debug.namespace || "");
+  }
+
   try {
-    const configuration = await getConfiguration();
-
-    //  We will quickly check configuration for debug tracing. If it throws we
-    //  will ignore for now, as later error handling will show the proper error
-    //  output to the user.
-    try {
-      if (configuration.debugEnable) {
-        dbg.enable(configuration.debugEnable);
-      }
-    } catch {
-      // no-op
-    }
-
     const program = new Command();
-    await cli(program, configuration);
+    await cli(program, executionContext, config);
     await program.parseAsync();
     // TODO(refactor): better error typing.
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any

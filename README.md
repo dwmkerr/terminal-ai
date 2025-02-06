@@ -359,73 +359,18 @@ The demo script is currently:
 **Actions** - these are commander.js functions that are called by the CLI. They should validate/decode parameters and ask for missing parameters. They will then call a **command**.
 **Commands** - these are the underlying APIs that the CLI offers - they are agnostic of the command line interface (and could therefore be exposed in a web server or so on).
 
-### Dependencies
+## Design Goals
 
-Runtime dependencies are:
-
-- `@aws-sdk/client-ec2` - AWS APIs
-- `colors` - to add colour to console output
-- `commander` - for quickly scaffold CLI apps
-- `open` - to open browsers / applications cross-platform
-
-Development dependencies:
-
-- [`aws-sdk-client-mock-jest`](https://github.com/m-radzikowski/aws-sdk-client-mock) mocks for the AWS V3 CLI as well as matchers for Jest
-
-### Troubleshooting
-
-`Argument of type... Types of property '...' are incompatible`
-
-Typically occurs if AWS SDK packages are not at the exact same number as the `@ask-sdk/types` version number. Update the package.json to use exactly the same version between all `@aws-sdk` libraries. Occasionally these libraries are still incompatible, in this case downgrade to a confirmed version that works such as `3.10.0`.
+- **Interactive by default** - with no input, `ai` is friendly and interactive. Everything that can be done interactively can be done non-interactively. Interactive operations hint at how to run non-interactively.
 
 ## TODO
 
 Quick and dirty task-list.
 
-### Alpha
-
-- [ ] feat: archive volumes by default flag in config
-- [ ] refactor: use node-configuration
-- [x] feat: 'import' option to tag a box and associated volumes
-- [x] refactor: check use of 'interface' which should be 'type'
-- [ ] testing: check ubox cost allocation tags for volumes
-
-### Beta
-
-- [ ] 'wait' flag for start/stop to wait until operation complete - default to 1hr and document the timeout info
-
-### Publish Blog
-
-- [ ] documentation on cost savings via archival
-
-### Later
-
-- [ ] refactor: 'wait' functions can be generalised to take a predicate that uses AWS calls and then share the same loop/logging/etc
-- [ ] feat: boxes aws-console opens link eg (https://us-west-2.console.aws.amazon.com/ec2/home?region=us-west-2#InstanceDetails:instanceId=i-043a3c1ce6c9ea6ad)
-- [ ] refactor: make 'debug' command local/debug build only?
-- [ ] feat: 'import' command to take an instance ID and create local box config for it and tag the instance
-- [ ] docs: cost allocation tags blog post
-- [ ] docs: create and share blogpost
-- [ ] docs: blog post showing step-by-step how to enable cost reporting, add the link to the docs here
-- [ ] refactor: extract and test the parameter expansion for 'connect'
-- [ ] feat: autocomplete
-- [ ] feat: aws profile in config file
-- [ ] epic: 'boxes create' to create from a template
-- [ ] refactor: find a better way to mock / inject config (rather than importing arbitrarily)
-- [ ] feat(import): save/update local config file
-
-### Epic - Interactive Setup
-
-Run `boxes init` - lets you choose a region, select instances, give a name.
-Will add the tags - but will also add the tags to the volumes and will notify if the cost explorer tag is not setup.
-Creates the local config.
-
-This would be demo-able.
-
----
-
-- [ ] Base ok boxes
-- [ ] Interactive by default
+- [x] base ok boxes
+- [ ] interactive by default
+- [ ] really user friendly way to get API key set
+- [ ] we can check first time run via presence of config file
 - [ ] Input: <prompt>: input
 - [ ] Call from vi example
 - [ ] Put in effective shell chapter
