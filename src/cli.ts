@@ -2,6 +2,7 @@
 
 import dbg from "debug";
 import { Command } from "commander";
+import * as readline from "readline";
 
 import { config } from "./commands/config";
 import { debug } from "./commands/debug";
@@ -27,7 +28,19 @@ const cli = async (program: Command, configuration: BoxesConfiguration) => {
   program
     .name("boxes")
     .description("CLI to control your cloud boxes")
-    .version(packageJson.version);
+    .version(packageJson.version)
+    .action(async () => {
+      // This will run when no command is specified
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+
+      rl.question("Enter some text: ", (answer) => {
+        console.log("You entered:", answer);
+        rl.close();
+      });
+    });
 
   program
     .command("list")

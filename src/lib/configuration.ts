@@ -30,6 +30,14 @@ export interface BoxesConfiguration {
   debugEnable?: string;
 }
 
+export function defaultConfiguration(): BoxesConfiguration {
+  return {
+    boxes: {},
+    aws: {},
+    commands: {},
+  };
+}
+
 export async function getConfiguration(): Promise<BoxesConfiguration> {
   //  For now, box config is hard coded to the current location.
   const boxConfigPaths = [
@@ -38,7 +46,8 @@ export async function getConfiguration(): Promise<BoxesConfiguration> {
   ];
   const candidates = boxConfigPaths.find(fs.existsSync);
   if (!candidates) {
-    throw new TerminatingWarning(`Failed to find config at: ${boxConfigPaths}`);
+    console.log(`Failed to find config at: ${boxConfigPaths}`);
+    return defaultConfiguration();
   }
   const boxConfigPath = boxConfigPaths[0];
 
