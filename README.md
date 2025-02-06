@@ -354,6 +354,11 @@ The demo script is currently:
 - `boxes stop steambox`
 - `boxes ls`
 
+### Concepts
+
+**Actions** - these are commander.js functions that are called by the CLI. They should validate/decode parameters and ask for missing parameters. They will then call a **command**.
+**Commands** - these are the underlying APIs that the CLI offers - they are agnostic of the command line interface (and could therefore be exposed in a web server or so on).
+
 ### Dependencies
 
 Runtime dependencies are:

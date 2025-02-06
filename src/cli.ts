@@ -2,7 +2,8 @@
 
 import dbg from "debug";
 import { Command } from "commander";
-import * as readline from "readline";
+
+import { chat } from "./actions/chat";
 
 import { config } from "./commands/config";
 import { debug } from "./commands/debug";
@@ -29,18 +30,8 @@ const cli = async (program: Command, configuration: BoxesConfiguration) => {
     .name("boxes")
     .description("CLI to control your cloud boxes")
     .version(packageJson.version)
-    .action(async () => {
-      // This will run when no command is specified
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      rl.question("Enter some text: ", (answer) => {
-        console.log("You entered:", answer);
-        rl.close();
-      });
-    });
+    //  'chat' is the default action when no command is specified.
+    .action(chat);
 
   program
     .command("list")
