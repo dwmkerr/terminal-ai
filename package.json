@@ -34,6 +34,7 @@
   "dependencies": {
     "@aws-sdk/client-cost-explorer": "3.10.0",
     "@aws-sdk/client-ec2": "3.10.0",
+    "@inquirer/prompts": "^7.3.1",
     "@types/js-yaml": "^4.0.9",
     "clipboardy": "^4.0.0",
     "colors": "^1.4.0",

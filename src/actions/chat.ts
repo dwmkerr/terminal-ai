@@ -3,6 +3,7 @@ import { chat as chatCommand } from "../commands/chat";
 import { ExecutionContext } from "../lib/execution-context";
 import { TerminatingWarning } from "../lib/errors";
 import { Configuration } from "../configuration/configuration";
+import { ensureApiKey } from "./ensure-api-key";
 
 export async function chat(
   executionContext: ExecutionContext,
@@ -15,10 +16,13 @@ export async function chat(
     );
   }
 
+  //  If we don't have an API key, ask for one.
+  const cfg = await ensureApiKey(executionContext, config);
+
   const rl = readline.promises.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
   const input = await rl.question("chat: ");
-  await chatCommand(config.openAiApiKey, input);
+  await chatCommand(cfg.openAiApiKey, input);
 }

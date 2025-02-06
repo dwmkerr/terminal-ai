@@ -322,8 +322,19 @@ This will keep the `./build` folder up-to-date and the `boxes` command will use 
 The [`debug`](https://github.com/debug-js/debug) library is used to make it easy to provide debug level output. Debug logging to the console can be enabled with:
 
 ```bash
-DEBUG='boxes*' boxes list
+AI_DEBUG_ENABLE="1" npm start
 ```
+
+The debug namespaces can be configured like so:
+
+```bash
+AI_DEBUG_NAMESPACE='ai*'
+```
+
+### Debug Commands
+
+**debug config** - show how the configuration has been constructed
+
 
 ### Error Handling
 
