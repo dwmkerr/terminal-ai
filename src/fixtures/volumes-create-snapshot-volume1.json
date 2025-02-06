@@ -1,0 +1,17 @@
+{
+    "Description": "",
+    "Encrypted": true,
+    "OwnerId": "705383350627",
+    "Progress": "",
+    "SnapshotId": "snap-03c3efc7e9254ab0a",
+    "StartTime": "2024-01-21T17:22:59.660000+00:00",
+    "State": "pending",
+    "VolumeId": "vol-0582d7fc0f3d797fc",
+    "VolumeSize": 20,
+    "Tags": [
+        {
+            "Key": "boxes.boxid",
+            "Value": "torrentbox"
+        }
+    ]
+}

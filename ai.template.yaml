@@ -1,0 +1,13 @@
+{
+  "boxes": [{
+    "boxId": "steambox",
+    "username": "Administrator",
+    "password": "TODO",
+    "connectUrl": "dcv://${host}:"
+  },{
+    "boxId": "torrentbox",
+    "username": "admin",
+    "password": "TODO",
+    "connectUrl": "http://${host}:9091/transmission/web/"
+  }]
+}

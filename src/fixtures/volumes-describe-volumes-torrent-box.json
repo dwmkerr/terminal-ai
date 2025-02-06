@@ -1,0 +1,56 @@
+{
+    "Volumes": [
+        {
+            "Attachments": [
+                {
+                    "AttachTime": "2023-11-10T02:14:25+00:00",
+                    "Device": "/dev/xvda",
+                    "InstanceId": "i-08fec1692931e31e7",
+                    "State": "attached",
+                    "VolumeId": "vol-0582d7fc0f3d797fc",
+                    "DeleteOnTermination": true
+                }
+            ],
+            "AvailabilityZone": "us-west-2a",
+            "CreateTime": "2023-11-10T02:14:25.545000+00:00",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-west-2:705383350627:key/1043b4a7-5766-4242-ab25-e6dc43ab41bd",
+            "Size": 20,
+            "SnapshotId": "snap-001c614f9d26384b4",
+            "State": "in-use",
+            "VolumeId": "vol-0582d7fc0f3d797fc",
+            "Iops": 100,
+            "VolumeType": "gp2",
+            "MultiAttachEnabled": false
+        },
+        {
+            "Attachments": [
+                {
+                    "AttachTime": "2023-11-10T02:14:25+00:00",
+                    "Device": "/dev/xvdf",
+                    "InstanceId": "i-08fec1692931e31e7",
+                    "State": "attached",
+                    "VolumeId": "vol-0987a9ce9bb4c7b1d",
+                    "DeleteOnTermination": true
+                }
+            ],
+            "AvailabilityZone": "us-west-2a",
+            "CreateTime": "2023-11-10T02:14:25.657000+00:00",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-west-2:705383350627:key/1043b4a7-5766-4242-ab25-e6dc43ab41bd",
+            "Size": 200,
+            "SnapshotId": "",
+            "State": "in-use",
+            "VolumeId": "vol-0987a9ce9bb4c7b1d",
+            "Iops": 600,
+            "Tags": [
+                {
+                    "Key": "boxes.boxid",
+                    "Value": "torrentbox"
+                }
+            ],
+            "VolumeType": "gp2",
+            "MultiAttachEnabled": false
+        }
+    ]
+}
