@@ -380,6 +380,7 @@ Quick and dirty task-list.
 
 - [x] base ok boxes
 - [ ] interactive by default
+- [ ] nth: 'vanilla' flag (no prompts)
 - [ ] really user friendly way to get API key set
 - [ ] we can check first time run via presence of config file
 - [ ] Input: <prompt>: input
@@ -399,3 +400,5 @@ Quick and dirty task-list.
 - [ ] When code is shown offer copy command
 - [ ] Execution context tty 
 - [ ] Location specific prompts, eg create a .ai folder, include prompts in it, tai shows them
+- [ ] docs: readline/prompt input keyboard shortcuts (cancel, copy, etc)
+- [ ] nth: unhandled error prettier printing

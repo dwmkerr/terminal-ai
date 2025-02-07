@@ -38,8 +38,12 @@ function printWarning(message: string) {
   console.log(colors.yellow(message));
 }
 
-export function printError(message: string) {
-  console.log(colors.red(message));
+export function printError(message: string, ...args: unknown[]) {
+  console.log(colors.red(message), args);
+}
+
+export function printResponse(message: string) {
+  console.log(colors.white(colors.bold("chatgpt:")) + message);
 }
 
 export default {
@@ -49,4 +53,5 @@ export default {
   printBoxDetail,
   printWarning,
   printError,
+  printResponse,
 };

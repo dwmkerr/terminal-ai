@@ -29,7 +29,6 @@ export interface BoxesConfiguration {
   archiveVolumesOnStop?: boolean;
   debugEnable?: string;
 }
-
 export function defaultConfiguration(): BoxesConfiguration {
   return {
     boxes: {},

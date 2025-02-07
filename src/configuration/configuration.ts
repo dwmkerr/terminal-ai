@@ -3,7 +3,6 @@ import os from "os";
 import path from "path";
 import yaml from "js-yaml";
 
-import * as constants from "../lib/constants";
 import { TerminatingWarning } from "../lib/errors";
 
 export interface Configuration {
@@ -19,6 +18,17 @@ type DeepPartial<T> = T extends object
       [P in keyof T]?: DeepPartial<T[P]>;
     }
   : T;
+
+export const configFilePath = ".ai/config.yaml";
+export const chatPromptsPath = ".ai/prompts/chat";
+
+export function getConfigPath(): string {
+  return path.join(os.homedir(), configFilePath);
+}
+
+export function getChatPromptsPath(): string {
+  return path.join(os.homedir(), chatPromptsPath);
+}
 
 export function getDefaultConfiguration(): Configuration {
   return {
@@ -87,10 +97,8 @@ export function getConfigurationFromEnv(
 }
 
 export async function getConfiguration(): Promise<Configuration> {
-  const configPath = path.join(os.homedir(), constants.configFilePath);
-
   const defaultConfig = getDefaultConfiguration();
-  const fileConfig = getConfigurationFromFile(configPath);
+  const fileConfig = getConfigurationFromFile(getConfigPath());
   const envConfig = getConfigurationFromEnv(process.env);
 
   const config1 = enrichConfiguration(defaultConfig, fileConfig);
