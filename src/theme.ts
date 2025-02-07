@@ -43,7 +43,7 @@ export function printError(message: string, ...args: unknown[]) {
 }
 
 export function printResponse(message: string) {
-  console.log(colors.white(colors.bold("chatgpt:")) + message);
+  console.log(colors.white(colors.bold("chatgpt: ")) + message);
 }
 
 export default {

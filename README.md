@@ -388,11 +388,18 @@ Additional env vars set:
 
 Quick and dirty task-list.
 
-- [x] base ok boxes
-- [ ] interactive by default
+**Chat - book ready**
+
+- [ ] enable non interactive
+- [x] hydrate config on startup
+- [ ] nth: chat command needs error handling
+- [ ] nth: terminal size
+
 - [ ] nth: 'vanilla' flag (no prompts)
 - [ ] nth: allow context to use env vars eg BASH_VERSION to infer shell
 - [ ] nth: terminal size env vars
+
+- [x] base ok boxes
 - [ ] really user friendly way to get API key set
 - [ ] we can check first time run via presence of config file
 - [ ] Input: <prompt>: input

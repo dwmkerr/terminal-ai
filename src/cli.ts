@@ -21,6 +21,7 @@ import { assertConfirmation, execCommand } from "./lib/cli-helpers";
 import { importBox } from "./commands/import";
 import { ExecutionContext } from "./lib/execution-context";
 import { Configuration, getConfiguration } from "./configuration/configuration";
+import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
 
 const ERROR_CODE_WARNING = 1;
 const ERROR_CODE_CONNECTION = 2;
@@ -203,11 +204,16 @@ async function main() {
   //  TODO extract this into a function.
   process.env["OS_PLATFORM"] = os.platform();
 
-  //  Load our configuration, best effort. Enable debug tracing if configured.
-  const config = await getConfiguration();
-  if (config.debug.enable) {
-    dbg.enable(config.debug.namespace || "");
+  //  Load our initial configuration, best effort. Allows us to enable debug
+  //  tracing if configured.
+  const initialConfig = await getConfiguration();
+  if (initialConfig.debug.enable) {
+    dbg.enable(initialConfig.debug.namespace || "");
   }
+
+  //  Now hydrate and reload our config.
+  hydrateDefaultConfig();
+  const config = await getConfiguration();
 
   try {
     const program = new Command();
