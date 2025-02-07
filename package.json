@@ -10,11 +10,11 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
-    "start": "ts-node ./src/cli.ts",
+    "start": "NODE_NO_WARNINGS=1 ts-node ./src/cli.ts",
     "start:debug": "NODE_OPTIONS='--experimental-vm-modules' node --inspect-brk node_modules/.bin/ts-node ./src/cli.ts",
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --no-coverage",
     "test:debug": "NODE_OPTIONS='--experimental-vm-modules' node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "NODE_NO_WARNINGS=1 NODE_OPTIONS=--experimental-vm-modules jest --watch --no-coverage",
     "test:cov": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",

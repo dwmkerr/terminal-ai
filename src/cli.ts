@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import os from "os";
 import dbg from "debug";
 import { Command } from "commander";
 
@@ -198,6 +199,9 @@ async function main() {
     isInteractive: process.stdout.isTTY,
     isTTY: process.stdout.isTTY,
   };
+
+  //  TODO extract this into a function.
+  process.env["OS_PLATFORM"] = os.platform();
 
   //  Load our configuration, best effort. Enable debug tracing if configured.
   const config = await getConfiguration();

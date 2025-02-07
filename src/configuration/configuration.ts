@@ -7,6 +7,11 @@ import { TerminatingWarning } from "../lib/errors";
 
 export interface Configuration {
   openAiApiKey: string;
+  prompts: {
+    chat: {
+      context: string[];
+    };
+  };
   debug: {
     enable: boolean;
     namespace: string;
@@ -20,7 +25,7 @@ type DeepPartial<T> = T extends object
   : T;
 
 export const configFilePath = ".ai/config.yaml";
-export const chatPromptsPath = ".ai/prompts/chat";
+export const chatPromptsPath = ".ai/prompts/chat/context";
 
 export function getConfigPath(): string {
   return path.join(os.homedir(), configFilePath);
@@ -33,6 +38,11 @@ export function getChatPromptsPath(): string {
 export function getDefaultConfiguration(): Configuration {
   return {
     openAiApiKey: "",
+    prompts: {
+      chat: {
+        context: [],
+      },
+    },
     debug: {
       enable: false,
       namespace: "ai*",
@@ -57,23 +67,6 @@ export function getConfigurationFromFile(
   }
 }
 
-export function enrichConfiguration(
-  config: Configuration,
-  data: DeepPartial<Configuration>,
-): Configuration {
-  const newConfig = { ...config };
-  if (data.openAiApiKey !== undefined) {
-    newConfig.openAiApiKey = data.openAiApiKey;
-  }
-  if (data?.debug?.enable !== undefined) {
-    newConfig.debug.enable = data.debug.enable;
-  }
-  if (data?.debug?.namespace !== undefined) {
-    newConfig.debug.namespace = data.debug.namespace;
-  }
-  return newConfig;
-}
-
 export function getConfigurationFromEnv(
   env: NodeJS.ProcessEnv,
 ): DeepPartial<Configuration> {
@@ -96,13 +89,59 @@ export function getConfigurationFromEnv(
   return newConfig;
 }
 
+export function getConfigurationFromPromptsFolder(
+  folder: string,
+): DeepPartial<Configuration> {
+  //  Load the chat prompts.
+  if (!fs.existsSync(folder)) {
+    return {};
+  }
+  const promptPaths = fs.readdirSync(folder);
+  console.log("paths", promptPaths);
+  const contextPrompts = promptPaths.map((promptPath) => {
+    const filePath = path.join(folder, promptPath);
+    console.log(`path`, filePath);
+    return fs.readFileSync(filePath, "utf8");
+  });
+  return {
+    prompts: {
+      chat: {
+        context: contextPrompts,
+      },
+    },
+  };
+}
+
+export function enrichConfiguration(
+  config: Configuration,
+  data: DeepPartial<Configuration>,
+): Configuration {
+  const newConfig = { ...config };
+  if (data.openAiApiKey !== undefined) {
+    newConfig.openAiApiKey = data.openAiApiKey;
+  }
+  if (data?.debug?.enable !== undefined) {
+    newConfig.debug.enable = data.debug.enable;
+  }
+  if (data?.debug?.namespace !== undefined) {
+    newConfig.debug.namespace = data.debug.namespace;
+  }
+  if (data?.prompts?.chat?.context !== undefined) {
+    const prompts = data.prompts.chat.context.filter((p) => p !== undefined);
+    newConfig.prompts.chat.context.push(...prompts);
+  }
+  return newConfig;
+}
+
 export async function getConfiguration(): Promise<Configuration> {
   const defaultConfig = getDefaultConfiguration();
+  const promptsConfig = getConfigurationFromPromptsFolder(getChatPromptsPath());
   const fileConfig = getConfigurationFromFile(getConfigPath());
   const envConfig = getConfigurationFromEnv(process.env);
 
-  const config1 = enrichConfiguration(defaultConfig, fileConfig);
-  const config2 = enrichConfiguration(config1, envConfig);
+  const config1 = enrichConfiguration(defaultConfig, promptsConfig);
+  const config2 = enrichConfiguration(config1, fileConfig);
+  const config3 = enrichConfiguration(config2, envConfig);
 
-  return config2;
+  return config3;
 }

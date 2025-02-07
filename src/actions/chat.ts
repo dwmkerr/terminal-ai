@@ -1,13 +1,14 @@
-import fs from "fs";
-import path from "path";
+import dbg from "debug";
 import { input } from "@inquirer/prompts";
 import OpenAI from "openai";
 import theme from "../theme";
-import * as configuration from "../configuration/configuration";
 import { ExecutionContext } from "../lib/execution-context";
 import { TerminatingWarning } from "../lib/errors";
 import { Configuration } from "../configuration/configuration";
 import { ensureApiKey } from "./ensure-api-key";
+import expandEnvVars from "../lib/expand-env-vars";
+
+const debug = dbg("ai:chat");
 
 export async function chat(
   executionContext: ExecutionContext,
@@ -26,20 +27,17 @@ export async function chat(
     apiKey: cfg.openAiApiKey,
   });
 
-  //  Load the chat prompts.
-  const promptsDir = configuration.getChatPromptsPath();
-  const promptPaths = fs.readdirSync(promptsDir);
-  const prompts = promptPaths.map((promptPath) => {
-    const filePath = path.join(promptsDir, promptPath);
-    return fs.readFileSync(filePath, "utf8");
-  });
-
   //  Create a converstion history that we will maintain as we interact.
   //  Add any chat prompts.
   const conversationHistory: { role: "user" | "assistant"; content: string }[] =
     [];
-  prompts.forEach((prompt) => {
-    conversationHistory.push({ role: "user", content: prompt });
+  config.prompts.chat.context.forEach((prompt) => {
+    const expanded = expandEnvVars(prompt, process.env);
+    debug(`prompt: ${expanded}`);
+    conversationHistory.push({
+      role: "user",
+      content: expanded,
+    });
   });
 
   //  Repeatedly interact with ChatGPT until the user terminates.
@@ -63,7 +61,6 @@ export async function chat(
       } else {
         theme.printResponse(response);
         conversationHistory.push({ role: "assistant", content: response });
-        throw new Error("test");
       }
     } catch (error) {
       theme.printError("Error calling ChatGPT", error);

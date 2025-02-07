@@ -1,1 +1,0 @@
-I am talking to you via a terminal CLI running on MacOS in the Bash shell. Please respond with brief and concise answers to ensure readability in the shell.

@@ -374,6 +374,16 @@ The demo script is currently:
 
 - **Interactive by default** - with no input, `ai` is friendly and interactive. Everything that can be done interactively can be done non-interactively. Interactive operations hint at how to run non-interactively.
 
+## Technical Documentation
+
+### Context Prompts
+
+Additional env vars set:
+
+| Environment Variable | Description            |
+|----------------------|------------------------|
+| `OS_PLATFORM`           | `nodejs os.platform()` |
+
 ## TODO
 
 Quick and dirty task-list.
@@ -381,6 +391,8 @@ Quick and dirty task-list.
 - [x] base ok boxes
 - [ ] interactive by default
 - [ ] nth: 'vanilla' flag (no prompts)
+- [ ] nth: allow context to use env vars eg BASH_VERSION to infer shell
+- [ ] nth: terminal size env vars
 - [ ] really user friendly way to get API key set
 - [ ] we can check first time run via presence of config file
 - [ ] Input: <prompt>: input

@@ -17,7 +17,7 @@ const debug = dbg("ai:ensure-api-key");
 async function ensurePromptsExist() {
   //  Ensure the prompts/chat folder exists.
   debug("checking local prompts...");
-  const sourceFolder = path.join(".", "prompts", "chat");
+  const sourceFolder = path.join(".", "prompts", "chat", "context");
   const destFolder = getChatPromptsPath();
   const promptsExists = fs.existsSync(destFolder);
   debug(
