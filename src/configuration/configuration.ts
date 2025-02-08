@@ -97,10 +97,8 @@ export function getConfigurationFromPromptsFolder(
     return {};
   }
   const promptPaths = fs.readdirSync(folder);
-  console.log("paths", promptPaths);
   const contextPrompts = promptPaths.map((promptPath) => {
     const filePath = path.join(folder, promptPath);
-    console.log(`path`, filePath);
     return fs.readFileSync(filePath, "utf8");
   });
   return {

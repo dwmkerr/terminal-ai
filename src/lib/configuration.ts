@@ -2,7 +2,6 @@ import os from "os";
 import fs from "fs";
 import fsPromises from "fs/promises";
 import path from "path";
-import { TerminatingWarning } from "./errors";
 
 export interface BoxConfiguration {
   connectUrl?: string;

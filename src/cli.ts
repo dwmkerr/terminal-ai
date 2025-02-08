@@ -6,7 +6,7 @@ import { Command } from "commander";
 
 import { chat } from "./actions/chat";
 
-import { debug } from "./commands/debug";
+import { debug as debugCommand } from "./commands/debug";
 import { getCosts } from "./commands/getCosts";
 import { info } from "./commands/info";
 import { list } from "./commands/list";
@@ -36,7 +36,11 @@ const cli = async (
     .description("CLI to control your cloud boxes")
     .version(packageJson.version)
     //  'chat' is the default action when no command is specified.
-    .action(async () => chat(executionContext, config));
+    .option("--no-context-prompts", "Disable context prompts")
+    .argument("[input]", "Chat input")
+    .action(async (input, { contextPrompts }) => {
+      return chat(executionContext, config, input, contextPrompts);
+    });
 
   program
     .command("list")
@@ -171,7 +175,7 @@ To accept charges, re-run with the '--yes' parameter.`,
     .argument("<command>", 'debug command to use, e.g. "test-detach"')
     .argument("<parameters...>", 'parameters for the command, e.g. "one two"')
     .action(async (command, parameters) => {
-      const result = await debug(command, parameters);
+      const result = await debugCommand(command, parameters);
       console.log(JSON.stringify(result));
     });
 

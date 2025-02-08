@@ -13,17 +13,16 @@ export async function ensureApiKey(
   executionContext: ExecutionContext,
   config: Configuration,
 ): Promise<Configuration> {
-  // This will run when no command is specified
-  if (!executionContext.isInteractive) {
-    throw new TerminatingWarning(
-      "Ensure API Key is not supported in non-interactive mode",
-    );
-  }
-
   //  If we already have a key, we're done.
   if (config.openAiApiKey !== "") {
     debug("key already configured");
     return config;
+  }
+
+  //  We don't have a key, if we're not interactive we cannot continue.
+  //  Note that the error message will be in the output, so keep it short.
+  if (!executionContext.isInteractive) {
+    throw new TerminatingWarning("error: openAiApiKey is not set");
   }
 
   //  If we don't have an API key, ask for one.

@@ -390,10 +390,22 @@ Quick and dirty task-list.
 
 **Chat - book ready**
 
-- [ ] enable non interactive
+- [x] enable non interactive - no terminal colors
+- [ ] build
 - [x] hydrate config on startup
+- [ ] close input ctrl+c handle
+- [ ] document chat
+- [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
 - [ ] nth: terminal size
+- [ ] nth: kill boxes commands
+
+- test: when downloading, no output shown when piping to a file (except for the chat output)
+
+
+---
+
+- [ ] nth(chat): line up input/output prompts on the colon
 
 - [ ] nth: 'vanilla' flag (no prompts)
 - [ ] nth: allow context to use env vars eg BASH_VERSION to infer shell

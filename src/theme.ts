@@ -42,8 +42,16 @@ export function printError(message: string, ...args: unknown[]) {
   console.log(colors.red(message), args);
 }
 
-export function printResponse(message: string) {
-  console.log(colors.white(colors.bold("chatgpt: ")) + message);
+export function inputPrompt(prompt: string): string {
+  return colors.white(colors.bold(`${prompt}:`));
+}
+
+export function printResponse(message: string, interactive: boolean) {
+  if (interactive) {
+    console.log(colors.white(colors.bold("chatgpt: ")) + message);
+  } else {
+    console.log(message);
+  }
 }
 
 export default {
@@ -53,5 +61,6 @@ export default {
   printBoxDetail,
   printWarning,
   printError,
+  inputPrompt,
   printResponse,
 };
