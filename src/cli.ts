@@ -70,7 +70,7 @@ async function main() {
   }
 
   //  Now hydrate and reload our config.
-  await hydrateDefaultConfig();
+  hydrateDefaultConfig();
   const config = await getConfiguration();
 
   //  Before we execute the command, we'll make sure we don't show a warning
