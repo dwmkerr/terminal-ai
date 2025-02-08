@@ -19,7 +19,8 @@
     "test:watch": "NODE_NO_WARNINGS=1 NODE_OPTIONS=--experimental-vm-modules jest --watch --no-coverage",
     "test:cov": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
     "tsc": "tsc",
-    "relink": "npm run build && npm unlink ai && npm link ai"
+    "relink": "npm run build && npm unlink ai && npm link ai",
+    "postinstall": "echo \"Terminal AI installed! Run 'ai' to try it out.\""
   },
   "repository": {
     "type": "git",

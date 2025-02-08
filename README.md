@@ -205,6 +205,7 @@ Quick and dirty task-list.
 
 ---
 
+- [ ] bug(build): don't include source - just dist
 - [ ] bug(ai): on startup the default yaml config should be copied over?
 - [ ] bug(chat): if API key is not set, error message must be plain text
 - [ ] devex: 'ai' local command to run from my folder
