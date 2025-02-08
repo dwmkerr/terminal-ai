@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.3](https://github.com/dwmkerr/terminal-ai/compare/v0.1.2...v0.1.3) (2025-02-08)
+
+
+### Bug Fixes
+
+* remove stale files ([#8](https://github.com/dwmkerr/terminal-ai/issues/8)) ([e05f8d4](https://github.com/dwmkerr/terminal-ai/commit/e05f8d453a048bff186759e8a96d1dffc7aee4b8))
+
+## [0.1.2](https://github.com/dwmkerr/terminal-ai/compare/v0.1.1...v0.1.2) (2025-02-08)
+
+
+### Bug Fixes
+
+* **ai:** show instructions post install ([cf029ae](https://github.com/dwmkerr/terminal-ai/commit/cf029aecec0112f94823f7e7e5ec1829a9ddc5ee))
+* **build:** correctly install dependencies on build ([b5dcf7f](https://github.com/dwmkerr/terminal-ai/commit/b5dcf7f11b15aaff44c3ac8ce587069dea244c4b))
+* bundle distributable code ([#6](https://github.com/dwmkerr/terminal-ai/issues/6)) ([690e95e](https://github.com/dwmkerr/terminal-ai/commit/690e95e370679ad08148b245d1cc75d48c9907c6))
+
 ## [0.1.1](https://github.com/dwmkerr/terminal-ai/compare/v0.1.0...v0.1.1) (2025-02-08)
 
 

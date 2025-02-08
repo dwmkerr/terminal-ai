@@ -197,9 +197,9 @@ Quick and dirty task-list.
 
 - [ ] nth: terminal recording
 
-
 ---
 
+- [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
 - [ ] bug(build): don't include source - just dist
 - [ ] bug(ai): on startup the default yaml config should be copied over?
 - [ ] bug(chat): if API key is not set, error message must be plain text

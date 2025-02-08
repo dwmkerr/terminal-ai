@@ -4,18 +4,10 @@ import { Command } from "commander";
 import { chat } from "./actions/chat";
 
 import { debug as debugCommand } from "./commands/debug";
-import { getCosts } from "./commands/getCosts";
-import { info } from "./commands/info";
-import { list } from "./commands/list";
-import { run } from "./commands/run";
-import { start } from "./commands/start";
 
 import theme from "./theme";
 import { TerminatingWarning } from "./lib/errors";
 import packageJson from "../package.json";
-import { BoxState } from "./box";
-import { assertConfirmation, execCommand } from "./lib/cli-helpers";
-import { importBox } from "./commands/import";
 import { ExecutionContext } from "./lib/execution-context";
 import { Configuration, getConfiguration } from "./configuration/configuration";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
@@ -41,126 +33,6 @@ const cli = async (
     });
 
   program
-    .command("list")
-    .alias("ls")
-    .description("Show boxes")
-    .action(async () => {
-      const boxes = await list();
-      boxes.forEach((box) => {
-        theme.printBoxHeading(box.boxId, box.state);
-        theme.printBoxDetail("Name", box.name || "<unknown>");
-        //  Only show DNS details if they exist (i.e. if the box is running).
-        if (box.instance?.PublicDnsName && box.instance?.PublicIpAddress) {
-          theme.printBoxDetail("DNS", box.instance.PublicDnsName);
-          theme.printBoxDetail("IP", box.instance.PublicIpAddress);
-        }
-        if (box.hasArchivedVolumes) {
-          theme.printBoxDetail("Archived Volumes", "true");
-        }
-      });
-    });
-
-  program
-    .command("info")
-    .description("Show detailed info on a box")
-    .argument("<boxId>", 'id of the box, e.g: "steambox"')
-    .action(info);
-
-  program
-    .command("run")
-    .description("Run a command on a box")
-    .argument("<boxId>", 'id of the box, e.g: "steambox"')
-    .argument("<commandName>", 'command name, e.g: "ssh"')
-    .argument("[args...]", "command arguments")
-    .option("-e, --exec", "execute command", false)
-    .option("-c, --copy-command", "copy command to clipboard", false)
-    .action(async (boxId, commandName, args, options) => {
-      const { command, copyCommand } = await run({
-        boxId,
-        commandName,
-        copyCommand: options.copyCommand,
-        args: args,
-      });
-      console.log(`${commandName}:`);
-      console.log(`  ${command}`);
-      if (options.copyCommand) {
-        console.log();
-        console.log(`Copied to clipboard: ${copyCommand}`);
-      }
-      if (options.exec) {
-        execCommand(command);
-      }
-    });
-
-  program
-    .command("start")
-    .description("Start a box")
-    .argument("<boxId>", 'id of the box, e.g: "steambox"')
-    .option("-w, --wait", "wait for box to complete startup", false)
-    .option(
-      "-y, --yes",
-      "[experimental] confirm restore archived volumes",
-      false,
-    )
-    .action(async (boxId, options) => {
-      const { instanceId, currentState, previousState } = await start({
-        boxId,
-        wait: options.wait,
-        restoreArchivedVolumes: options.yes,
-      });
-      console.log(
-        `  ${theme.boxId(boxId)} (${instanceId}): ${theme.state(
-          previousState,
-        )} -> ${theme.state(currentState)}`,
-      );
-    });
-
-  program
-    .command("costs")
-    .description("Check box costs")
-    .option("-y, --yes", "accept AWS charges", false)
-    .option("-y, --year <year>", "month of year", undefined)
-    .option("-m, --month <month>", "month of year", undefined)
-    .action(async (options) => {
-      //  Demand confirmation.
-      await assertConfirmation(
-        options,
-        "yes",
-        `The AWS cost explorer charges $0.01 per call.
-To accept charges, re-run with the '--yes' parameter.`,
-      );
-
-      const boxes = await list();
-      const costs = await getCosts({
-        yes: options.yes,
-        year: options.year,
-        month: options.month,
-      });
-
-      //  Show each box, joined to costs.
-      boxes.forEach((box) => {
-        //  TODO refactor typescript
-        if (box.boxId !== undefined) {
-          theme.printBoxHeading(box.boxId, box.state);
-          const boxCosts = costs[box.boxId];
-          theme.printBoxDetail("Costs (this month)", boxCosts || "<unknown>");
-          delete costs[box.boxId];
-        }
-      });
-
-      //  Any costs we didn't map should be found.
-      Object.getOwnPropertyNames(costs).forEach((key) => {
-        const cost = costs[key];
-        if (key === "*") {
-          theme.printBoxHeading("Non-box costs");
-        } else {
-          theme.printBoxHeading(key, BoxState.Unknown);
-        }
-        theme.printBoxDetail("Costs (this month)", cost);
-      });
-    });
-
-  program
     .command("config")
     .description("Show current configuration")
     .action(async () => {
@@ -175,23 +47,6 @@ To accept charges, re-run with the '--yes' parameter.`,
     .action(async (command, parameters) => {
       const result = await debugCommand(command, parameters);
       console.log(JSON.stringify(result));
-    });
-
-  program
-    .command("import")
-    .description("Import an AWS instance and volumes and tag as a Box")
-    .argument("<instanceId>", "the aws instance id")
-    .argument("<boxId>", "the box id to tag the instance with")
-    .option("-o, --overwrite", "overwrite existing box tags", false)
-    .action(async (instanceId, boxId, options) => {
-      await importBox({
-        boxId,
-        instanceId,
-        overwrite: options.overwrite,
-      });
-      console.log(
-        `  ${theme.boxId(boxId)} (${instanceId}): imported successfully`,
-      );
     });
 };
 
@@ -215,7 +70,7 @@ async function main() {
   }
 
   //  Now hydrate and reload our config.
-  await hydrateDefaultConfig();
+  hydrateDefaultConfig();
   const config = await getConfiguration();
 
   //  Before we execute the command, we'll make sure we don't show a warning
