@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import os from "os";
 import dbg from "debug";
 import { Command } from "commander";
 
