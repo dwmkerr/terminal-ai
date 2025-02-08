@@ -41,6 +41,8 @@
     "commander": "^11.1.0",
     "debug": "^4.3.4",
     "js-yaml": "^4.1.0",
+    "marked": "^15.0.6",
+    "marked-terminal": "^7.3.0",
     "open": "^9.1.0",
     "openai": "^4.83.0"
   },

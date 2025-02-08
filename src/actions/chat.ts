@@ -16,6 +16,9 @@ export async function chat(
   inputMessage: string | undefined,
   enableContextPrompts: boolean,
 ) {
+  //  If we don't have an API key, ask for one. Create the OpenAI interface.
+  const cfg = await ensureApiKey(executionContext, config);
+
   //  Our chat input will be the initial input if set, otherwise we'll have
   //  to prompt for it. We can also set the chat input params to have a nice
   //  color.
@@ -30,9 +33,6 @@ export async function chat(
     }
     chatInput = await input({ message: chatInputMessgae });
   }
-
-  //  If we don't have an API key, ask for one. Create the OpenAI interface.
-  const cfg = await ensureApiKey(executionContext, config);
 
   //  Create a converstion history that we will maintain as we interact.
   //  Add any chat prompts.
@@ -70,6 +70,7 @@ export async function chat(
     //  conversation
     chatInput = "";
     if (executionContext.isInteractive) {
+      console.log(""); // write a newline to make things more readable.
       chatInput = await input({ message: chatInputMessgae });
     }
   }

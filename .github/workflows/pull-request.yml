@@ -33,6 +33,10 @@ jobs:
     - name: test
       run: npm run test:cov
 
+    # Ensure we can build.
+    - name: test build
+      run: npm run build
+
     # Upload coverage to codecov.
     - uses: codecov/codecov-action@v3
       with:

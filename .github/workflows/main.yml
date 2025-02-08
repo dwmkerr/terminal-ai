@@ -50,6 +50,10 @@ jobs:
       - name: test
         run: npm run test:cov
 
+      # Ensure we can build.
+      - name: test build
+        run: npm run build
+
       # Upload the artifacts folder.
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -103,7 +107,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
-          package-name: crosswords-js
+          package-name: terminal-ai
       
       - name: Checkout
         uses: actions/checkout@v3
@@ -114,6 +118,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_LTS_VERSION }}
           registry-url: 'https://registry.npmjs.org'
+
+      # Build the distributable code.
+      - name: Build Distributable
+        run: npm run build
 
       # Publish the module to NPM.
       - name: Publish to NPM

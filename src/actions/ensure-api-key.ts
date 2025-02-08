@@ -1,11 +1,9 @@
-import fs from "fs";
-import yaml from "js-yaml";
 import dbg from "debug";
 import { input } from "@inquirer/prompts";
 
 import { ExecutionContext } from "../lib/execution-context";
 import { TerminatingWarning } from "../lib/errors";
-import { Configuration, getConfigPath } from "../configuration/configuration";
+import { Configuration, saveApiKey } from "../configuration/configuration";
 
 const debug = dbg("ai:ensure-api-key");
 
@@ -33,21 +31,7 @@ Enter your key below, or for instructions check:
 `,
   );
   const apiKey = await input({ message: "API Key:" });
-
-  //  Update the config file.
-  const configPath = getConfigPath();
-  try {
-    const fileContents = fs.readFileSync(configPath, "utf8");
-    const yamlData = yaml.load(fileContents) as Record<string, unknown>;
-    yamlData["openAiApiKey"] = apiKey;
-    const updatedYaml = yaml.dump(yamlData, { indent: 2 });
-    fs.writeFileSync(configPath, updatedYaml, "utf8");
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    throw new TerminatingWarning(
-      `Error updating config file ${configPath}: ${error.message}`,
-    );
-  }
+  saveApiKey(apiKey);
 
   //  Return the enriched configuration.
   debug("key read and saved");
