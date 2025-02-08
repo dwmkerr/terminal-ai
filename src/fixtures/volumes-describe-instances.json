@@ -1,0 +1,154 @@
+{
+    "Reservations": [
+        {
+            "Groups": [],
+            "Instances": [
+                {
+                    "AmiLaunchIndex": 0,
+                    "ImageId": "ami-0872c164f38dcc49f",
+                    "InstanceId": "i-08fec1692931e31e7",
+                    "InstanceType": "t2.micro",
+                    "KeyName": "dwmkerr_aws_key",
+                    "LaunchTime": "2024-01-19T15:15:08+00:00",
+                    "Monitoring": {
+                        "State": "disabled"
+                    },
+                    "Placement": {
+                        "AvailabilityZone": "us-west-2a",
+                        "GroupName": "",
+                        "Tenancy": "default"
+                    },
+                    "PrivateDnsName": "ip-10-0-1-11.us-west-2.compute.internal",
+                    "PrivateIpAddress": "10.0.1.11",
+                    "ProductCodes": [],
+                    "PublicDnsName": "",
+                    "State": {
+                        "Code": 80,
+                        "Name": "stopped"
+                    },
+                    "StateTransitionReason": "User initiated (2024-01-21 16:16:20 GMT)",
+                    "SubnetId": "subnet-0218aa127fc710ca2",
+                    "VpcId": "vpc-000512d60555e3586",
+                    "Architecture": "x86_64",
+                    "BlockDeviceMappings": [],
+                    "ClientToken": "terraform-20231110021418137600000002",
+                    "EbsOptimized": false,
+                    "EnaSupport": true,
+                    "Hypervisor": "xen",
+                    "IamInstanceProfile": {
+                        "Arn": "arn:aws:iam::705383350627:instance-profile/torrent-box",
+                        "Id": "AIPA2IPA7YFR7R52P3QTA"
+                    },
+                    "NetworkInterfaces": [
+                        {
+                            "Attachment": {
+                                "AttachTime": "2023-11-10T02:14:24+00:00",
+                                "AttachmentId": "eni-attach-0aadacdaeea6ee30d",
+                                "DeleteOnTermination": true,
+                                "DeviceIndex": 0,
+                                "Status": "attached",
+                                "NetworkCardIndex": 0
+                            },
+                            "Description": "",
+                            "Groups": [
+                                {
+                                    "GroupName": "ssh-ingress",
+                                    "GroupId": "sg-0197adf4dda7c939e"
+                                }
+                            ],
+                            "Ipv6Addresses": [],
+                            "MacAddress": "06:3a:34:27:1e:3f",
+                            "NetworkInterfaceId": "eni-04b6899b732026480",
+                            "OwnerId": "705383350627",
+                            "PrivateDnsName": "ip-10-0-1-11.us-west-2.compute.internal",
+                            "PrivateIpAddress": "10.0.1.11",
+                            "PrivateIpAddresses": [
+                                {
+                                    "Primary": true,
+                                    "PrivateDnsName": "ip-10-0-1-11.us-west-2.compute.internal",
+                                    "PrivateIpAddress": "10.0.1.11"
+                                }
+                            ],
+                            "SourceDestCheck": false,
+                            "Status": "in-use",
+                            "SubnetId": "subnet-0218aa127fc710ca2",
+                            "VpcId": "vpc-000512d60555e3586",
+                            "InterfaceType": "interface"
+                        }
+                    ],
+                    "RootDeviceName": "/dev/xvda",
+                    "RootDeviceType": "ebs",
+                    "SecurityGroups": [
+                        {
+                            "GroupName": "ssh-ingress",
+                            "GroupId": "sg-0197adf4dda7c939e"
+                        }
+                    ],
+                    "SourceDestCheck": false,
+                    "StateReason": {
+                        "Code": "Client.UserInitiatedShutdown",
+                        "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                    },
+                    "Tags": [
+                        {
+                            "Key": "Owner",
+                            "Value": "dwmkerr"
+                        },
+                        {
+                            "Key": "boxes.volumearchives",
+                            "Value": "[{\"snapshotId\":\"snap-03c3efc7e9254ab0a\",\"device\":\"/dev/xvda\"},{\"snapshotId\":\"snap-056afd3da4b3b003b\",\"device\":\"/dev/xvdf\"}]"
+                        },
+                        {
+                            "Key": "boxes.boxid",
+                            "Value": "torrentbox"
+                        },
+                        {
+                            "Key": "Project",
+                            "Value": "github.com/dwmkerr/dwmkerr"
+                        },
+                        {
+                            "Key": "Name",
+                            "Value": "Torrent Box"
+                        }
+                    ],
+                    "VirtualizationType": "hvm",
+                    "CpuOptions": {
+                        "CoreCount": 1,
+                        "ThreadsPerCore": 1
+                    },
+                    "CapacityReservationSpecification": {
+                        "CapacityReservationPreference": "open"
+                    },
+                    "HibernationOptions": {
+                        "Configured": false
+                    },
+                    "MetadataOptions": {
+                        "State": "applied",
+                        "HttpTokens": "optional",
+                        "HttpPutResponseHopLimit": 1,
+                        "HttpEndpoint": "enabled",
+                        "HttpProtocolIpv6": "disabled",
+                        "InstanceMetadataTags": "disabled"
+                    },
+                    "EnclaveOptions": {
+                        "Enabled": false
+                    },
+                    "PlatformDetails": "Linux/UNIX",
+                    "UsageOperation": "RunInstances",
+                    "UsageOperationUpdateTime": "2023-11-10T02:14:24+00:00",
+                    "PrivateDnsNameOptions": {
+                        "HostnameType": "ip-name",
+                        "EnableResourceNameDnsARecord": false,
+                        "EnableResourceNameDnsAAAARecord": false
+                    },
+                    "MaintenanceOptions": {
+                        "AutoRecovery": "default"
+                    },
+                    "CurrentInstanceBootMode": "legacy-bios"
+                }
+            ],
+            "OwnerId": "705383350627",
+            "ReservationId": "r-00ed8dde4b0ca365d"
+        }
+    ]
+}

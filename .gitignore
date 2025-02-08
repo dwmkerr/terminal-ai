@@ -1,0 +1,11 @@
+.DS_Store
+artifacts/
+dist/
+node_modules/
+jspm_packages/
+package-lock.json
+
+# Ignore any local AI config - but track the test fixture version.
+ai.yaml
+!src/fixtures/ai.yaml
+.env

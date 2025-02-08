@@ -1,0 +1,54 @@
+{
+    "GroupDefinitions": [
+        {
+            "Type": "TAG",
+            "Key": "boxes.boxid"
+        }
+    ],
+    "ResultsByTime": [
+        {
+            "TimePeriod": {
+                "Start": "2023-11-01",
+                "End": "2023-11-11"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "boxes.boxid$"
+                    ],
+                    "Metrics": {
+                        "UnblendedCost": {
+                            "Amount": "33.7798506778",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "boxes.boxid$steambox"
+                    ],
+                    "Metrics": {
+                        "UnblendedCost": {
+                            "Amount": "0.5264341375",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "boxes.boxid$torrentbox"
+                    ],
+                    "Metrics": {
+                        "UnblendedCost": {
+                            "Amount": "0.0515429305",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        }
+    ],
+    "DimensionValueAttributes": []
+}

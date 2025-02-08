@@ -1,0 +1,14 @@
+{
+    "AvailabilityZone": "us-west-2a",
+    "CreateTime": "2024-01-21T21:16:47+00:00",
+    "Encrypted": true,
+    "KmsKeyId": "arn:aws:kms:us-west-2:705383350627:key/1043b4a7-5766-4242-ab25-e6dc43ab41bd",
+    "Size": 20,
+    "SnapshotId": "snap-0f87e8940e82b46ce",
+    "State": "creating",
+    "VolumeId": "vol-0c3940cade857692b",
+    "Iops": 100,
+    "Tags": [],
+    "VolumeType": "gp2",
+    "MultiAttachEnabled": false
+}

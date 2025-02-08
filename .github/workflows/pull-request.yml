@@ -1,0 +1,44 @@
+name: Validate Pull Request
+
+# This workflow verifies that the site will build for pull requests.
+on: [pull_request]
+
+jobs:
+  validate-pull-request:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version:
+          - 16.x
+          - 18.x
+          - 20.x
+          - 22.x
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: 'https://registry.npmjs.org'
+
+    # # Fixup Git URLs, see:
+    # # https://stackoverflow.com/questions/70663523/the-unauthenticated-git-protocol-on-port-9418-is-no-longer-supported
+    # - name: Fix up git URLs
+    #   run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
+
+    # Lint and test.
+    - name: install
+      run: npm install
+    - name: lint
+      run: npm run lint
+    - name: test
+      run: npm run test:cov
+
+    # Upload coverage to codecov.
+    - uses: codecov/codecov-action@v3
+      with:
+        directory: ./artifacts/coverage

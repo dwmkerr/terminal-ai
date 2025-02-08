@@ -1,0 +1,64 @@
+{
+  "name": "@dwmkerr/terminal-ai",
+  "description": "Effortless AI in your terminal.",
+  "type": "commonjs",
+  "version": "0.1.0",
+  "main": "./dist/cli.js",
+  "bin": {
+    "ai": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "start": "NODE_NO_WARNINGS=1 ts-node ./src/cli.ts",
+    "start:debug": "NODE_OPTIONS='--experimental-vm-modules' node --inspect-brk node_modules/.bin/ts-node ./src/cli.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --no-coverage",
+    "test:debug": "NODE_OPTIONS='--experimental-vm-modules' node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "NODE_NO_WARNINGS=1 NODE_OPTIONS=--experimental-vm-modules jest --watch --no-coverage",
+    "test:cov": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
+    "tsc": "tsc",
+    "relink": "npm run build && npm unlink ai && npm link ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dwmkerr/terminal-ai.git"
+  },
+  "author": "dwmkerr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dwmkerr/terminal-ai/issues"
+  },
+  "homepage": "https://github.com/dwmkerr/terminal-ai#readme",
+  "dependencies": {
+    "@aws-sdk/client-cost-explorer": "3.10.0",
+    "@aws-sdk/client-ec2": "3.10.0",
+    "@inquirer/prompts": "^7.3.1",
+    "@types/js-yaml": "^4.0.9",
+    "clipboardy": "^4.0.0",
+    "colors": "^1.4.0",
+    "commander": "^11.1.0",
+    "debug": "^4.3.4",
+    "js-yaml": "^4.1.0",
+    "open": "^9.1.0",
+    "openai": "^4.83.0"
+  },
+  "devDependencies": {
+    "@aws-sdk/types": "3.10.0",
+    "@types/debug": "^4.1.12",
+    "@types/jest": "^29.5.11",
+    "@types/mock-fs": "^4.13.4",
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "aws-sdk-client-mock-jest": "^3.0.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "jest": "^29.7.0",
+    "mock-fs": "^5.2.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

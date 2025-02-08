@@ -1,0 +1,143 @@
+name: main
+
+on:
+  push:
+    branches:
+      - main
+      - build/*
+
+# Release Please needs permisisons to write commits and open PRs.
+permissions:
+  contents: write
+  pull-requests: write
+
+# We will build and test across a number of Node.js versions. Some steps only
+# occur for a single Node version (such as uploading coverage) - this variable
+# defines which Node version to use for these steps (which should be the current
+# Node Long-Term Support version).
+env:
+  NODE_LTS_VERSION: 22.x
+
+jobs:
+  validate-main:
+
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version:
+          - 16.x
+          - 18.x
+          - 20.x
+          - 22.x
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup the right version of Node.js.
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Fixup Git URLs, see:
+      # https://stackoverflow.com/questions/70663523/the-unauthenticated-git-protocol-on-port-9418-is-no-longer-supported
+      - name: Fix up git URLs
+        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
+        if: ${{ steps.release.outputs.release_created }}
+
+      # Lint and test.
+      - name: install
+        run: npm install
+      - name: lint
+        run: npm run lint
+      - name: test
+        run: npm run test:cov
+
+      # Upload the artifacts folder.
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            ./artifacts/
+        # Only upload artifacts for the build on the LTS version (we don't
+        # need artifacts per node version).
+        if: ${{ matrix.node-version == env.NODE_LTS_VERSION }}
+
+  upload-coverage:
+    # The 'upload coverage' job will only run if successfully complete the
+    # 'validate-main' job.
+    needs: validate-main
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      # The source files must be present for codecov to be upload the file list
+      # properly, otherwise no coverage is reported and the "unusable report"
+      # error is shown. Took ages to work this out.
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Download the build artifacts.
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+          path: ./artifacts
+
+      # Upload coverage.
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./artifacts/coverage
+
+  release-please:
+    # The 'release please' job will only run if successfully complete the
+    # 'validate-main' job. The deployment steps only occur if this is a release
+    # merge.
+    needs: validate-main
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: crosswords-js
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup the right version of Node.js.
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_LTS_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Fixup Git URLs, see:
+      # https://stackoverflow.com/questions/70663523/the-unauthenticated-git-protocol-on-port-9418-is-no-longer-supported
+      - name: Fix up git URLs
+        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
+
+      # Publish the module to NPM.
+      - name: Publish to NPM
+        run: |
+          # The 'npm publish' command will only run if an NPM_TOKEN secret is
+          # set. If it is not set, warn the user.
+          if [ "$NODE_AUTH_TOKEN" == "" ]; then
+            echo "The 'NPM_TOKEN' secret must be set to deploy to NPM"
+            exit 1
+          else
+            echo "The 'NPM_TOKEN' secret has been set - deploying to NPM..."
+            npm publish --access=public
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        if: ${{ steps.release.outputs.release_created }}

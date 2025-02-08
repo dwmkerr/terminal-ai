@@ -1,0 +1,7 @@
+{
+    "AttachTime": "2023-11-10T02:14:25+00:00",
+    "Device": "/dev/xvda",
+    "InstanceId": "i-08fec1692931e31e7",
+    "State": "detaching",
+    "VolumeId": "vol-0582d7fc0f3d797fc"
+}
