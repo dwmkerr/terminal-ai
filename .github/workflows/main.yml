@@ -52,7 +52,9 @@ jobs:
 
       # Ensure we can build.
       - name: test build
-        run: npm run build
+        run: |
+          npm install
+          npm run build
 
       # Upload the artifacts folder.
       - name: Upload Artifacts
@@ -121,7 +123,9 @@ jobs:
 
       # Build the distributable code.
       - name: Build Distributable
-        run: npm run build
+        run: |
+          npm install
+          npm run build
 
       # Publish the module to NPM.
       - name: Publish to NPM

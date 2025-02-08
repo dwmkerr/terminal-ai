@@ -35,7 +35,9 @@ jobs:
 
     # Ensure we can build.
     - name: test build
-      run: npm run build
+      run: |
+        npm install
+        npm run build
 
     # Upload coverage to codecov.
     - uses: codecov/codecov-action@v3
