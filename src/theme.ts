@@ -1,4 +1,7 @@
 import colors from "colors/safe";
+// import { marked } from "marked";
+// // import TerminalRenderer from "marked-terminal";
+
 import { BoxState } from "./box";
 
 function boxId(boxId: string) {
@@ -47,6 +50,12 @@ export function inputPrompt(prompt: string): string {
 }
 
 export function printResponse(message: string, interactive: boolean) {
+  //  Write markdown.
+  //
+
+  // marked.use({ renderer: new TerminalRenderer() });
+  // const response = marked.parse(message);
+
   if (interactive) {
     console.log(colors.white(colors.bold("chatgpt: ")) + message);
   } else {

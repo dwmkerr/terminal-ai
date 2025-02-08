@@ -24,8 +24,9 @@ type DeepPartial<T> = T extends object
     }
   : T;
 
-export const configFilePath = ".ai/config.yaml";
-export const chatPromptsPath = ".ai/prompts/chat/context";
+export const configDir = ".ai";
+export const configFilePath = `${configDir}/config.yaml`;
+export const chatPromptsPath = `${configDir}/prompts/chat/context`;
 
 export function getConfigPath(): string {
   return path.join(os.homedir(), configFilePath);
@@ -142,4 +143,31 @@ export async function getConfiguration(): Promise<Configuration> {
   const config3 = enrichConfiguration(config2, envConfig);
 
   return config3;
+}
+
+//  Update the config file.
+export function saveApiKey(apiKey: string) {
+  const configPath = getConfigPath();
+  try {
+    //  Ensure the config directory exists.
+    // Check if the directory exists
+    if (!fs.existsSync(configDir)) {
+      fs.mkdirSync(configDir);
+    }
+
+    //  We might be updating an existing file, if so get its contents.
+
+    const fileContents = fs.existsSync(configPath)
+      ? fs.readFileSync(configPath, "utf8")
+      : "";
+    const yamlData = (yaml.load(fileContents) as Record<string, unknown>) || {};
+    yamlData["openAiApiKey"] = apiKey;
+    const updatedYaml = yaml.dump(yamlData, { indent: 2 });
+    fs.writeFileSync(configPath, updatedYaml, "utf8");
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new TerminatingWarning(
+      `Error updating config file ${configPath}: ${error.message}`,
+    );
+  }
 }
