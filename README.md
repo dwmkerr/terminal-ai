@@ -181,14 +181,9 @@ Quick and dirty task-list.
 
 **Chat - book ready**
 
-- [x] enable non interactive - no terminal colors
-- [ ] build
 - [ ] nth: reply/copy/quit options
 - [ ] document chat
-- [x] close input ctrl+c handle
-- [x] hydrate config on startup
 - [ ] nth: chat command needs error handling
-- [ ] nth: terminal size
 - [ ] nth: kill boxes commands
 
 - test: when downloading, no output shown when piping to a file (except for the chat output)
@@ -202,9 +197,9 @@ Quick and dirty task-list.
 
 - [ ] nth: terminal recording
 
-
 ---
 
+- [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
 - [ ] bug(build): don't include source - just dist
 - [ ] bug(ai): on startup the default yaml config should be copied over?
 - [ ] bug(chat): if API key is not set, error message must be plain text
