@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/dwmkerr/terminal-ai/compare/v0.1.3...v0.1.4) (2025-02-08)
+
+
+### Bug Fixes
+
+* deprecation warning ([2172ca4](https://github.com/dwmkerr/terminal-ai/commit/2172ca4bb1720f14560fd0f57000e671acbe046a))
+
 ## [0.1.3](https://github.com/dwmkerr/terminal-ai/compare/v0.1.2...v0.1.3) (2025-02-08)
 
 
