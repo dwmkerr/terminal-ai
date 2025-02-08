@@ -205,7 +205,10 @@ Quick and dirty task-list.
 
 ---
 
+- [ ] devex: 'ai' local command to run from my folder
+
 - [ ] nth(chat): line up input/output prompts on the colon
+- [ ] build: lint on commit or at least push
 
 - [ ] nth: 'vanilla' flag (no prompts)
 - [ ] nth: allow context to use env vars eg BASH_VERSION to infer shell
