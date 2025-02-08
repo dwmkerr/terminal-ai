@@ -181,14 +181,9 @@ Quick and dirty task-list.
 
 **Chat - book ready**
 
-- [x] enable non interactive - no terminal colors
-- [ ] build
 - [ ] nth: reply/copy/quit options
 - [ ] document chat
-- [x] close input ctrl+c handle
-- [x] hydrate config on startup
 - [ ] nth: chat command needs error handling
-- [ ] nth: terminal size
 - [ ] nth: kill boxes commands
 
 - test: when downloading, no output shown when piping to a file (except for the chat output)
