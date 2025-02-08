@@ -1,10 +1,4 @@
 import * as config from "../configuration/configuration";
-import { TerminatingWarning } from "../lib/errors";
-
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-function logJson(val: any) {
-  console.log(JSON.stringify(val, null, 2));
-}
 
 export async function debug(command: string, parameters: string[]) {
   console.log(`debug: command - ${command} with parameters ${parameters}`);
