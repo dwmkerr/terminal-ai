@@ -219,6 +219,18 @@ async function main() {
   hydrateDefaultConfig();
   const config = await getConfiguration();
 
+  //  Before we execute the command, we'll make sure we don't show a warning
+  //  message if a user closes an inquirer prompt with Ctrl+C.
+  process.on("uncaughtException", (error) => {
+    console.log(`uncauht exceptin`);
+    if (error instanceof Error && error.name === "ExitPromptError") {
+      console.log("👋 until next time!");
+    } else {
+      // Rethrow unknown errors
+      throw error;
+    }
+  });
+
   try {
     const program = new Command();
     await cli(program, executionContext, config);
@@ -227,7 +239,12 @@ async function main() {
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   } catch (err: any) {
     //  TODO: if the 'verbose' flag has been set, log the error object.
-    if (err instanceof TerminatingWarning) {
+    //  Handle inquirer Ctrl+C.
+    if (err instanceof Error && err.name === "ExitPromptError") {
+      if (executionContext.isInteractive) {
+        console.log("Goodbye!");
+      }
+    } else if (err instanceof TerminatingWarning) {
       theme.printWarning(err.message);
       process.exit(ERROR_CODE_WARNING);
     } else if (err.code === "ENOTFOUND") {

@@ -392,8 +392,8 @@ Quick and dirty task-list.
 
 - [x] enable non interactive - no terminal colors
 - [ ] build
+- [x] close input ctrl+c handle
 - [x] hydrate config on startup
-- [ ] close input ctrl+c handle
 - [ ] document chat
 - [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
