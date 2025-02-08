@@ -11,7 +11,7 @@
     "build": "tsc",
     "build:watch": "tsc -w",
     "start": "NODE_NO_WARNINGS=1 ts-node ./src/cli.ts",
-    "start:debug": "NODE_OPTIONS='--experimental-vm-modules' node --inspect-brk node_modules/.bin/ts-node ./src/cli.ts",
+    "start:debug": "NODE_NO_WARNINGS=1 NODE_OPTIONS='--experimental-vm-modules' node --inspect-brk node_modules/.bin/ts-node ./src/cli.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest --no-coverage",
@@ -33,8 +33,6 @@
   },
   "homepage": "https://github.com/dwmkerr/terminal-ai#readme",
   "dependencies": {
-    "@aws-sdk/client-cost-explorer": "3.10.0",
-    "@aws-sdk/client-ec2": "3.10.0",
     "@inquirer/prompts": "^7.3.1",
     "@types/js-yaml": "^4.0.9",
     "clipboardy": "^4.0.0",
