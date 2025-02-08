@@ -42,12 +42,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
 
-      # Fixup Git URLs, see:
-      # https://stackoverflow.com/questions/70663523/the-unauthenticated-git-protocol-on-port-9418-is-no-longer-supported
-      - name: Fix up git URLs
-        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-        if: ${{ steps.release.outputs.release_created }}
-
       # Lint and test.
       - name: install
         run: npm install
@@ -83,7 +77,7 @@ jobs:
 
       # Download the build artifacts.
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifacts
           path: ./artifacts
@@ -120,11 +114,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_LTS_VERSION }}
           registry-url: 'https://registry.npmjs.org'
-
-      # Fixup Git URLs, see:
-      # https://stackoverflow.com/questions/70663523/the-unauthenticated-git-protocol-on-port-9418-is-no-longer-supported
-      - name: Fix up git URLs
-        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
 
       # Publish the module to NPM.
       - name: Publish to NPM

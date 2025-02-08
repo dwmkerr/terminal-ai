@@ -43,7 +43,7 @@ export async function chat(
   if (enableContextPrompts) {
     cfg.prompts.chat.context.forEach((prompt) => {
       const expanded = expandEnvVars(prompt, process.env);
-      debug(`prompt: ${expanded}`);
+      debug(`hydrated context prompt: ${expanded}`);
       conversationHistory.push({
         role: "user",
         content: expanded,

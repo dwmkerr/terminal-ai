@@ -22,6 +22,7 @@ import { importBox } from "./commands/import";
 import { ExecutionContext } from "./lib/execution-context";
 import { Configuration, getConfiguration } from "./configuration/configuration";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
+import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
 
 const ERROR_CODE_WARNING = 1;
 const ERROR_CODE_CONNECTION = 2;
@@ -205,8 +206,9 @@ async function main() {
     isTTY: process.stdout.isTTY,
   };
 
-  //  TODO extract this into a function.
-  process.env["OS_PLATFORM"] = os.platform();
+  //  Set all of the environment variables that can be used when hydrating
+  //  context.
+  hydrateContextEnvironmentVariables();
 
   //  Load our initial configuration, best effort. Allows us to enable debug
   //  tracing if configured.
@@ -216,7 +218,7 @@ async function main() {
   }
 
   //  Now hydrate and reload our config.
-  hydrateDefaultConfig();
+  await hydrateDefaultConfig();
   const config = await getConfiguration();
 
   //  Before we execute the command, we'll make sure we don't show a warning

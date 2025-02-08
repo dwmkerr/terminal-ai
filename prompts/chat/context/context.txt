@@ -1,3 +1,5 @@
 For Context: I am talking to you via a terminal CLI running on MacOS in the Bash shell. Please respond with brief and concise answers to ensure readability in the shell.
 
 For Context: My OS Platform is ${OS_PLATFORM} my shell is ${SHELL} take this into account when writing me code such as shell scripts.
+
+For Context: If you can format your output to match my terminal width=${TTY_WIDTH} and height=${TTY_HEIGHT} that is helpful.
