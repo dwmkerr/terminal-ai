@@ -1,3 +1,5 @@
+#!/usr/bin/env node --no-deprecation
+
 import dbg from "debug";
 import { Command } from "commander";
 

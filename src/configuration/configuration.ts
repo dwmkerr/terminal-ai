@@ -64,7 +64,9 @@ export function getConfigurationFromFile(
     const fileContents = fs.readFileSync(path, "utf8");
     return yaml.load(fileContents) as DeepPartial<Configuration>;
   } catch (error) {
-    throw new TerminatingWarning(`error reading config file: ${path}`);
+    throw new TerminatingWarning(
+      `error reading config file: ${path}: ${error}`,
+    );
   }
 }
 

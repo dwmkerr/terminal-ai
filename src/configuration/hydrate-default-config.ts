@@ -33,7 +33,6 @@ export function hydrateDefaultConfig() {
 
     try {
       fs.copyFileSync(sourceFile, destFile);
-      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err) {
       console.error(`Error copying ${file}: ${err}`);
     }
