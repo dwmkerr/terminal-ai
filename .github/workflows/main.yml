@@ -16,7 +16,7 @@ permissions:
 # defines which Node version to use for these steps (which should be the current
 # Node Long-Term Support version).
 env:
-  NODE_LTS_VERSION: 20.x
+  NODE_LTS_VERSION: 22.x
 
 jobs:
   validate-main:
@@ -29,6 +29,7 @@ jobs:
           - 16.x
           - 18.x
           - 20.x
+          - 22.x
 
     steps: 
       - name: Checkout
@@ -57,7 +58,7 @@ jobs:
 
       # Upload the artifacts folder.
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
