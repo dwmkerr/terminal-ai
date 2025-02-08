@@ -169,9 +169,11 @@ The demo script is currently:
 
 Additional env vars set:
 
-| Environment Variable | Description            |
-|----------------------|------------------------|
-| `OS_PLATFORM`           | `nodejs os.platform()` |
+| Environment Variable | Description                            |
+|----------------------|----------------------------------------|
+| `OS_PLATFORM`        | `nodejs os.platform()`                 |
+| `TTY_WIDTH`          | The terminal width (or 80 if not set)  |
+| `TTY_HEIGHT`         | The terminal height (or 24 if not set) |
 
 ## TODO
 
@@ -181,15 +183,24 @@ Quick and dirty task-list.
 
 - [x] enable non interactive - no terminal colors
 - [ ] build
+- [ ] nth: reply/copy/quit options
+- [ ] document chat
 - [x] close input ctrl+c handle
 - [x] hydrate config on startup
-- [ ] document chat
-- [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
 - [ ] nth: terminal size
 - [ ] nth: kill boxes commands
 
 - test: when downloading, no output shown when piping to a file (except for the chat output)
+
+**Code - book ready**
+
+- [ ] code: interactive
+- [ ] nth: code - non interactive
+
+**Documentation - book ready**
+
+- [ ] nth: terminal recording
 
 
 ---
