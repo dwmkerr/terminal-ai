@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/dwmkerr/terminal-ai/compare/v0.1.2...v0.1.3) (2025-02-08)
+
+
+### Bug Fixes
+
+* remove stale files ([#8](https://github.com/dwmkerr/terminal-ai/issues/8)) ([e05f8d4](https://github.com/dwmkerr/terminal-ai/commit/e05f8d453a048bff186759e8a96d1dffc7aee4b8))
+
 ## [0.1.2](https://github.com/dwmkerr/terminal-ai/compare/v0.1.1...v0.1.2) (2025-02-08)
 
 

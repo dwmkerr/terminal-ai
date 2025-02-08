@@ -2,7 +2,7 @@
   "name": "@dwmkerr/terminal-ai",
   "description": "Effortless AI in your terminal.",
   "type": "commonjs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "./dist/cli.js",
   "bin": {
     "ai": "NODE_OPTIONS=--no-deprecation node ./dist/cli.js"
