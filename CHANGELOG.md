@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0 (2025-02-08)
+
+
+### Features
+
+* basic 'chat' command ([d6603a3](https://github.com/dwmkerr/terminal-ai/commit/d6603a3e29fc229163005c38320d03dc98e03a50))
+* **chat:** enable TTY dimensions ([#4](https://github.com/dwmkerr/terminal-ai/issues/4)) ([533a872](https://github.com/dwmkerr/terminal-ai/commit/533a872253d842b06b14f2a4eba4e44dd95ad533))
+
+
+### Miscellaneous Chores
+
+* release 0.1.0 ([3c43ab8](https://github.com/dwmkerr/terminal-ai/commit/3c43ab879cb73a7356fe1da898571d07e39825e3))
+
 ## [0.2.0](https://github.com/dwmkerr/boxes/compare/v0.1.0...v0.2.0) (2023-11-10)
 
 
