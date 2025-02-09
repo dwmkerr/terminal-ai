@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/dwmkerr/terminal-ai/compare/v0.1.4...v0.2.0) (2025-02-09)
+
+
+### Features
+
+* **chat:** style markdown output ([#12](https://github.com/dwmkerr/terminal-ai/issues/12)) ([f81e3dd](https://github.com/dwmkerr/terminal-ai/commit/f81e3dd6b030bbca099ef11d5104b8f872010c81))
+
 ## [0.1.4](https://github.com/dwmkerr/terminal-ai/compare/v0.1.3...v0.1.4) (2025-02-08)
 
 
