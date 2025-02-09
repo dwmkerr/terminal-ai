@@ -181,12 +181,9 @@ Quick and dirty task-list.
 
 **Chat - book ready**
 
-- [ ] nth: reply/copy/quit options
 - [ ] document chat
+- [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
-- [ ] nth: kill boxes commands
-
-- test: when downloading, no output shown when piping to a file (except for the chat output)
 
 **Code - book ready**
 
@@ -202,17 +199,14 @@ Quick and dirty task-list.
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
 - [ ] bug(build): don't include source - just dist
 - [ ] bug(ai): on startup the default yaml config should be copied over?
-- [ ] bug(chat): if API key is not set, error message must be plain text
+- [ ] bug(chat): when non-interactive if API key is not set, error message must be plain text
 - [ ] devex: 'ai' local command to run from my folder
 
 - [ ] nth(chat): line up input/output prompts on the colon
 - [ ] build: lint on commit or at least push
 
 - [ ] nth: 'vanilla' flag (no prompts)
-- [ ] nth: allow context to use env vars eg BASH_VERSION to infer shell
-- [ ] nth: terminal size env vars
 
-- [x] base ok boxes
 - [ ] really user friendly way to get API key set
 - [ ] we can check first time run via presence of config file
 - [ ] Input: <prompt>: input

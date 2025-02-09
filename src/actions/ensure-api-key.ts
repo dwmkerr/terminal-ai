@@ -25,7 +25,9 @@ export async function ensureApiKey(
 
   //  If we don't have an API key, ask for one.
   console.log(
-    `An API key must be configured so that Terminal AI can talk to ChatGPT.
+    `Welcome to Terminal AI!
+
+An API key must be configured so that Terminal AI can talk to ChatGPT.
 Enter your key below, or for instructions check:
   https://github.com/dwmkerr/terminal-ai#api-key
 `,
