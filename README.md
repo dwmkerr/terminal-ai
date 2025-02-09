@@ -36,21 +36,18 @@ WIP
 
 WIP
 
-### `boxes config`
+### `ai config`
 
-Shows the current configuration that has been loaded for `boxes`. Can be helpful for troubleshooting whether things like the region are set properly:
+Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables (and in the future) from local `.ai` files:
 
-```bash
-% boxes config
+```
+$ ai
 {
-  "boxes": ...
-  "aws": {
-    "region": "us-west-2"
-  }
-}
+  "openAiApiKey": "<secret>",
+  "prompts": {
+    "chat": {
 ```
 
-**debug config** - show how the configuration has been constructed
 
 
 ## Configuration
@@ -165,9 +162,18 @@ The demo script is currently:
 
 ## Technical Documentation
 
+### Context
+
+"Context" refers to prompts which are passed to the model before the user interacts, which can provide the model with more information about the environment of the user or their potential intent. Examples would be:
+
+- That the user is running in a shell, with a given set of terminal dimensions
+- What the operating system is that the user is running
+- (WIP) the organisation and name of the local Git repo
+- (WIP) the primary language of the current Git repo.
+
 ### Context Prompts
 
-Additional env vars set:
+When expanding context prompts (e.g. ./prompts/chat/context/context.txt) environment variables may be used to give more specific information. As well as those provided by the system (or yourself), the following are automatically set for convenience:
 
 | Environment Variable | Description                            |
 |----------------------|----------------------------------------|
@@ -175,18 +181,20 @@ Additional env vars set:
 | `TTY_WIDTH`          | The terminal width (or 80 if not set)  |
 | `TTY_HEIGHT`         | The terminal height (or 24 if not set) |
 
+
 ## TODO
 
 Quick and dirty task-list.
 
 **Chat - book ready**
 
-- [ ] nth: reply/copy/quit options
 - [ ] document chat
+- [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
-- [ ] nth: kill boxes commands
 
-- test: when downloading, no output shown when piping to a file (except for the chat output)
+**Output modes (interaction modes) - book ready**
+
+- [ ] Input: <prompt>: input
 
 **Code - book ready**
 
@@ -197,25 +205,32 @@ Quick and dirty task-list.
 
 - [ ] nth: terminal recording
 
+**Epic - Output Modes**
+
+- [ ] feat: custom inqurirer module to handle keypresses and toggle the input prompt
+
+**Chat**
+
+- [ ] nth: decide on whether a response prompt is needed. For a single line response it is probably good, for multi-line it is probably unneeded, for a single line of code it is likely not needed, consider either heuristics or configuration options
+- [ ] nth: support reflow with marked-terminal to more gracefully show output
 ---
 
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
 - [ ] bug(build): don't include source - just dist
 - [ ] bug(ai): on startup the default yaml config should be copied over?
-- [ ] bug(chat): if API key is not set, error message must be plain text
+- [ ] bug(chat): when non-interactive if API key is not set, error message must be plain text
 - [ ] devex: 'ai' local command to run from my folder
 
 - [ ] nth(chat): line up input/output prompts on the colon
 - [ ] build: lint on commit or at least push
 
 - [ ] nth: 'vanilla' flag (no prompts)
-- [ ] nth: allow context to use env vars eg BASH_VERSION to infer shell
-- [ ] nth: terminal size env vars
+- [ ] fix(config): hide sensitive values by default
 
-- [x] base ok boxes
+- [ ] minor: consider what heading/title to run when init-ing the key or first time interactive.
+
 - [ ] really user friendly way to get API key set
 - [ ] we can check first time run via presence of config file
-- [ ] Input: <prompt>: input
 - [ ] Call from vi example
 - [ ] Put in effective shell chapter
 - [ ] Check competitors
