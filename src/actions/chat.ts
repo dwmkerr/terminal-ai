@@ -1,5 +1,8 @@
 import dbg from "debug";
+import fs from "fs";
 import { input } from "@inquirer/prompts";
+import { select } from "@inquirer/prompts";
+
 import { chat as chatCommand } from "../commands/chat";
 import theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
@@ -70,8 +73,64 @@ export async function chat(
     //  conversation
     chatInput = "";
     if (executionContext.isInteractive) {
-      console.log(""); // write a newline to make things more readable.
+      await nextOption(response || "");
       chatInput = await input({ message: chatInputMessgae });
+    }
+  }
+}
+
+export async function nextOption(response: string) {
+  //  Loop until we know we've got an option we can continue with.
+  while (true) {
+    const answer = await select({
+      message: theme.inputPrompt("What next?"),
+      default: "r",
+      choices: [
+        {
+          name: "Reply",
+          value: "reply",
+        },
+        {
+          name: "Copy Response",
+          value: "copy",
+        },
+        {
+          name: "Save Response",
+          value: "save",
+        },
+        {
+          name: "Quit",
+          value: "quit",
+        },
+      ],
+    });
+
+    //  Delete the previous line, i.e. the selection line, so that the output
+    //  stays clean.
+    process.stdout.write("\u001b[1A" + "\u001b[2K");
+
+    //  If the answer is copy, copy the response to the clipboard.
+    if (answer === "reply") {
+      break;
+    } else if (answer === "copy") {
+      //  Note that 'clipboardy' requires dynamic imports so that this
+      //  can be packaged as a commonjs module.
+      const clipboard = (await import("clipboardy")).default;
+      clipboard.writeSync(response);
+      console.log(`✅ Response copied to clipboard!`);
+    } else if (answer === "save") {
+      const inputPrompt = theme.inputPrompt("Save As");
+      const path = await input({ message: inputPrompt });
+      try {
+        fs.writeFileSync(path, response, "utf8");
+        console.log(`✅ Response saved to ${path}!`);
+      } catch (err) {
+        theme.printError(
+          "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
+        );
+      }
+    } else if (answer === "quit") {
+      process.exit(0);
     }
   }
 }

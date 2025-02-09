@@ -30,7 +30,7 @@ export function printResponse(message: string, interactive: boolean) {
   //  We are interactive, so first we'll write the ChatGPT reponse prompt,
   //  then the markdown content styled for the terminal.
   const markdownOutput = marked.parse(message);
-  console.log(colors.white(colors.bold("chatgpt: ")), markdownOutput);
+  console.log(colors.white(colors.bold("chatgpt:")), markdownOutput);
 }
 
 export default {
