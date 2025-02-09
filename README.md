@@ -209,6 +209,10 @@ Quick and dirty task-list.
 
 - [ ] feat: custom inqurirer module to handle keypresses and toggle the input prompt
 
+**Chat**
+
+- [ ] nth: decide on whether a response prompt is needed. For a single line response it is probably good, for multi-line it is probably unneeded, for a single line of code it is likely not needed, consider either heuristics or configuration options
+- [ ] nth: support reflow with marked-terminal to more gracefully show output
 ---
 
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
