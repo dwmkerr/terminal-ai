@@ -28,9 +28,24 @@ export function printResponse(message: string, interactive: boolean) {
   }
 
   //  We are interactive, so first we'll write the ChatGPT reponse prompt,
-  //  then the markdown content styled for the terminal.
-  const markdownOutput = marked.parse(message);
-  console.log(colors.white(colors.bold("chatgpt: ")), markdownOutput);
+  //  then the markdown content styled for the terminal. Also clear trailing
+  //  newlines.
+  const markdownOutput = marked.parse(message) as string;
+  const trimmedMarkdownOutput = markdownOutput.trim();
+
+  //  Clear trailing newlines.
+  console.log(colors.white(colors.bold("chatgpt:")), trimmedMarkdownOutput);
+}
+
+export function printHint(hint: string) {
+  // This needs to be configurable.
+
+  // Move cursor up using ANSI escape codes
+  console.log();
+  console.log(colors.gray(hint));
+  // process.stdout.write("\u001b[1A"); // Move cursor up by 1 line
+  // console.log("          " + colors.gray(hint));
+  // process.stdout.write("\u001b[1A"); // Move cursor up by 1 line
 }
 
 export default {
@@ -38,4 +53,5 @@ export default {
   printError,
   inputPrompt,
   printResponse,
+  printHint,
 };

@@ -188,13 +188,11 @@ Quick and dirty task-list.
 
 **Chat - book ready**
 
+- [x] reply/copy/quit options - offer file output for example
+- [x] copy action, save action
+- [ ] nth: just show the response prompt, but if empty response show actions
 - [ ] document chat
-- [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
-
-**Output modes (interaction modes) - book ready**
-
-- [ ] Input: <prompt>: input
 
 **Code - book ready**
 
@@ -207,14 +205,22 @@ Quick and dirty task-list.
 
 **Epic - Output Modes**
 
+Enable the `<output>: input` format for chats, e.g. to go straight to file
+
 - [ ] feat: custom inqurirer module to handle keypresses and toggle the input prompt
 
 **Chat**
 
 - [ ] nth: decide on whether a response prompt is needed. For a single line response it is probably good, for multi-line it is probably unneeded, for a single line of code it is likely not needed, consider either heuristics or configuration options
 - [ ] nth: support reflow with marked-terminal to more gracefully show output
+- [ ] nth: 'compact' option for action menu
+- [ ] nth: clean up the prompt for next action as well as the code
+- [ ] nth: decide how to trim markdown and space output. It might be based on whether the output is multi-line and so on
+- [ ] nth: give code blocks more of a background so that they are more readable
+
 ---
 
+- [ ] bug: printError shows an empty square brackets at the end
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
 - [ ] bug(build): don't include source - just dist
 - [ ] bug(ai): on startup the default yaml config should be copied over?
@@ -222,7 +228,6 @@ Quick and dirty task-list.
 - [ ] devex: 'ai' local command to run from my folder
 
 - [ ] nth(chat): line up input/output prompts on the colon
-- [ ] build: lint on commit or at least push
 
 - [ ] nth: 'vanilla' flag (no prompts)
 - [ ] fix(config): hide sensitive values by default
