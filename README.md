@@ -36,21 +36,18 @@ WIP
 
 WIP
 
-### `boxes config`
+### `ai config`
 
-Shows the current configuration that has been loaded for `boxes`. Can be helpful for troubleshooting whether things like the region are set properly:
+Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables (and in the future) from local `.ai` files:
 
-```bash
-% boxes config
+```
+$ ai
 {
-  "boxes": ...
-  "aws": {
-    "region": "us-west-2"
-  }
-}
+  "openAiApiKey": "<secret>",
+  "prompts": {
+    "chat": {
 ```
 
-**debug config** - show how the configuration has been constructed
 
 
 ## Configuration
@@ -165,15 +162,25 @@ The demo script is currently:
 
 ## Technical Documentation
 
+### Context
+
+"Context" refers to prompts which are passed to the model before the user interacts, which can provide the model with more information about the environment of the user or their potential intent. Examples would be:
+
+- That the user is running in a shell, with a given set of terminal dimensions
+- What the operating system is that the user is running
+- (WIP) the organisation and name of the local Git repo
+- (WIP) the primary language of the current Git repo.
+
 ### Context Prompts
 
-Additional env vars set:
+When expanding context prompts (e.g. ./prompts/chat/context/context.txt) environment variables may be used to give more specific information. As well as those provided by the system (or yourself), the following are automatically set for convenience:
 
 | Environment Variable | Description                            |
 |----------------------|----------------------------------------|
 | `OS_PLATFORM`        | `nodejs os.platform()`                 |
 | `TTY_WIDTH`          | The terminal width (or 80 if not set)  |
 | `TTY_HEIGHT`         | The terminal height (or 24 if not set) |
+
 
 ## TODO
 
@@ -185,6 +192,10 @@ Quick and dirty task-list.
 - [ ] nth: reply/copy/quit options
 - [ ] nth: chat command needs error handling
 
+**Output modes (interaction modes) - book ready**
+
+- [ ] Input: <prompt>: input
+
 **Code - book ready**
 
 - [ ] code: interactive
@@ -193,6 +204,10 @@ Quick and dirty task-list.
 **Documentation - book ready**
 
 - [ ] nth: terminal recording
+
+**Epic - Output Modes**
+
+- [ ] feat: custom inqurirer module to handle keypresses and toggle the input prompt
 
 ---
 
@@ -206,10 +221,12 @@ Quick and dirty task-list.
 - [ ] build: lint on commit or at least push
 
 - [ ] nth: 'vanilla' flag (no prompts)
+- [ ] fix(config): hide sensitive values by default
+
+- [ ] minor: consider what heading/title to run when init-ing the key or first time interactive.
 
 - [ ] really user friendly way to get API key set
 - [ ] we can check first time run via presence of config file
-- [ ] Input: <prompt>: input
 - [ ] Call from vi example
 - [ ] Put in effective shell chapter
 - [ ] Check competitors

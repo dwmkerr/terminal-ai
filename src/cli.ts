@@ -45,7 +45,7 @@ const cli = async (
     .command("debug")
     .description("Additional commands used for debugging")
     .argument("<command>", 'debug command to use, e.g. "test-detach"')
-    .argument("<parameters...>", 'parameters for the command, e.g. "one two"')
+    .argument("[parameters...]", 'parameters for the command, e.g. "one two"')
     .action(async (command, parameters) => {
       const result = await debugCommand(command, parameters);
       console.log(JSON.stringify(result));
