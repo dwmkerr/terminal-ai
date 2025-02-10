@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/dwmkerr/terminal-ai/compare/v0.4.0...v0.5.0) (2025-02-10)
+
+
+### Features
+
+* **chat:** basic code intent ([#19](https://github.com/dwmkerr/terminal-ai/issues/19)) ([0ebbcee](https://github.com/dwmkerr/terminal-ai/commit/0ebbcee740c63b5f4b76317803f0dcf95d00c20d))
+
 ## [0.4.0](https://github.com/dwmkerr/terminal-ai/compare/v0.1.0...v0.4.0) (2025-02-09)
 
 
