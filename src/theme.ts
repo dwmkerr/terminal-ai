@@ -29,8 +29,15 @@ export function printResponse(message: string, interactive: boolean): string {
     ? "\n\n" + markdownOutput
     : markdownOutput.trim();
 
+  //  If our output starts with a newline, we don't need a 'space' after the
+  //  prompt.
+  const newLineOutput = trimmedMarkdownOutput.startsWith("\n");
+  const separator = newLineOutput ? "" : " ";
+
   //  Clear trailing newlines.
-  return colors.white(colors.bold("chatgpt: ")) + trimmedMarkdownOutput;
+  return (
+    colors.white(colors.bold("chatgpt:")) + separator + trimmedMarkdownOutput
+  );
 }
 
 export function printHint(hint: string) {

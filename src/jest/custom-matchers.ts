@@ -5,20 +5,6 @@ export interface CustomMatchers<R = unknown> extends jest.Matchers<R> {
   toMatchPlainText(expected: string): R;
 }
 
-function findFirstDifference(s1: string, s2: string) {
-  for (let i = 0; i < Math.min(s1.length, s2.length); i++) {
-    if (s1[i] !== s2[i]) {
-      return `First difference found at line ${i + 1}, char ${i + 1}: '${s1[i]}' vs '${s2[i]}'`;
-    }
-  }
-
-  if (s1.length !== s2.length) {
-    return `Strings differ in length starting from line ${Math.min(s1.length, s2.length) + 1}`;
-  } else {
-    return "No differences found between the strings!";
-  }
-}
-
 export const customMatchers: jest.ExpectExtendMap = {
   toBeFormatted(
     //  eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -45,8 +31,6 @@ export const customMatchers: jest.ExpectExtendMap = {
   ): jest.CustomMatcherResult {
     const plainText = stripFormatting(formatMarkdown(received));
     const pass = plainText === expected;
-    findFirstDifference(expected, plainText);
-    debugger;
 
     return {
       pass,

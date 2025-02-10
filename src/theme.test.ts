@@ -3,7 +3,7 @@ import { printResponse } from "./theme";
 
 describe("theme", () => {
   describe("printResponse", () => {
-    test.only("correctly prints single line response", () => {
+    test("correctly prints single line response", () => {
       expect(printResponse("Good morning", true)).toBeFormatted(true);
       expect(printResponse("Good morning", true)).toMatchPlainText(
         "chatgpt: Good morning",
@@ -15,20 +15,7 @@ describe("theme", () => {
       );
     });
 
-    test.skip("correctly prints single code block response", () => {
-      const rawResponse = `\`\`\`python
-if not os.path.exists(folder_name):
-\`\`\``;
-
-      const formattedResponse = printResponse(rawResponse, true);
-      // expect(formattedResponse).toBeFormatted(true);
-      //  Note the title, indentation and leading/trailing whitespace.
-      expect(formattedResponse).toMatchPlainText(`chatgpt:
-
-    if not os.path.exists(folder_name):`);
-    });
-
-    test.skip("correctly prints single code block response", () => {
+    test("correctly prints single code block response", () => {
       const rawResponse = `\`\`\`python
 import os
 
@@ -50,13 +37,5 @@ if not os.path.exists(folder_name):
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)`);
     });
-
-    //   const response = printResponse("Good morning", false);
-    //   const strippedResponse = stripVTControlCharacters(response);
-    //   const hasAnsiCodes = strippedResponse !== response;
-
-    //   expect(strippedResponse).toBe("chatgpt: Good morning");
-    //   expect(hasAnsiCodes).toBe(false);
-    // });
   });
 });
