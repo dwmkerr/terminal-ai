@@ -275,6 +275,8 @@ Enable the `<output>: input` format for chats, e.g. to go straight to file
 
 ---
 
+- [ ] bug: fix skipped tests
+
 - [ ] bug: printError shows an empty square brackets at the end
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
 - [ ] bug(build): don't include source - just dist

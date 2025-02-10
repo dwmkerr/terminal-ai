@@ -20,6 +20,7 @@ export async function chat(
   inputMessage: string | undefined,
   enableContextPrompts: boolean,
 ) {
+  debug(`chat interactive:`, executionContext);
   //  If we don't have an API key, ask for one. Create the OpenAI interface.
   const cfg = await ensureApiKey(executionContext, config);
 
@@ -60,7 +61,8 @@ export async function chat(
     //  TODO: this is ugly and hard-coded but currently the only output
     //  interaction model we need. This'll be extracted into proper logic
     //  soon.
-    if (/^code:/.test(chatInput)) {
+    const outputIntentIsCode = /^code:/.test(chatInput);
+    if (outputIntentIsCode) {
       debug("'code' output intent detected, fixing input and adding prompt...");
       chatInput = chatInput.substring(5);
       const prompt =
@@ -77,9 +79,17 @@ export async function chat(
     if (!response) {
       theme.printError("No response received from ChatGPT...");
     } else {
-      console.log(
-        theme.printResponse(response, executionContext.isInteractive),
+      //  If our intent is code and we're writing to a file, make it plain text
+      //  code.
+      const responseText = theme.printResponse(
+        response,
+        executionContext.isInteractive,
       );
+      if (outputIntentIsCode && executionContext.isInteractive === false) {
+        console.log(plainTextCode(responseText));
+      } else {
+        console.log(responseText);
+      }
       conversationHistory.push({
         role: "assistant",
         content: response,
