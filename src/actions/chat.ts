@@ -77,7 +77,9 @@ export async function chat(
     if (!response) {
       theme.printError("No response received from ChatGPT...");
     } else {
-      theme.printResponse(response, executionContext.isInteractive);
+      console.log(
+        theme.printResponse(response, executionContext.isInteractive),
+      );
       conversationHistory.push({
         role: "assistant",
         content: response,

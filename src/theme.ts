@@ -13,11 +13,11 @@ export function inputPrompt(prompt: string): string {
   return colors.white(colors.bold(`${prompt}:`));
 }
 
-export function printResponse(message: string, interactive: boolean) {
+export function printResponse(message: string, interactive: boolean): string {
   //  If we are non-interactive, we will simply write the result as plain
   //  text and return (no formatting).
   if (!interactive) {
-    console.log(message);
+    return message;
   }
 
   //  We are interactive, so first we'll write the ChatGPT reponse prompt,
@@ -30,7 +30,7 @@ export function printResponse(message: string, interactive: boolean) {
     : markdownOutput.trim();
 
   //  Clear trailing newlines.
-  console.log(colors.white(colors.bold("chatgpt:")), trimmedMarkdownOutput);
+  return colors.white(colors.bold("chatgpt: ")) + trimmedMarkdownOutput;
 }
 
 export function printHint(hint: string) {
