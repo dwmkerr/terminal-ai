@@ -1,10 +1,5 @@
 import colors from "colors/safe";
-import { marked } from "marked";
-
-//  We're going to 'require' as there are not up to date type definitions
-//  for marked-terminal.
-//  eslint-disable-next-line
-const loadedModule: any = require("marked-terminal");
+import { formatMarkdown } from "./lib/markdown";
 
 function printWarning(message: string) {
   console.log(colors.yellow(message));
@@ -19,8 +14,6 @@ export function inputPrompt(prompt: string): string {
 }
 
 export function printResponse(message: string, interactive: boolean) {
-  marked.use(loadedModule.markedTerminal());
-
   //  If we are non-interactive, we will simply write the result as plain
   //  text and return (no formatting).
   if (!interactive) {
@@ -29,9 +22,12 @@ export function printResponse(message: string, interactive: boolean) {
 
   //  We are interactive, so first we'll write the ChatGPT reponse prompt,
   //  then the markdown content styled for the terminal. Also clear trailing
-  //  newlines.
-  const markdownOutput = marked.parse(message) as string;
-  const trimmedMarkdownOutput = markdownOutput.trim();
+  //  newlines. However, if we have code output we don't want to trim the
+  //  beginning.
+  const markdownOutput = formatMarkdown(message);
+  const trimmedMarkdownOutput = message.trim().startsWith("```")
+    ? "\n\n" + markdownOutput
+    : markdownOutput.trim();
 
   //  Clear trailing newlines.
   console.log(colors.white(colors.bold("chatgpt:")), trimmedMarkdownOutput);

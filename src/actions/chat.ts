@@ -10,6 +10,7 @@ import { TerminatingWarning } from "../lib/errors";
 import { Configuration } from "../configuration/configuration";
 import { ensureApiKey } from "./ensure-api-key";
 import expandEnvVars from "../lib/expand-env-vars";
+import { plainTextCode } from "../lib/markdown";
 
 const debug = dbg("ai:chat");
 
@@ -56,6 +57,17 @@ export async function chat(
 
   //  Repeatedly interact with ChatGPT as long as we have chat input.
   while (chatInput !== "") {
+    //  TODO: this is ugly and hard-coded but currently the only output
+    //  interaction model we need. This'll be extracted into proper logic
+    //  soon.
+    if (/^code:/.test(chatInput)) {
+      debug("'code' output intent detected, fixing input and adding prompt...");
+      chatInput = chatInput.substring(5);
+      const prompt =
+        "In your output, give me code only and no explanation, plain code that I can put directly in a file. It can be in a markdown code fence";
+      conversationHistory.push({ role: "user", content: prompt });
+    }
+
     conversationHistory.push({ role: "user", content: chatInput });
     const response = await chatCommand(
       executionContext,
@@ -128,13 +140,14 @@ export async function nextOption(response: string) {
     //  Note that 'clipboardy' requires dynamic imports so that this
     //  can be packaged as a commonjs module.
     const clipboard = (await import("clipboardy")).default;
-    clipboard.writeSync(response);
+    clipboard.writeSync(plainTextCode(response));
+
     console.log(`✅ Response copied to clipboard!`);
   } else if (answer === "save") {
     const inputPrompt = theme.inputPrompt("Save As");
     const path = await input({ message: inputPrompt });
     try {
-      fs.writeFileSync(path, response, "utf8");
+      fs.writeFileSync(path, plainTextCode(response), "utf8");
       console.log(`✅ Response saved to ${path}!`);
     } catch (err) {
       theme.printError(

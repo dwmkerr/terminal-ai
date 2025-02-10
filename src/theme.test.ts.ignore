@@ -1,0 +1,26 @@
+//  TODO: module issues when using this code, fix when have time.
+
+// import { printResponse } from "./theme";
+// import { stripVTControlCharacters } from "util";
+
+// describe("theme", () => {
+//   describe("printResponse", () => {
+//     test("prints inline with an output prompt for a single line output (interactive)", () => {
+//       const response = printResponse("Good morning", true);
+//       const strippedResponse = stripVTControlCharacters(response);
+//       const hasAnsiCodes = strippedResponse !== response;
+
+//       expect(strippedResponse).toBe("chatgpt: Good morning");
+//       expect(hasAnsiCodes).toBe(true);
+//     });
+
+//     test("prints inline with an output prompt for a single line output (non-interactive)", () => {
+//       const response = printResponse("Good morning", false);
+//       const strippedResponse = stripVTControlCharacters(response);
+//       const hasAnsiCodes = strippedResponse !== response;
+
+//       expect(strippedResponse).toBe("chatgpt: Good morning");
+//       expect(hasAnsiCodes).toBe(false);
+//     });
+//   });
+// });
