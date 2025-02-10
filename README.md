@@ -6,8 +6,6 @@ Effortless AI in your terminal.
 
 Quickly turn on, turn off, list, show costs and connect to your AWS instances. Great for saving costs by running servers in the cloud and starting them only when needed.
 
-![Recording of a terminal session that shows Terminal AI in action](./docs/democast.svg)
-
 ## Quickstart
 
 Install Terminal AI:
@@ -27,6 +25,27 @@ That's it.
 Every feature can be used as a command or in an interactive session.
 
 The quickest way to learn how to use the tool is to look at the [#examples](#examples). Each [command](#command) is documented below.
+
+<!-- vim-markdown-toc GFM -->
+
+- [Examples](#examples)
+- [Commands](#commands)
+    - [`ai config`](#ai-config)
+- [API Key](#api-key)
+- [Configuration](#configuration)
+- [Developer Guide](#developer-guide)
+    - [Debugging](#debugging)
+    - [Debug Commands](#debug-commands)
+    - [Error Handling](#error-handling)
+    - [Terminal Recording / asciinema](#terminal-recording--asciinema)
+    - [Concepts](#concepts)
+- [Design Goals](#design-goals)
+- [Technical Documentation](#technical-documentation)
+    - [Context](#context)
+    - [Context Prompts](#context-prompts)
+- [TODO](#todo)
+
+<!-- vim-markdown-toc -->
 
 ## Examples
 
@@ -49,6 +68,13 @@ $ ai
 ```
 
 
+## API Key
+
+An OpenAI API key is needed to be able to make calls to ChatGPT. At the time of writing a subscription fee is needed to create an API key. Create an API key by following the instructions at:
+
+https://platform.openai.com/api-keys
+
+Once you have your API key you can configure it in the `ai` tool by running `ai` or `ai init`.
 
 ## Configuration
 
@@ -186,13 +212,20 @@ When expanding context prompts (e.g. ./prompts/chat/context/context.txt) environ
 
 Quick and dirty task-list.
 
-**Chat - book ready**
+**Chat - book preview ready**
 
+- [ ] fix: if we have any multiline in the output, or we have a markdown block, then start the response with a newline
+- [ ] fix: if we are writing to a file, put in markdown but strip all colors.
+- [ ] fix: if we have parameter input we still need to decode intent
 - [x] reply/copy/quit options - offer file output for example
 - [x] copy action, save action
-- [ ] nth: just show the response prompt, but if empty response show actions
+- [x] nth: just show the response prompt, but if empty response show actions
 - [ ] document chat
 - [ ] nth: chat command needs error handling
+
+**Book Ready**
+
+- [ ] nth: init command
 
 **Code - book ready**
 
@@ -211,6 +244,7 @@ Enable the `<output>: input` format for chats, e.g. to go straight to file
 
 **Chat**
 
+- [ ] nth: see if we can auth user/pass instead of using an API key
 - [ ] nth: decide on whether a response prompt is needed. For a single line response it is probably good, for multi-line it is probably unneeded, for a single line of code it is likely not needed, consider either heuristics or configuration options
 - [ ] nth: support reflow with marked-terminal to more gracefully show output
 - [ ] nth: 'compact' option for action menu
