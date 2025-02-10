@@ -35,6 +35,7 @@ The quickest way to learn how to use the tool is to look at the [#examples](#exa
 - [Configuration](#configuration)
 - [Developer Guide](#developer-guide)
     - [Debugging](#debugging)
+    - [Testing](#testing)
     - [Debug Commands](#debug-commands)
     - [Error Handling](#error-handling)
     - [Terminal Recording / asciinema](#terminal-recording--asciinema)
@@ -144,6 +145,21 @@ The debug namespaces can be configured like so:
 AI_DEBUG_NAMESPACE='ai*'
 ```
 
+### Testing
+
+The following commands are helpful when testing:
+
+```bash
+# Run all tests. Run tests with coverage.
+npm run test
+npm run test:cov
+
+# Run (or watch, or debug) tests that match a pattern.
+npm run test -- theme
+npm run test:watch -- theme
+npm run test:debug -- theme
+```
+
 ### Debug Commands
 
 
@@ -232,6 +248,10 @@ Quick and dirty task-list.
 - [ ] code: interactive
 - [ ] nth: code - non interactive
 
+**GitHub**
+
+- [ ] feat: create/list bugs
+
 **Documentation - book ready**
 
 - [ ] nth: terminal recording
@@ -251,8 +271,11 @@ Enable the `<output>: input` format for chats, e.g. to go straight to file
 - [ ] nth: clean up the prompt for next action as well as the code
 - [ ] nth: decide how to trim markdown and space output. It might be based on whether the output is multi-line and so on
 - [ ] nth: give code blocks more of a background so that they are more readable
+- [ ] fix: module issues when using `theme.test.ts`
 
 ---
+
+- [ ] bug: fix skipped tests
 
 - [ ] bug: printError shows an empty square brackets at the end
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues

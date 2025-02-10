@@ -24,8 +24,8 @@ const cli = async (
   config: Configuration,
 ) => {
   program
-    .name("boxes")
-    .description("CLI to control your cloud boxes")
+    .name("ai")
+    .description("Effortless AI in the terminal")
     .version(packageJson.version)
     //  'chat' is the default action when no command is specified.
     .option("--no-context-prompts", "Disable context prompts")
@@ -56,8 +56,8 @@ async function main() {
   //  Create an initial execution context. This may evolve as we run various commands etc.
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   const executionContext: ExecutionContext = {
-    isInteractive: process.stdout.isTTY,
-    isTTY: process.stdout.isTTY,
+    isInteractive: process.stdout.isTTY || false,
+    isTTY: process.stdout.isTTY || false,
   };
 
   //  Set all of the environment variables that can be used when hydrating

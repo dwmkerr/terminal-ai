@@ -42,6 +42,6 @@ echo "Hello, World!"
 [Link to Google](https://www.google.com)
 \`\`\`
     `;
-    printResponse(markdown, true);
+    console.log(printResponse(markdown, true));
   }
 }

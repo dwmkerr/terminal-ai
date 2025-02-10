@@ -12,7 +12,9 @@
     "noImplicitAny": true,
     "useUnknownInCatchVariables": true,
     "skipLibCheck": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "types": ["jest", "marked-terminal"]
   },
   "exclude": ["jest.config.ts"]
 }

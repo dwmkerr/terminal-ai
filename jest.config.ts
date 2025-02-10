@@ -30,7 +30,7 @@ const config: Config = {
   roots: ["./src/"],
 
   //  Jest setup function.
-  setupFilesAfterEnv: ["./src/jest.setup.ts"],
+  setupFilesAfterEnv: ["./src/jest/jest.setup.ts"],
 
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,

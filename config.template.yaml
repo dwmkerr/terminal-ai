@@ -1,0 +1,7 @@
+openAiApiKey: "secret"
+debug:
+  enable: 1
+  namespace: "ai*"
+prompts:
+  chat:
+    context: ["override not add..."]
