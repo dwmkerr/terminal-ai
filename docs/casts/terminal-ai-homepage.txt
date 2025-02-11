@@ -1,0 +1,9 @@
+What is ChatGPT?
+
+Can I call ChatGPT from Python?
+
+Can you write some code to demo this? Code only, no explanation.
+
+(Save file)
+(Quit)
+(Show file)
