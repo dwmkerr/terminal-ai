@@ -268,7 +268,6 @@ Enable the `<output>: input` format for chats, e.g. to go straight to file
 - [ ] nth: clean up the prompt for next action as well as the code
 - [ ] nth: decide how to trim markdown and space output. It might be based on whether the output is multi-line and so on
 - [ ] nth: give code blocks more of a background so that they are more readable
-- [ ] fix: module issues when using `theme.test.ts`
 
 **Configuration**
 
