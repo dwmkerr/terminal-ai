@@ -4,7 +4,7 @@ Effortless AI in your terminal.
 
 [![main](https://github.com/dwmkerr/terminal-ai/actions/workflows/main.yml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/main.yml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=uGVpjGFbDf)](https://codecov.io/gh/dwmkerr/terminal-ai)
 
-Quickly turn on, turn off, list, show costs and connect to your AWS instances. Great for saving costs by running servers in the cloud and starting them only when needed.
+![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
 
 ## Quickstart
 
@@ -38,7 +38,6 @@ The quickest way to learn how to use the tool is to look at the [#examples](#exa
 - [Developer Guide](#developer-guide)
     - [Debugging](#debugging)
     - [Testing](#testing)
-    - [Debug Commands](#debug-commands)
     - [Error Handling](#error-handling)
     - [Terminal Recording / asciinema](#terminal-recording--asciinema)
     - [Concepts](#concepts)
@@ -171,17 +170,13 @@ npm run test:watch -- theme
 npm run test:debug -- theme
 ```
 
-### Debug Commands
-
-
-
 ### Error Handling
 
 To show a warning and terminate the application, throw a `TerminatingWarning` error:
 
 ```js
 import { TerminatingWarning } from "./errors.js";
-throw new TerminatingWarning("Your AWS profile is not set");
+throw new TerminatingWarning("Some error");
 ```
 
 ### Terminal Recording / asciinema
@@ -193,16 +188,7 @@ To create a terminal recording for the documentation:
 - Run the script to start a 'clean' terminal `./scripts/record-demo.sh`
 - Download your recording, e.g. to `./docs/620124.cast`
 - Install [svg-term-cli](https://github.com/marionebl/svg-term-cli) `npm install -g svg-term-cli`
-- Convert to SVG: `svg-term --in ./docs/620124.cast --out docs/democast.svg --window --no-cursor --from=1000`
-
-The demo script is currently:
-
-- `boxes ls`
-- `boxes start steambox`
-- `boxes costs --yes`
-- `boxes ssh torrentbox`
-- `boxes stop steambox`
-- `boxes ls`
+- Convert to SVG: `./scripts/demo-to-svg.sh`
 
 ### Concepts
 
