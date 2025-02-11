@@ -6,6 +6,11 @@ Quick and dirty task-list.
 
 - [ ] feat: no tty flag
 
+**Documentation**
+
+- Configuration Files and Structure
+- Interactive modes / TTY / how to enable/disable.
+
 **Configuration**
 
 - [ ] use local `.ai` files:

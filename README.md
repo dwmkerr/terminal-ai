@@ -6,6 +6,8 @@ Effortless AI in your terminal.
 
 ![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
 
+[Examples](#examples) | [Commands](#commands) | [Developer Guide](#developer-guide)
+
 ## Quickstart
 
 Install Terminal AI:
@@ -22,33 +24,11 @@ ai
 
 That's it. The quickest way to learn how to use the tool is to look at the [Examples](#examples).
 
----
-
-<!-- vim-markdown-toc GFM -->
-
-- [Examples](#examples)
-    - [Simple Chat](#simple-chat)
-    - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
-    - [Writing Code](#writing-code)
-- [Commands](#commands)
-- [API Key](#api-key)
-- [Developer Guide](#developer-guide)
-    - [Debugging](#debugging)
-    - [Testing](#testing)
-    - [Terminal Recording / asciinema](#terminal-recording--asciinema)
-    - [Concepts](#concepts)
-    - [Context](#context)
-    - [Context Prompts](#context-prompts)
-
-<!-- vim-markdown-toc -->
-
----
-
 ## Examples
 
 ### Simple Chat
 
-To chat, run `ai` and follow the prompts. Instead of replying, if you press 'Enter' in the chat prompt the actions menu will pop up with more options:
+To chat, run `ai` and follow the prompts. If you press 'Enter' in the chat prompt instead of replying then the actions menu will pop up with more options:
 
 ![Demo Recording of a Simple Chat with Terminal AI](./docs/casts/simple-chat.svg)
 
@@ -84,7 +64,9 @@ The `code` output intent tries to ensure that a _single_ code block is created, 
 
 ## Commands
 
-The default `ai` command is to initiate a chat. Simply run `ai`:
+**`ai`**
+
+The default `ai` command initiates a chat. Simply run `ai`:
 
 ```bash
 ai
