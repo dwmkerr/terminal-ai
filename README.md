@@ -3,7 +3,10 @@
 Effortless AI in your terminal.
 
 [![main](https://github.com/dwmkerr/terminal-ai/actions/workflows/main.yml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/main.yml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
+
 ![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
+
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Developer Guide](#developer-guide)
 
 ## Quickstart
 
@@ -19,58 +22,72 @@ Run the tool to configure your environment and start interactively interfacing w
 ai
 ```
 
-That's it.
-
-Every feature can be used as a command or in an interactive session.
-
-The quickest way to learn how to use the tool is to look at the [Examples](#examples).
-
----
-
-<!-- vim-markdown-toc GFM -->
-
-- [Examples](#examples)
-- [Commands](#commands)
-- [Intents](#intents)
-    - [`code`](#code)
-    - [`ai config`](#ai-config)
-- [API Key](#api-key)
-- [Configuration](#configuration)
-- [Developer Guide](#developer-guide)
-    - [Debugging](#debugging)
-    - [Testing](#testing)
-    - [Error Handling](#error-handling)
-    - [Terminal Recording / asciinema](#terminal-recording--asciinema)
-    - [Concepts](#concepts)
-- [Design Goals](#design-goals)
-- [Technical Documentation](#technical-documentation)
-    - [Context](#context)
-    - [Context Prompts](#context-prompts)
-- [TODO](#todo)
-
-<!-- vim-markdown-toc -->
-
----
+That's it. The quickest way to learn how to use the tool is to look at the [Examples](#examples).
 
 ## Examples
 
-WIP
+### Simple Chat
+
+To chat, run `ai` and follow the prompts. If you press 'Enter' in the chat prompt instead of replying then the actions menu will pop up with more options:
+
+![Demo Recording of a Simple Chat with Terminal AI](./docs/casts/simple-chat.svg)
+
+To execute a chat command, pass your message as a parameter. Note that you should always separate the message parameter from any other flags or commands by using the `--` separator:
+
+```
+ai -- "How can I programatically create a calendar invite?"
+```
+
+If `ai` detects that you are using a TTY then it will prompt you to continue the conversation. If you are not, the message will be responded to and the tool will close:
+
+```
+ai -- "How can I programatically create a calendar invite?" > answer.txt
+```
+
+### Copying to the Clipboard or Saving to a File
+
+Open the Actions menu with 'Enter' and choose 'Copy Response'. The most recent message will be copied. To save a file, use the 'Save Response' action.
+
+### Writing Code
+
+If you want a response to only contain code, prefix your message with `code:`. This makes it much easier to create a response which is ready to be pasted into a file or saved and executed:
+
+![Demo Recording of Code Output](./docs/casts/code-output-intent.svg)
+
+To run as a command:
+
+```bash
+ai -- "code: Python code to find largest file in current directory" > findfile.py
+```
+
+The `code` output intent tries to ensure that a _single_ code block is created, rather than multiple blocks in multiple languages. It does this by asking for a single listing with comments used to indicate whether other scripts or operations are needed.
 
 ## Commands
 
-WIP
+**`ai`**
 
-## Intents
+The default `ai` command initiates a chat. Simply run `ai`:
 
-### `code`
+```bash
+ai
+```
 
-- TODO: video
-- TODO: Document how to use
-- TODO: Document prompts
+You can provide the initial message as a parameter to the tool:
 
-### `ai config`
+```bash
+ai -- "How do I install NodeJS?"
+```
 
-Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables (and in the future) from local `.ai` files:
+The following parameters are available:
+
+| Parameter              | Description                                        |
+|------------------------|----------------------------------------------------|
+| `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash'). |
+| `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').    |
+
+**`ai config`**
+
+Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder:
 
 ```
 $ ai
@@ -81,7 +98,6 @@ $ ai
     ...
 ```
 
-
 ## API Key
 
 An OpenAI API key is needed to be able to make calls to ChatGPT. At the time of writing a subscription fee is needed to create an API key. Create an API key by following the instructions at:
@@ -90,59 +106,45 @@ https://platform.openai.com/api-keys
 
 Once you have your API key you can configure it in the `ai` tool by running `ai` or `ai init`.
 
-## Configuration
-
-A local `boxes.json` file can be used for configuration. The following values are supported:
-
-```
-{
-  "boxes": {
-    /* box configuration */
-  },
-  "aws": {
-    "region": "us-west-2"
-  },
-  "archiveVolumesOnStop": true,
-  "debugEnable": "boxes*"
-}
-```
-
-Box configuration is evolving rapidly and the documentation will be updated. The AWS configuration is more stable.
-
 ## Developer Guide
 
-Clone the repo, install dependencies, build, link, then the `boxes` command will be available:
+Clone the repo, install dependencies, build and then run:
 
 ```bash
 git clone git@github.com:dwmkerr/boxes.git
-# optionally use the latest node with:
+
+# optional: use the latest node with:
 # nvm use --lts
 npm install
-npm run build
-npm link boxes # link the 'boxes' command.
+npm start
+```
 
-# Now run boxes commands such as:
-boxes list
+If you want to install the `ai` command run the following:
+
+```bash
+npm run build
+npm link ai
+
+# Now run ai commands such as:
+ai "ask me anything"
 
 # Clean up when you are done...
 npm unlink
 ```
 
-The CLI uses the current local AWS configuration and will manage any EC2 instances with a tag named `boxes.boxid`. The value of the tag is the identifier used to manage the specific box.
-
-Note that you will need to rebuild the code if you change it, so run `npm run build` before using the `boxes` alias. A quick way to do this is to run:
+Note that you will need to rebuild the code if you change it, so run `npm run build` before using the `ai` alias. A quick way to do this is to run:
 
 ```bash
 npm run relink
 ```
 
-If you are developing and would like to run the `boxes` command without relinking, just build, link, then run:
+If you are developing and would like to run `ai` without relinking, just build, link, then run:
 
 ```bash
 npm run build:watch
 ```
 
-This will keep the `./build` folder up-to-date and the `boxes` command will use the latest compiled code. This will *sometimes* work but it might miss certain changes, so `relink` is the safer option. `build:watch` works well if you are making small changes to existing files, but not if you are adding new files (it seems).
+This will keep the `./build` folder up-to-date and the `ai` command will use the latest compiled code. This can *sometimes* miss certain changes, so `relink` is the safer option. `build:watch` works well if you are making small changes to existing files, but not if you are adding new files.
 
 ### Debugging
 
@@ -173,15 +175,6 @@ npm run test:watch -- theme
 npm run test:debug -- theme
 ```
 
-### Error Handling
-
-To show a warning and terminate the application, throw a `TerminatingWarning` error:
-
-```js
-import { TerminatingWarning } from "./errors.js";
-throw new TerminatingWarning("Some error");
-```
-
 ### Terminal Recording / asciinema
 
 To create a terminal recording for the documentation:
@@ -197,12 +190,7 @@ To create a terminal recording for the documentation:
 
 **Actions** - these are commander.js functions that are called by the CLI. They should validate/decode parameters and ask for missing parameters. They will then call a **command**.
 **Commands** - these are the underlying APIs that the CLI offers - they are agnostic of the command line interface (and could therefore be exposed in a web server or so on).
-
-## Design Goals
-
-- **Interactive by default** - with no input, `ai` is friendly and interactive. Everything that can be done interactively can be done non-interactively. Interactive operations hint at how to run non-interactively.
-
-## Technical Documentation
+**Context** - information which is provided via prompts to shape the intended output. More details below.
 
 ### Context
 
@@ -222,95 +210,3 @@ When expanding context prompts (e.g. ./prompts/chat/context/context.txt) environ
 | `OS_PLATFORM`        | `nodejs os.platform()`                 |
 | `TTY_WIDTH`          | The terminal width (or 80 if not set)  |
 | `TTY_HEIGHT`         | The terminal height (or 24 if not set) |
-
-
-## TODO
-
-Quick and dirty task-list.
-
-**Chat - book preview ready**
-
-- [ ] fix: if we have any multiline in the output, or we have a markdown block, then start the response with a newline
-- [ ] fix: if we are writing to a file, put in markdown but strip all colors.
-- [ ] fix: if we have parameter input we still need to decode intent
-- [x] reply/copy/quit options - offer file output for example
-- [x] copy action, save action
-- [x] nth: just show the response prompt, but if empty response show actions
-- [ ] document chat
-- [ ] nth: chat command needs error handling
-
-**Book Ready**
-
-- [ ] nth: init command
-
-**Code - book ready**
-
-- [ ] code: interactive
-- [ ] nth: code - non interactive
-
-**GitHub**
-
-- [ ] feat: create/list bugs
-
-**Documentation - book ready**
-
-- [ ] nth: terminal recording
-
-**Epic - Output Modes**
-
-Enable the `<output>: input` format for chats, e.g. to go straight to file
-
-- [ ] feat: custom inqurirer module to handle keypresses and toggle the input prompt
-
-**Chat**
-
-- [ ] nth: see if we can auth user/pass instead of using an API key
-- [ ] nth: decide on whether a response prompt is needed. For a single line response it is probably good, for multi-line it is probably unneeded, for a single line of code it is likely not needed, consider either heuristics or configuration options
-- [ ] nth: support reflow with marked-terminal to more gracefully show output
-- [ ] nth: 'compact' option for action menu
-- [ ] nth: clean up the prompt for next action as well as the code
-- [ ] nth: decide how to trim markdown and space output. It might be based on whether the output is multi-line and so on
-- [ ] nth: give code blocks more of a background so that they are more readable
-
-**Configuration**
-
-- [ ] feat(config): prompts should be named
-
----
-
-- [ ] bug: fix skipped tests
-
-- [ ] bug: printError shows an empty square brackets at the end
-- [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
-- [ ] bug(build): don't include source - just dist
-- [ ] bug(ai): on startup the default yaml config should be copied over?
-- [ ] bug(chat): when non-interactive if API key is not set, error message must be plain text
-- [ ] devex: 'ai' local command to run from my folder
-
-- [ ] nth(chat): line up input/output prompts on the colon
-
-- [ ] nth: 'vanilla' flag (no prompts)
-- [ ] fix(config): hide sensitive values by default
-
-- [ ] minor: consider what heading/title to run when init-ing the key or first time interactive.
-
-- [ ] really user friendly way to get API key set
-- [ ] we can check first time run via presence of config file
-- [ ] Call from vi example
-- [ ] Put in effective shell chapter
-- [ ] Check competitors
-- [ ] Spinners
-- [ ] Interactive mode shows prompt in green press up down to cycle modes
-- [ ] Chat mode default
-- [ ] Output: file -suggestion name and format eg ics 
-- [ ] Clipboard
-- [ ] Structure: context prompt / input prompt / text / output mode
-- [ ] GitHub mode
-- [ ] Vanilla mode
-- [ ] Online instructions for api key
-- [ ] Videos on LinkedIn
-- [ ] When code is shown offer copy command
-- [ ] Execution context tty 
-- [ ] Location specific prompts, eg create a .ai folder, include prompts in it, tai shows them
-- [ ] docs: readline/prompt input keyboard shortcuts (cancel, copy, etc)
-- [ ] nth: unhandled error prettier printing
