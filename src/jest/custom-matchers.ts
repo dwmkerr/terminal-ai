@@ -6,14 +6,7 @@ export interface CustomMatchers<R = unknown> extends jest.Matchers<R> {
 }
 
 export const customMatchers: jest.ExpectExtendMap = {
-  toBeFormatted(
-    //  eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    this: jest.MatcherContext & { equals: (a: any, b: any) => boolean },
-    received: string,
-    expected: boolean,
-  ): jest.CustomMatcherResult {
-    //  If our received text is not identical to its own plaintext, then we can
-    //  assume that's because we have formatting.
+  toBeFormatted(received: string, expected: boolean) {
     const formatted = isFormatted(received);
 
     return {
@@ -23,12 +16,7 @@ export const customMatchers: jest.ExpectExtendMap = {
     };
   },
 
-  toMatchPlainText(
-    //  eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    this: jest.MatcherContext & { equals: (a: any, b: any) => boolean },
-    received: string,
-    expected: string,
-  ): jest.CustomMatcherResult {
+  toMatchPlainText(received: string, expected: string) {
     const plainText = stripFormatting(formatMarkdown(received));
     const pass = plainText === expected;
 

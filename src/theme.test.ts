@@ -1,9 +1,17 @@
 import { describe, expect, test } from "@jest/globals";
+import colors from "colors/safe";
 import { printResponse } from "./theme";
 
 describe("theme", () => {
+  beforeAll(() => {
+    //  Colors are automatically disabled when we don't have a TTY (e.g. in
+    //  GitHub actions) - this makes the tests fail as we're testing ASCII
+    //  color code outputs. So force them in tests.
+    colors.enable();
+  });
+
   describe("printResponse", () => {
-    test.skip("correctly prints single line response", () => {
+    test("correctly prints single line response", () => {
       expect(printResponse("Good morning", true)).toBeFormatted(true);
       expect(printResponse("Good morning", true)).toMatchPlainText(
         "chatgpt: Good morning",
@@ -15,7 +23,7 @@ describe("theme", () => {
       );
     });
 
-    test.skip("correctly prints a single code block response", () => {
+    test("correctly prints a single code block response", () => {
       const rawResponse = `\`\`\`python
 import os
 
