@@ -15,7 +15,7 @@ describe("theme", () => {
       );
     });
 
-    test.skip("correctly prints single code block response", () => {
+    test.skip("correctly prints a single code block response", () => {
       const rawResponse = `\`\`\`python
 import os
 

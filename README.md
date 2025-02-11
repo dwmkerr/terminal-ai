@@ -30,6 +30,8 @@ The quickest way to learn how to use the tool is to look at the [#examples](#exa
 
 - [Examples](#examples)
 - [Commands](#commands)
+- [Intents](#intents)
+    - [`code`](#code)
     - [`ai config`](#ai-config)
 - [API Key](#api-key)
 - [Configuration](#configuration)
@@ -56,6 +58,14 @@ WIP
 
 WIP
 
+## Intents
+
+### `code`
+
+- TODO: video
+- TODO: Document how to use
+- TODO: Document prompts
+
 ### `ai config`
 
 Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables (and in the future) from local `.ai` files:
@@ -66,6 +76,7 @@ $ ai
   "openAiApiKey": "<secret>",
   "prompts": {
     "chat": {
+    ...
 ```
 
 
@@ -272,6 +283,10 @@ Enable the `<output>: input` format for chats, e.g. to go straight to file
 - [ ] nth: decide how to trim markdown and space output. It might be based on whether the output is multi-line and so on
 - [ ] nth: give code blocks more of a background so that they are more readable
 - [ ] fix: module issues when using `theme.test.ts`
+
+**Configuration**
+
+- [ ] feat(config): prompts should be named
 
 ---
 

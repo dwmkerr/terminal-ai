@@ -9,8 +9,9 @@ import { ExecutionContext } from "../lib/execution-context";
 import { TerminatingWarning } from "../lib/errors";
 import { Configuration } from "../configuration/configuration";
 import { ensureApiKey } from "./ensure-api-key";
-import expandEnvVars from "../lib/expand-env-vars";
 import { plainTextCode } from "../lib/markdown";
+import { OutputIntent, parseInput } from "../lib/input";
+import { expandPrompts } from "../context/context";
 
 const debug = dbg("ai:chat");
 
@@ -19,8 +20,8 @@ export async function chat(
   config: Configuration,
   inputMessage: string | undefined,
   enableContextPrompts: boolean,
+  enableOutputPrompts: boolean,
 ) {
-  debug(`chat interactive:`, executionContext);
   //  If we don't have an API key, ask for one. Create the OpenAI interface.
   const cfg = await ensureApiKey(executionContext, config);
 
@@ -46,31 +47,32 @@ export async function chat(
 
   //  If context prompts are enabled, add them now.
   if (enableContextPrompts) {
-    cfg.prompts.chat.context.forEach((prompt) => {
-      const expanded = expandEnvVars(prompt, process.env);
-      debug(`hydrated context prompt: ${expanded}`);
-      conversationHistory.push({
-        role: "user",
-        content: expanded,
-      });
+    conversationHistory.push({
+      role: "user",
+      content: expandPrompts(cfg.prompts.chat.context, process.env).join("\n"),
     });
   }
 
   //  Repeatedly interact with ChatGPT as long as we have chat input.
   while (chatInput !== "") {
-    //  TODO: this is ugly and hard-coded but currently the only output
-    //  interaction model we need. This'll be extracted into proper logic
-    //  soon.
-    const outputIntentIsCode = /^code:/.test(chatInput);
-    if (outputIntentIsCode) {
-      debug("'code' output intent detected, fixing input and adding prompt...");
-      chatInput = chatInput.substring(5);
-      const prompt =
-        "In your output, give me code only and no explanation, plain code that I can put directly in a file. It can be in a markdown code fence";
-      conversationHistory.push({ role: "user", content: prompt });
+    //  Deconstruct our chat input into a message and intent.
+    const inputAndIntent = parseInput(chatInput);
+    debug(`intent: `, inputAndIntent);
+
+    //  If we're using the 'code' output intent, expand and add the prompts.
+    if (inputAndIntent.outputIntent === OutputIntent.Code) {
+      if (enableOutputPrompts) {
+        debug("'code' output intent detected, adding prompt...");
+        conversationHistory.push({
+          role: "user",
+          content: expandPrompts(cfg.prompts.code.output, process.env).join(
+            "\n",
+          ),
+        });
+      }
     }
 
-    conversationHistory.push({ role: "user", content: chatInput });
+    conversationHistory.push({ role: "user", content: inputAndIntent.message });
     const response = await chatCommand(
       executionContext,
       cfg,
@@ -85,7 +87,10 @@ export async function chat(
         response,
         executionContext.isInteractive,
       );
-      if (outputIntentIsCode && executionContext.isInteractive === false) {
+      if (
+        inputAndIntent.outputIntent === OutputIntent.Code &&
+        executionContext.isInteractive === false
+      ) {
         console.log(plainTextCode(responseText));
       } else {
         console.log(responseText);

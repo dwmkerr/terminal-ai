@@ -2,14 +2,20 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import yaml from "js-yaml";
+import dbg from "debug";
 
 import { TerminatingWarning } from "../lib/errors";
+
+const debug = dbg("ai:configuration");
 
 export interface Configuration {
   openAiApiKey: string;
   prompts: {
     chat: {
       context: string[];
+    };
+    code: {
+      output: string[];
     };
   };
   debug: {
@@ -27,13 +33,21 @@ type DeepPartial<T> = T extends object
 export const configDir = ".ai";
 export const configFilePath = `${configDir}/config.yaml`;
 export const chatPromptsPath = `${configDir}/prompts/chat/context`;
+export const codeOutputPromptsPath = `${configDir}/prompts/code/output`;
+
+export const promptFolders = {
+  chatPrompts: {
+    src: `./prompts/chat/context`,
+    dest: path.join(os.homedir(), `${configDir}/prompts/chat/context`),
+  },
+  codePrompts: {
+    src: `./prompts/code/output`,
+    dest: path.join(os.homedir(), `${configDir}/prompts/code/output`),
+  },
+};
 
 export function getConfigPath(): string {
   return path.join(os.homedir(), configFilePath);
-}
-
-export function getChatPromptsPath(): string {
-  return path.join(os.homedir(), chatPromptsPath);
 }
 
 export function getDefaultConfiguration(): Configuration {
@@ -42,6 +56,9 @@ export function getDefaultConfiguration(): Configuration {
     prompts: {
       chat: {
         context: [],
+      },
+      code: {
+        output: [],
       },
     },
     debug: {
@@ -91,21 +108,28 @@ export function getConfigurationFromEnv(
 }
 
 export function getConfigurationFromPromptsFolder(
-  folder: string,
+  chatContextPromptsFolder: string,
+  codeOutputPromptsFolder: string,
 ): DeepPartial<Configuration> {
-  //  Load the chat prompts.
-  if (!fs.existsSync(folder)) {
-    return {};
-  }
-  const promptPaths = fs.readdirSync(folder);
-  const contextPrompts = promptPaths.map((promptPath) => {
-    const filePath = path.join(folder, promptPath);
-    return fs.readFileSync(filePath, "utf8");
-  });
+  const loadPrompts = (folder: string): string[] => {
+    if (!fs.existsSync(folder)) {
+      return [];
+    }
+    const promptPaths = fs.readdirSync(folder);
+    const prompts = promptPaths.map((promptPath) => {
+      const filePath = path.join(folder, promptPath);
+      return fs.readFileSync(filePath, "utf8");
+    });
+    return prompts;
+  };
+
   return {
     prompts: {
       chat: {
-        context: contextPrompts,
+        context: loadPrompts(chatContextPromptsFolder),
+      },
+      code: {
+        output: loadPrompts(codeOutputPromptsFolder),
       },
     },
   };
@@ -129,18 +153,33 @@ export function enrichConfiguration(
     const prompts = data.prompts.chat.context.filter((p) => p !== undefined);
     newConfig.prompts.chat.context.push(...prompts);
   }
+  if (data?.prompts?.code?.output !== undefined) {
+    const prompts = data.prompts.code.output.filter((p) => p !== undefined);
+    newConfig.prompts.code.output.push(...prompts);
+  }
   return newConfig;
 }
 
 export async function getConfiguration(): Promise<Configuration> {
   const defaultConfig = getDefaultConfiguration();
-  const promptsConfig = getConfigurationFromPromptsFolder(getChatPromptsPath());
+  const promptsConfig = getConfigurationFromPromptsFolder(
+    promptFolders.chatPrompts.src,
+    promptFolders.codePrompts.src,
+  );
   const fileConfig = getConfigurationFromFile(getConfigPath());
   const envConfig = getConfigurationFromEnv(process.env);
+
+  debug("composing configuration:");
+  debug("  default config:", defaultConfig);
+  debug("  prompts config:", promptsConfig);
+  debug("  file config   :", fileConfig);
+  debug("  env config    :", envConfig);
 
   const config1 = enrichConfiguration(defaultConfig, promptsConfig);
   const config2 = enrichConfiguration(config1, fileConfig);
   const config3 = enrichConfiguration(config2, envConfig);
+
+  debug("  final config  :", config3);
 
   return config3;
 }
