@@ -1,0 +1,1 @@
+In your output, give me code only and no explanation, plain code that I can put directly in a file. It should be one listing only, use comments to explain how to take many actions if many snippets are required. It can be in a markdown code fence

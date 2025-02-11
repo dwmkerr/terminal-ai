@@ -1,11 +1,11 @@
 import { OutputIntent, parseInput } from "./input";
 
-describe.skip("input", () => {
+describe("input", () => {
   describe("parseInput", () => {
     test("parses input without intent", () => {
       expect(parseInput("python to sort note the colon : here")).toEqual({
         message: "python to sort note the colon : here",
-        outputIntent: OutputIntent.Chat,
+        outputIntent: OutputIntent.Unknown,
       });
     });
 
@@ -21,7 +21,18 @@ describe.skip("input", () => {
         parseInput("this is code: python to sort note the colon : here"),
       ).toEqual({
         message: "this is code: python to sort note the colon : here",
-        outputIntent: OutputIntent.Chat,
+        outputIntent: OutputIntent.Unknown,
+      });
+    });
+
+    test("handles multiline input", () => {
+      expect(
+        parseInput(
+          "code: create python script\nto sort then make executable and run",
+        ),
+      ).toEqual({
+        message: "create python script\nto sort then make executable and run",
+        outputIntent: OutputIntent.Code,
       });
     });
   });

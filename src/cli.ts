@@ -29,9 +29,16 @@ const cli = async (
     .version(packageJson.version)
     //  'chat' is the default action when no command is specified.
     .option("--no-context-prompts", "Disable context prompts")
+    .option("--no-output-prompts", "Disable output prompts")
     .argument("[input]", "Chat input")
-    .action(async (input, { contextPrompts }) => {
-      return chat(executionContext, config, input, contextPrompts);
+    .action(async (input, { contextPrompts, outputPrompts }) => {
+      return chat(
+        executionContext,
+        config,
+        input,
+        contextPrompts,
+        outputPrompts,
+      );
     });
 
   program

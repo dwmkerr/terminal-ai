@@ -2,32 +2,27 @@ import fs from "fs";
 import path from "path";
 import dbg from "debug";
 
-import { getChatPromptsPath } from "../configuration/configuration";
+import { promptFolders } from "../configuration/configuration";
 
 const debug = dbg("ai:configuration");
 
-export function hydrateDefaultConfig() {
-  //  Ensure the prompts/chat folder exists.
-  debug("hydrating default config...");
-  debug("checking local prompts...");
-  const sourceFolder = path.join(".", "prompts", "chat", "context");
-  const destFolder = getChatPromptsPath();
-  const promptsExists = fs.existsSync(destFolder);
+export function hydrateFolder(target: string, source: string): void {
+  const targetFolderExists = fs.existsSync(target);
   debug(
-    `checking local prompts... ${promptsExists ? "exists" : "doesn't exist -> creating..."}`,
+    `target folder: '${target}' ${targetFolderExists ? "exists" : "doesn't exist -> creating..."}`,
   );
-  if (!promptsExists) {
-    fs.mkdirSync(destFolder, { recursive: true });
+  if (!targetFolderExists) {
+    fs.mkdirSync(target, { recursive: true });
   }
 
-  // Copy all files from source folder to destination folder
-  const files = fs.readdirSync(sourceFolder);
+  //  Copy all files from source folder to destination folder.
+  const files = fs.readdirSync(source);
   files.forEach((file) => {
-    const sourceFile = path.join(sourceFolder, file);
-    const destFile = path.join(destFolder, file);
+    const sourceFile = path.join(source, file);
+    const destFile = path.join(target, file);
     const exists = fs.existsSync(destFile);
     debug(
-      `checking prompt ${destFile}... ${exists ? "exists" : "doesn't exist -> copying..."}`,
+      `checking file ${destFile}... ${exists ? "exists" : "doesn't exist -> copying..."}`,
     );
     if (exists) return;
 
@@ -38,4 +33,11 @@ export function hydrateDefaultConfig() {
       console.error(`Error copying ${file}: ${err}`);
     }
   });
+}
+
+export function hydrateDefaultConfig() {
+  //  Ensure the prompts/chat folder exists.
+  debug("hydrating default config...");
+  hydrateFolder(promptFolders.chatPrompts.dest, promptFolders.chatPrompts.src);
+  hydrateFolder(promptFolders.codePrompts.dest, promptFolders.codePrompts.src);
 }
