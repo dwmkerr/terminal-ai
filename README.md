@@ -6,7 +6,7 @@ Effortless AI in your terminal.
 
 ![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
 
-[Examples](#examples) | [Commands](#commands) | [Developer Guide](#developer-guide)
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Developer Guide](#developer-guide)
 
 ## Quickstart
 
