@@ -39,7 +39,9 @@ jobs:
         npm install
         npm run build
 
-    # Upload coverage to codecov.
-    - uses: codecov/codecov-action@v3
+    # Upload coverage.
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v5
       with:
         directory: ./artifacts/coverage
+        token: ${{ secrets.CODECOV_TOKEN }}

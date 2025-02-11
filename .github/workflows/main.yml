@@ -90,9 +90,10 @@ jobs:
 
       # Upload coverage.
       - name: Upload Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           directory: ./artifacts/coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   release-please:
     # The 'release please' job will only run if successfully complete the

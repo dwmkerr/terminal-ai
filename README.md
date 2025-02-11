@@ -24,7 +24,9 @@ That's it.
 
 Every feature can be used as a command or in an interactive session.
 
-The quickest way to learn how to use the tool is to look at the [#examples](#examples). Each [command](#command) is documented below.
+The quickest way to learn how to use the tool is to look at the [Examples](#examples).
+
+---
 
 <!-- vim-markdown-toc GFM -->
 
@@ -48,6 +50,8 @@ The quickest way to learn how to use the tool is to look at the [#examples](#exa
 - [TODO](#todo)
 
 <!-- vim-markdown-toc -->
+
+---
 
 ## Examples
 
