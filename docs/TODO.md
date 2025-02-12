@@ -29,9 +29,8 @@ Quick and dirty task-list.
 - [x] bug: printError shows an empty square brackets at the end
 - [x] nth: chat command needs error handling
 - [x] feat(init): create config (OpenAI key / leave empty for default), validate key, choose model
-- [ ] feat(chat): copy to clipboard flag
-- [ ] bug(build): don't include source - just dist
-- [ ] bug(chat): terminal overwrite bugs on multiline
+- [x] feat(chat): copy to clipboard flag
+- [x] bug(build): don't include source - just dist
 
 ## Version 0.7
 
@@ -40,6 +39,7 @@ Quick and dirty task-list.
 ## Version 0.8
 
 - If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
+- [ ] bug(chat): terminal overwrite bugs on multiline
 
 ## Documentation
 

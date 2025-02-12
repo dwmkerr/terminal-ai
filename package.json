@@ -23,6 +23,9 @@
     "postinstall": "echo \"Terminal AI installed! Run 'ai' to try it out.\"",
     "prepare": "husky"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/dwmkerr/terminal-ai.git"

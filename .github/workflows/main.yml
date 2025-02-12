@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - build/*
 
 # Release Please needs permisisons to write commits and open PRs.
 permissions:
