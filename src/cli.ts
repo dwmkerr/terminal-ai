@@ -36,16 +36,18 @@ const cli = async (
     .description("Effortless AI in the terminal")
     .version(packageJson.version)
     //  'chat' is the default action when no command is specified.
+    .option("-c, --copy", "Copy output to clipboard and exit")
     .option("--no-context-prompts", "Disable context prompts")
     .option("--no-output-prompts", "Disable output prompts")
     .argument("[input]", "Chat input")
-    .action(async (input, { contextPrompts, outputPrompts }) => {
+    .action(async (input, { contextPrompts, outputPrompts, copy }) => {
       return chat(
         executionContext,
         config,
         input,
         contextPrompts,
         outputPrompts,
+        copy,
       );
     });
 
@@ -60,7 +62,14 @@ const cli = async (
       );
       //  The only possible next action is chat or quit.
       if (nextAction === Actions.Chat) {
-        return chat(executionContext, updatedConfig, undefined, true, true);
+        return chat(
+          executionContext,
+          updatedConfig,
+          undefined,
+          true,
+          true,
+          false,
+        );
       }
     });
 
