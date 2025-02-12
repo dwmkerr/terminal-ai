@@ -30,7 +30,6 @@ That's it. The quickest way to learn how to use the tool is to look at the [Exam
 
 To chat, run `ai` and follow the prompts. If you press 'Enter' in the chat prompt instead of replying then the actions menu will pop up with more options:
 
-
 ![Demo Recording of a Simple Chat with Terminal AI](./docs/casts/simple-chat.svg)
 
 To execute a chat command, pass your message as a parameter. Note that you should always separate the message parameter from any other flags or commands by using the `--` separator:
@@ -43,6 +42,18 @@ If `ai` detects that you are using a TTY then it will prompt you to continue the
 
 ```
 ai -- "How can I programatically create a calendar invite?" > answer.txt
+```
+
+### Initialising or Updating Config
+
+Set or update your configuration (such as the OpenAI API key) with the `ai init` command:
+
+![Demo Recording of a the 'ai init' command](./docs/casts/ai-init.svg)
+
+Run this command with:
+
+```bash
+ai init
 ```
 
 ### Copying to the Clipboard or Saving to a File
@@ -91,6 +102,24 @@ The following parameters are available:
 |------------------------|----------------------------------------------------|
 | `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash'). |
 | `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').    |
+
+**`ai init`**
+
+The `ai init` commands allows you to initialise or update your configuration (such as your API key). It also offers the option to validate your configuration:
+
+```
+ai init
+
+Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...
+✔ OpenAI API Key: **************************************************
+********************************************************************
+**********************************************
+✔ Test API Key & Configuration? Yes
+Checking configuration...
+OpenAP API Key validated
+Configuration validated
+✔ What next?: Chat
+```
 
 **`ai check`**
 
