@@ -29,8 +29,8 @@ Quick and dirty task-list.
 - [x] bug: printError shows an empty square brackets at the end
 - [x] nth: chat command needs error handling
 - [x] feat(init): create config (OpenAI key / leave empty for default), validate key, choose model
-- [ ] feat(chat): copy to clipboard flag
-- [ ] bug(build): don't include source - just dist
+- [x] feat(chat): copy to clipboard flag
+- [x] bug(build): don't include source - just dist
 - [ ] bug(chat): terminal overwrite bugs on multiline
 
 ## Version 0.7

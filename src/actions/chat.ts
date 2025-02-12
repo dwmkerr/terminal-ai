@@ -12,6 +12,7 @@ import { ensureApiKey } from "./ensure-api-key";
 import { plainTextCode } from "../lib/markdown";
 import { OutputIntent, parseInput } from "../lib/input";
 import { expandPrompts } from "../context/context";
+import { writeClipboard } from "../lib/clipboard";
 
 const debug = dbg("ai:chat");
 
@@ -87,11 +88,7 @@ export async function chat(
       executionContext.isInteractive,
     );
     if (copy) {
-      const clipboard = (await import("clipboardy")).default;
-      clipboard.writeSync(plainTextCode(response));
-      if (executionContext.isInteractive) {
-        console.log(`✅ Response copied to clipboard!`);
-      }
+      await writeClipboard(plainTextCode(response), true);
       return;
     } else if (
       inputAndIntent.outputIntent === OutputIntent.Code &&
@@ -159,12 +156,7 @@ export async function nextOption(response: string) {
   //  If the answer is copy, copy the response to the clipboard.
   if (answer === "reply") {
   } else if (answer === "copy") {
-    //  Note that 'clipboardy' requires dynamic imports so that this
-    //  can be packaged as a commonjs module.
-    const clipboard = (await import("clipboardy")).default;
-    clipboard.writeSync(plainTextCode(response));
-
-    console.log(`✅ Response copied to clipboard!`);
+    await writeClipboard(plainTextCode(response), true);
   } else if (answer === "save") {
     const inputPrompt = theme.inputPrompt("Save As");
     const path = await input({ message: inputPrompt });
