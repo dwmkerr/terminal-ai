@@ -1,5 +1,6 @@
 #!/usr/bin/env node --no-deprecation
 
+import fs from "fs";
 import dbg from "debug";
 import { Command } from "commander";
 
@@ -15,11 +16,16 @@ import {
 } from "./lib/errors";
 import packageJson from "../package.json";
 import { ExecutionContext } from "./lib/execution-context";
-import { Configuration, getConfiguration } from "./configuration/configuration";
+import {
+  configFilePath,
+  Configuration,
+  getConfiguration,
+} from "./configuration/configuration";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
 import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
 import { check } from "./actions/check";
-
+import { init } from "./actions/init";
+import { Actions } from "./actions/actions";
 const cli = async (
   program: Command,
   executionContext: ExecutionContext,
@@ -41,6 +47,21 @@ const cli = async (
         contextPrompts,
         outputPrompts,
       );
+    });
+
+  program
+    .command("init")
+    .description("Set or update configuration")
+    .action(async () => {
+      const { nextAction, updatedConfig } = await init(
+        executionContext,
+        config,
+        true,
+      );
+      //  The only possible next action is chat or quit.
+      if (nextAction === Actions.Chat) {
+        return chat(executionContext, updatedConfig, undefined, true, true);
+      }
     });
 
   program
@@ -72,6 +93,7 @@ async function main() {
   //  Create an initial execution context. This may evolve as we run various commands etc.
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   const executionContext: ExecutionContext = {
+    firstTime: fs.existsSync(configFilePath),
     isInteractive: process.stdout.isTTY || false,
     isTTY: process.stdout.isTTY || false,
   };

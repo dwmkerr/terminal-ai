@@ -5,6 +5,8 @@ Quick and dirty task-list.
 <!-- vim-markdown-toc GFM -->
 
 - [Version 0.6](#version-06)
+- [Version 0.7](#version-07)
+- [Version 0.8](#version-08)
 - [Documentation](#documentation)
 - [Global](#global)
 - [Configuration](#configuration)
@@ -26,9 +28,16 @@ Quick and dirty task-list.
 - [x] nth: unhandled error prettier printing
 - [x] bug: printError shows an empty square brackets at the end
 - [x] nth: chat command needs error handling
+- [x] feat(init): create config (OpenAI key / leave empty for default), validate key, choose model
 - [ ] feat(chat): copy to clipboard flag
 - [ ] bug(build): don't include source - just dist
 - [ ] bug(chat): terminal overwrite bugs on multiline
+
+## Version 0.7
+
+## Version 0.8
+
+If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
 
 ## Documentation
 
@@ -41,7 +50,7 @@ Quick and dirty task-list.
 - [ ] feat: no tty flag
 - [ ] nth: 'vanilla' flag (no prompts) - or one to not format markdown?
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues (requires ESLint 9)
-- [ ] minor: consider what heading/title to run when init-ing the key or first time interactive.
+- [ ] minor: consider what heading/title to run when init-ing or running any action.
 - [ ] Spinners
 - [ ] Handle asymmetric TTY eg pipe /dev/stdin as input and pipe to output file, or pipe echo into interactive or pipe echo into file- use context to inform if the output should use markdown or not?
 - [ ] TAI: files flag, folder flag best effort

@@ -123,7 +123,7 @@ export async function nextOption(response: string) {
   //  Loop until we know we've got an option we can continue with.
   const answer = await select({
     message: theme.inputPrompt("What next?"),
-    default: "r",
+    default: "reply",
     choices: [
       {
         name: "Reply",

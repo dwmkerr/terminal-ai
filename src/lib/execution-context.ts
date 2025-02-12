@@ -1,4 +1,7 @@
 export type ExecutionContext = {
+  //  This is a first-time run.
+  firstTime: boolean;
+
   //  The user is interfacing via a terminal.
   isInteractive: boolean;
 
