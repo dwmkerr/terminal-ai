@@ -1,0 +1,11 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        # We are moving fast and experimenting, so threshold is very low...
+        threshold: 10%
+    patch:
+      default:
+        # Try and at least get *some* testing in new code...
+        target: 20%
