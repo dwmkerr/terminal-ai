@@ -6,7 +6,7 @@ import { select } from "@inquirer/prompts";
 import { chat as chatCommand } from "../commands/chat";
 import theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
-import { TerminatingWarning } from "../lib/errors";
+import { TerminatingError, TerminatingWarning } from "../lib/errors";
 import { Configuration } from "../configuration/configuration";
 import { ensureApiKey } from "./ensure-api-key";
 import { plainTextCode } from "../lib/markdown";
@@ -78,28 +78,25 @@ export async function chat(
       cfg,
       conversationHistory,
     );
-    if (!response) {
-      theme.printError("No response received from ChatGPT...");
+
+    //  If our intent is code and we're writing to a file, make it plain text
+    //  code.
+    const responseText = theme.printResponse(
+      response,
+      executionContext.isInteractive,
+    );
+    if (
+      inputAndIntent.outputIntent === OutputIntent.Code &&
+      executionContext.isInteractive === false
+    ) {
+      console.log(plainTextCode(responseText));
     } else {
-      //  If our intent is code and we're writing to a file, make it plain text
-      //  code.
-      const responseText = theme.printResponse(
-        response,
-        executionContext.isInteractive,
-      );
-      if (
-        inputAndIntent.outputIntent === OutputIntent.Code &&
-        executionContext.isInteractive === false
-      ) {
-        console.log(plainTextCode(responseText));
-      } else {
-        console.log(responseText);
-      }
-      conversationHistory.push({
-        role: "assistant",
-        content: response,
-      });
+      console.log(responseText);
     }
+    conversationHistory.push({
+      role: "assistant",
+      content: response,
+    });
 
     //  Clear the next chat input. If we're interactive, we can continue the
     //  conversation
@@ -167,7 +164,7 @@ export async function nextOption(response: string) {
       fs.writeFileSync(path, plainTextCode(response), "utf8");
       console.log(`✅ Response saved to ${path}!`);
     } catch (err) {
-      theme.printError(
+      throw new TerminatingError(
         "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
       );
     }

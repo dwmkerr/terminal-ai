@@ -1,12 +1,16 @@
 import colors from "colors/safe";
 import { formatMarkdown } from "./lib/markdown";
 
-function printWarning(message: string) {
-  console.log(colors.yellow(message));
+export function printMessage(message: string, interactive: boolean) {
+  return interactive ? colors.white(message) : message;
 }
 
-export function printError(message: string, ...args: unknown[]) {
-  console.log(colors.red(message), args);
+export function printWarning(message: string, interactive: boolean) {
+  return interactive ? colors.yellow(message) : message;
+}
+
+export function printError(message: string, interactive: boolean) {
+  return interactive ? colors.red(message) : message;
 }
 
 export function inputPrompt(prompt: string): string {
@@ -52,6 +56,7 @@ export function printHint(hint: string) {
 }
 
 export default {
+  printMessage,
   printWarning,
   printError,
   inputPrompt,
