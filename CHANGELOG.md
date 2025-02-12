@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.6.0](https://github.com/dwmkerr/terminal-ai/compare/v0.5.0...v0.6.0) (2025-02-12)
+
+
+### Features
+
+* **chat:** 'code' output context prompts configurable ([#21](https://github.com/dwmkerr/terminal-ai/issues/21)) ([d7126b7](https://github.com/dwmkerr/terminal-ai/commit/d7126b71519a8ad74b373d4b87397e515179df53))
+* **chat:** 'copy' option ([#29](https://github.com/dwmkerr/terminal-ai/issues/29)) ([2e46e86](https://github.com/dwmkerr/terminal-ai/commit/2e46e86c37c822b09a5434ce64f8298616c09382))
+* **check:** 'ai check' validates OpenAI key and config ([#27](https://github.com/dwmkerr/terminal-ai/issues/27)) ([24a3d9b](https://github.com/dwmkerr/terminal-ai/commit/24a3d9bda2eacd28b2f97aea22fc4c17d34b9c9e))
+* **docs:** terminal recording + docs ([#23](https://github.com/dwmkerr/terminal-ai/issues/23)) ([48b75fd](https://github.com/dwmkerr/terminal-ai/commit/48b75fd1b6f0b92683d16b687d5059900e34de14))
+* **init:** 'ai init' sets/updates/checks config ([#28](https://github.com/dwmkerr/terminal-ai/issues/28)) ([370ce66](https://github.com/dwmkerr/terminal-ai/commit/370ce66ebedc49e956aabeb13335dba7ff9b6908))
+
+
+### Bug Fixes
+
+* **build:** reduce bundle size - bundle only distributables ([#30](https://github.com/dwmkerr/terminal-ai/issues/30)) ([826fe17](https://github.com/dwmkerr/terminal-ai/commit/826fe1799bac70ed85df9ef0ae3096281e219c68))
+* re enable theme tests ([#24](https://github.com/dwmkerr/terminal-ai/issues/24)) ([357b433](https://github.com/dwmkerr/terminal-ai/commit/357b433b053be9be1b7f28fa99bac62c80c50b79))
+
 ## [0.5.0](https://github.com/dwmkerr/terminal-ai/compare/v0.4.0...v0.5.0) (2025-02-10)
 
 
