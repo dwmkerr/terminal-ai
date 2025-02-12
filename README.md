@@ -50,6 +50,12 @@ Set or update your configuration (such as the OpenAI API key) with the `ai init`
 
 ![Demo Recording of a the 'ai init' command](./docs/casts/ai-init.svg)
 
+Run this command with:
+
+```bash
+ai init
+```
+
 ### Copying to the Clipboard or Saving to a File
 
 Open the Actions menu with 'Enter' and choose 'Copy Response'. The most recent message will be copied. To save a file, use the 'Save Response' action.
