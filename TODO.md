@@ -35,9 +35,11 @@ Quick and dirty task-list.
 
 ## Version 0.7
 
+- 'raw' output - not formatted / stripped markdown (for copy/file/clipbord/interactive)
+
 ## Version 0.8
 
-If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
+- If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
 
 ## Documentation
 
@@ -57,6 +59,8 @@ If running for the first time, choose 'init'. Note that if running `ai init` thi
 
 ## Configuration
 
+- [ ] feat: openai model configuration
+- [ ] feat: advanced config option
 - [ ] use local `.ai` files:
 - [ ] Location specific prompts, eg create a .ai folder, include prompts in it, tai shows them
 - [ ] feat(config): prompts should be named

@@ -21,6 +21,7 @@ export async function chat(
   inputMessage: string | undefined,
   enableContextPrompts: boolean,
   enableOutputPrompts: boolean,
+  copy: boolean,
 ) {
   //  If we don't have an API key, ask for one. Create the OpenAI interface.
   const cfg = await ensureApiKey(executionContext, config);
@@ -85,7 +86,14 @@ export async function chat(
       response,
       executionContext.isInteractive,
     );
-    if (
+    if (copy) {
+      const clipboard = (await import("clipboardy")).default;
+      clipboard.writeSync(plainTextCode(response));
+      if (executionContext.isInteractive) {
+        console.log(`✅ Response copied to clipboard!`);
+      }
+      return;
+    } else if (
       inputAndIntent.outputIntent === OutputIntent.Code &&
       executionContext.isInteractive === false
     ) {

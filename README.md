@@ -60,11 +60,18 @@ ai init
 
 Open the Actions menu with 'Enter' and choose 'Copy Response'. The most recent message will be copied. To save a file, use the 'Save Response' action.
 
+You can copy to the clipboard by specifying the `-c` or `--copy` parameter:
+
+```bash
+ai -c -- "Travel time for London to Paris?"
+```
+
 You can also copy to the clipboard by piping to a program like `pbcopy`. This example uses the `code` intent to ask for code output only and writes to the clipboard:
 
 ```bash
 ai -- "code: bash script to zip all files in current directory" | pbcopy
 ```
+
 
 ### Writing Code
 
@@ -100,6 +107,7 @@ The following parameters are available:
 
 | Parameter              | Description                                        |
 |------------------------|----------------------------------------------------|
+| `-c, --copy`           | Copy response to the clipboard and exit.           |
 | `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash'). |
 | `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').    |
 
