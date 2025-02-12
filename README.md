@@ -30,6 +30,7 @@ That's it. The quickest way to learn how to use the tool is to look at the [Exam
 
 To chat, run `ai` and follow the prompts. If you press 'Enter' in the chat prompt instead of replying then the actions menu will pop up with more options:
 
+
 ![Demo Recording of a Simple Chat with Terminal AI](./docs/casts/simple-chat.svg)
 
 To execute a chat command, pass your message as a parameter. Note that you should always separate the message parameter from any other flags or commands by using the `--` separator:
@@ -47,6 +48,12 @@ ai -- "How can I programatically create a calendar invite?" > answer.txt
 ### Copying to the Clipboard or Saving to a File
 
 Open the Actions menu with 'Enter' and choose 'Copy Response'. The most recent message will be copied. To save a file, use the 'Save Response' action.
+
+You can also copy to the clipboard by piping to a program like `pbcopy`. This example uses the `code` intent to ask for code output only and writes to the clipboard:
+
+```bash
+ai -- "code: bash script to zip all files in current directory" | pbcopy
+```
 
 ### Writing Code
 
@@ -85,18 +92,39 @@ The following parameters are available:
 | `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash'). |
 | `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').    |
 
+**`ai check`**
+
+The `ai check` command validates your configuration, ensuring your OpenAI API key is configured correctly:
+
+```bash
+ai check
+
+Checking configuration...
+OpenAP API Key validated
+Configuration validated
+```
+
 **`ai config`**
 
 Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder:
 
 ```
-$ ai
-{
-  "openAiApiKey": "<secret>",
-  "prompts": {
-    "chat": {
-    ...
+$ ai chec
+
+Checking configuration...
+OpenAP API Key validated
+Configuration validated
 ```
+
+## Error Codes
+
+The following error codes can be returned by `ai`:
+
+| Code | Name                                | Description                      |
+|------|-------------------------------------|----------------------------------|
+| 1    | `ERROR_CODE_WARNING`                | A warning was shown to the user. |
+| 2    | `ERROR_CODE_INVALID_CONFIFGURATION` | Network connectivity error.      |
+| 3    | `ERROR_CODE_CONNECTION`             | Configuration error.             |
 
 ## API Key
 

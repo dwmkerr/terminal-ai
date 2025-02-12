@@ -2,103 +2,95 @@
 
 Quick and dirty task-list.
 
-**Global**
+<!-- vim-markdown-toc GFM -->
 
-- [ ] feat: no tty flag
+- [Version 0.6](#version-06)
+- [Documentation](#documentation)
+- [Global](#global)
+- [Configuration](#configuration)
+- [Commands: Chat](#commands-chat)
+- [Commands: Config](#commands-config)
+- [Commands: Init](#commands-init)
+- [GitHub Output Intent](#github-output-intent)
+- [File Output Intent](#file-output-intent)
+- [NTH: Vim Integration / Demo](#nth-vim-integration--demo)
+- [Testing](#testing)
+- [Random Ideas](#random-ideas)
 
-**Documentation**
+<!-- vim-markdown-toc -->
+
+## Version 0.6
+
+- [x] feat(check): basic check command
+- [x] bug(chat): when non-interactive if API key is not set, error message must be plain text
+- [x] nth: unhandled error prettier printing
+- [x] bug: printError shows an empty square brackets at the end
+- [x] nth: chat command needs error handling
+- [ ] feat(chat): copy to clipboard flag
+- [ ] bug(build): don't include source - just dist
+- [ ] bug(chat): terminal overwrite bugs on multiline
+
+## Documentation
 
 - Configuration Files and Structure
 - Interactive modes / TTY / how to enable/disable.
+- [ ] Structure: context prompt / input prompt / text / output mode
 
-**Configuration**
+## Global
+
+- [ ] feat: no tty flag
+- [ ] nth: 'vanilla' flag (no prompts) - or one to not format markdown?
+- [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues (requires ESLint 9)
+- [ ] minor: consider what heading/title to run when init-ing the key or first time interactive.
+- [ ] Spinners
+- [ ] Handle asymmetric TTY eg pipe /dev/stdin as input and pipe to output file, or pipe echo into interactive or pipe echo into file- use context to inform if the output should use markdown or not?
+- [ ] TAI: files flag, folder flag best effort
+
+## Configuration
 
 - [ ] use local `.ai` files:
+- [ ] Location specific prompts, eg create a .ai folder, include prompts in it, tai shows them
+- [ ] feat(config): prompts should be named
 
-**Chat - book preview ready**
+## Commands: Chat
 
-- [ ] fix: if we have any multiline in the output, or we have a markdown block, then start the response with a newline
-- [ ] fix: if we are writing to a file, put in markdown but strip all colors.
-- [ ] fix: if we have parameter input we still need to decode intent
-- [x] reply/copy/quit options - offer file output for example
-- [x] copy action, save action
-- [x] nth: just show the response prompt, but if empty response show actions
-- [ ] document chat
-- [ ] nth: chat command needs error handling
-
-**Book Ready**
-
-- [ ] nth: init command
-
-**Code - book ready**
-
-- [ ] code: interactive
-- [ ] nth: code - non interactive
-
-**GitHub**
-
-- [ ] feat: create/list bugs
-
-**Documentation - book ready**
-
-- [ ] nth: terminal recording
-
-**Epic - Output Modes**
-
-Enable the `<output>: input` format for chats, e.g. to go straight to file
-
+- [ ] Interactive mode shows prompt in green press up down to cycle modes
 - [ ] feat: custom inqurirer module to handle keypresses and toggle the input prompt
-
-**Chat**
-
-- [ ] nth: see if we can auth user/pass instead of using an API key
 - [ ] nth: decide on whether a response prompt is needed. For a single line response it is probably good, for multi-line it is probably unneeded, for a single line of code it is likely not needed, consider either heuristics or configuration options
 - [ ] nth: support reflow with marked-terminal to more gracefully show output
-- [ ] nth: 'compact' option for action menu
 - [ ] nth: clean up the prompt for next action as well as the code
 - [ ] nth: decide how to trim markdown and space output. It might be based on whether the output is multi-line and so on
 - [ ] nth: give code blocks more of a background so that they are more readable
-
-**Configuration**
-
-- [ ] feat(config): prompts should be named
-
----
-
-- [ ] bug: fix skipped tests
-
-- [ ] bug: printError shows an empty square brackets at the end
-- [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues
-- [ ] bug(build): don't include source - just dist
-- [ ] bug(ai): on startup the default yaml config should be copied over?
-- [ ] bug(chat): when non-interactive if API key is not set, error message must be plain text
-- [ ] devex: 'ai' local command to run from my folder
-
 - [ ] nth(chat): line up input/output prompts on the colon
+- [ ] docs: readline/prompt input keyboard shortcuts (cancel, copy, etc)
 
-- [ ] nth: 'vanilla' flag (no prompts)
+## Commands: Config
+
 - [ ] fix(config): hide sensitive values by default
 
-- [ ] minor: consider what heading/title to run when init-ing the key or first time interactive.
+## Commands: Init
 
-- [ ] really user friendly way to get API key set
-- [ ] we can check first time run via presence of config file
-- [ ] Call from vi example
-- [ ] Put in effective shell chapter
-- [ ] Check competitors
-- [ ] Spinners
-- [ ] Interactive mode shows prompt in green press up down to cycle modes
-- [ ] Chat mode default
+- [ ] nth: init command
+
+## GitHub Output Intent
+
+- [ ] feat: create/list bugs
+- [ ] GitHub: Read repo from .git, Env var and token in config
+- [ ] GitHub tree folder structure for context, offer option to ask for files
+
+## File Output Intent
+
 - [ ] Output: file -suggestion name and format eg ics 
-- [ ] Clipboard
-- [ ] Structure: context prompt / input prompt / text / output mode
-- [ ] GitHub mode
-- [ ] Vanilla mode
-- [ ] Online instructions for api key
-- [ ] Videos on LinkedIn
-- [ ] When code is shown offer copy command
-- [ ] Execution context tty 
-- [ ] Location specific prompts, eg create a .ai folder, include prompts in it, tai shows them
-- [ ] docs: readline/prompt input keyboard shortcuts (cancel, copy, etc)
-- [ ] nth: unhandled error prettier printing
 
+## NTH: Vim Integration / Demo
+
+- [ ] Call from vi example
+
+## Testing
+
+- [ ] Future: test responses from ChatGPT expected-ish eg code intent has a single code block only, score results as a percentage based on expectations
+
+## Random Ideas
+
+- [ ] terminal recording
+- [ ] terminal pair programming

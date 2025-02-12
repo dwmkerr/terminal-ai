@@ -8,15 +8,17 @@ import { chat } from "./actions/chat";
 import { debug as debugCommand } from "./commands/debug";
 
 import theme from "./theme";
-import { TerminatingWarning } from "./lib/errors";
+import {
+  ERROR_CODE_CONNECTION,
+  TerminatingError,
+  TerminatingWarning,
+} from "./lib/errors";
 import packageJson from "../package.json";
 import { ExecutionContext } from "./lib/execution-context";
 import { Configuration, getConfiguration } from "./configuration/configuration";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
 import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
-
-const ERROR_CODE_WARNING = 1;
-const ERROR_CODE_CONNECTION = 2;
+import { check } from "./actions/check";
 
 const cli = async (
   program: Command,
@@ -46,6 +48,13 @@ const cli = async (
     .description("Show current configuration")
     .action(async () => {
       console.log(JSON.stringify(config, null, 2));
+    });
+
+  program
+    .command("check")
+    .description("Validate configuration")
+    .action(async () => {
+      await check(executionContext, config);
     });
 
   program
@@ -108,13 +117,29 @@ async function main() {
         console.log("Goodbye!");
       }
     } else if (err instanceof TerminatingWarning) {
-      theme.printWarning(err.message);
-      process.exit(ERROR_CODE_WARNING);
+      console.log(
+        theme.printWarning(err.message, executionContext.isInteractive),
+      );
+    } else if (err instanceof TerminatingError) {
+      console.log(
+        theme.printError(err.message, executionContext.isInteractive),
+      );
+      process.exit(err.errorCode);
     } else if (err.code === "ENOTFOUND") {
-      theme.printError("Address not found - check internet connection");
+      console.log(
+        theme.printError(
+          "Address not found - check internet connection",
+          executionContext.isInteractive,
+        ),
+      );
       process.exit(ERROR_CODE_CONNECTION);
     } else if (err.code === "ERR_TLS_CERT_ALTNAME_INVALID") {
-      theme.printError("Invalid certificate - check internet connection");
+      console.log(
+        theme.printError(
+          "Invalid certificate - check internet connection",
+          executionContext.isInteractive,
+        ),
+      );
       process.exit(ERROR_CODE_CONNECTION);
     } else {
       throw err;
