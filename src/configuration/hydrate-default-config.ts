@@ -38,6 +38,7 @@ export function hydrateFolder(target: string, source: string): void {
 export function hydrateDefaultConfig() {
   //  Ensure the prompts/chat folder exists.
   debug("hydrating default config...");
-  hydrateFolder(promptFolders.chatPrompts.dest, promptFolders.chatPrompts.src);
-  hydrateFolder(promptFolders.codePrompts.dest, promptFolders.codePrompts.src);
+  const folders = promptFolders();
+  hydrateFolder(folders.chatPrompts.dest, folders.chatPrompts.src);
+  hydrateFolder(folders.codePrompts.dest, folders.codePrompts.src);
 }
