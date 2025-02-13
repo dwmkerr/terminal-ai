@@ -2,6 +2,10 @@
 
 Quick and dirty task-list.
 
+Bigger questions:
+
+- When we 'copy' or 'exec' - should we try and grab the latest code block?
+
 <!-- vim-markdown-toc GFM -->
 
 - [Version 0.6](#version-06)
@@ -90,6 +94,7 @@ Quick and dirty task-list.
 
 ## Actions: Execute
 
+- [ ] feat(execute): try and infer the code type and use the correct file extension to get syntax highlighting in the code editor
 - [ ] fix(execute): the prompts are a little large for an 80 col view
 - [ ] feat(execute): allow for command line option?
 

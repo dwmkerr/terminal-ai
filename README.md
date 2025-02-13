@@ -26,6 +26,14 @@ That's it. The quickest way to learn how to use the tool is to look at the [Exam
 
 ## Examples
 
+Quick links:
+
+- [Simple Chat](#simple-chat)
+- [Initialising or Updating Config](#initialising-or-updating-config)
+- [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
+- [Writing Code](#writing-code)
+- [Executing Scripts](#executing-scripts)
+
 ### Simple Chat
 
 To chat, run `ai` and follow the prompts. If you press 'Enter' in the chat prompt instead of replying then the actions menu will pop up with more options:
@@ -71,7 +79,6 @@ You can also copy to the clipboard by piping to a program like `pbcopy`. This ex
 ```bash
 ai -- "code: bash script to zip all files in current directory" | pbcopy
 ```
-
 
 ### Writing Code
 
