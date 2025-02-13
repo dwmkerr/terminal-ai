@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/dwmkerr/terminal-ai/compare/v0.7.0...v0.7.1) (2025-02-13)
+
+
+### Bug Fixes
+
+* correct use of env/params ([d2cbf6f](https://github.com/dwmkerr/terminal-ai/commit/d2cbf6fc35b46e584f2d68f08b426aba357f1fb6))
+* package missing prompts dir ([b842229](https://github.com/dwmkerr/terminal-ai/commit/b84222913d80205b224e4307159a1e0d52f0fee9))
+
 ## [0.7.0](https://github.com/dwmkerr/terminal-ai/compare/v0.6.0...v0.7.0) (2025-02-13)
 
 
