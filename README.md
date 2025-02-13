@@ -87,6 +87,12 @@ ai -- "code: Python code to find largest file in current directory" > findfile.p
 
 The `code` output intent tries to ensure that a _single_ code block is created, rather than multiple blocks in multiple languages. It does this by asking for a single listing with comments used to indicate whether other scripts or operations are needed.
 
+### Executing Scripts
+
+You can execute scripts by asking for `code` output, pressing 'Enter' in the response prompt to open the Actions menu and then choosing 'Execute Response'. Terminal AI will ask you to verify the code (using your configured `$EDITOR`) and then ask for confirmation before executing:
+
+![Demo Recording of Execute Response](./docs/casts/ai-chat-exec.svg)
+
 ## Commands
 
 **`ai`**
@@ -128,6 +134,8 @@ OpenAP API Key validated
 Configuration validated
 ✔ What next?: Chat
 ```
+
+This command also allows advanced configuration such as the model to be updated.
 
 **`ai check`**
 

@@ -13,6 +13,7 @@ Quick and dirty task-list.
 - [Beta](#beta)
 - [Documentation](#documentation)
 - [Global](#global)
+- [Actions: Execute](#actions-execute)
 - [Configuration](#configuration)
 - [Commands: Chat](#commands-chat)
 - [Commands: Config](#commands-config)
@@ -39,13 +40,13 @@ Quick and dirty task-list.
 ## Version 0.7
 
 - [x] init: choose model
-- [ ] system prompts for context
 - [x] 'raw' output - not formatted / stripped markdown (for copy/file/clipbord/interactive)
-- [ ] execute scripts
-- [ ] local .ai config - context prompts only
+- [x] execute scripts
 
 ## Version 0.8
 
+- [ ] local .ai config - context prompts only
+- [ ] system prompts for context
 - [ ] file upload, e.g. ~/.vimrc how to check speeds
 
 - deepseek
@@ -86,6 +87,11 @@ Quick and dirty task-list.
 - [ ] Spinners
 - [ ] Handle asymmetric TTY eg pipe /dev/stdin as input and pipe to output file, or pipe echo into interactive or pipe echo into file- use context to inform if the output should use markdown or not?
 - [ ] TAI: files flag, folder flag best effort
+
+## Actions: Execute
+
+- [ ] fix(execute): the prompts are a little large for an 80 col view
+- [ ] feat(execute): allow for command line option?
 
 ## Configuration
 
