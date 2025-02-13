@@ -158,15 +158,7 @@ Configuration validated
 
 **`ai config`**
 
-Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder:
-
-```
-$ ai chec
-
-Checking configuration...
-OpenAP API Key validated
-Configuration validated
-```
+Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder.
 
 ## Error Codes
 
