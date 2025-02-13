@@ -4,12 +4,21 @@ import path from "path";
 import yaml from "js-yaml";
 import dbg from "debug";
 
-import { TerminatingWarning } from "../lib/errors";
+import {
+  ERROR_CODE_INVALID_CONFIFGURATION,
+  TerminatingError,
+  TerminatingWarning,
+} from "../lib/errors";
+import { ChatModel } from "openai/resources/index.mjs";
+import { toChatModel } from "../lib/openai/openai-models";
 
 const debug = dbg("ai:configuration");
 
 export interface Configuration {
   openAiApiKey: string;
+  openai: {
+    model: ChatModel;
+  };
   prompts: {
     chat: {
       context: string[];
@@ -53,6 +62,9 @@ export function getConfigPath(): string {
 export function getDefaultConfiguration(): Configuration {
   return {
     openAiApiKey: "",
+    openai: {
+      model: "gpt-3.5-turbo",
+    },
     prompts: {
       chat: {
         context: [],
@@ -79,9 +91,26 @@ export function getConfigurationFromFile(
   //  Load the configuration structure.
   try {
     const fileContents = fs.readFileSync(path, "utf8");
-    return yaml.load(fileContents) as DeepPartial<Configuration>;
-  } catch (error) {
-    throw new TerminatingWarning(`error reading config file: ${path}`);
+    const contents = yaml.load(fileContents) as DeepPartial<Configuration>;
+
+    const fileModel = contents?.openai?.model;
+    if (fileModel !== undefined) {
+      const model = toChatModel(fileModel);
+      if (model === undefined) {
+        throw new TerminatingError(
+          `Error: Config file value 'openai.model' set to invalid value '${fileModel}'`,
+          ERROR_CODE_INVALID_CONFIFGURATION,
+        );
+      }
+    }
+    return contents;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    //  Re-throw our own specific errors.
+    if (error instanceof TerminatingError) {
+      throw error;
+    }
+    throw new TerminatingError(`error reading config file: ${path}`);
   }
 }
 
@@ -91,6 +120,20 @@ export function getConfigurationFromEnv(
   const newConfig: DeepPartial<Configuration> = {};
   if (env.AI_OPENAI_API_KEY !== undefined) {
     newConfig.openAiApiKey = env.AI_OPENAI_API_KEY;
+  }
+  if (env.AI_OPENAI_MODEL !== undefined) {
+    if (newConfig.openai === undefined) {
+      newConfig.openai = {};
+    }
+    const envModel = env.AI_OPENAI_MODEL;
+    const model = toChatModel(envModel);
+    if (model === undefined) {
+      throw new TerminatingError(
+        `Error: Environment Variable AI_OPENAI_MODEL set to invalid value '${envModel}'`,
+        ERROR_CODE_INVALID_CONFIFGURATION,
+      );
+    }
+    newConfig.openai.model = model;
   }
   if (env.AI_DEBUG_ENABLE !== undefined) {
     if (newConfig.debug === undefined) {
@@ -142,6 +185,9 @@ export function enrichConfiguration(
   const newConfig = { ...config };
   if (data.openAiApiKey !== undefined) {
     newConfig.openAiApiKey = data.openAiApiKey;
+  }
+  if (data?.openai?.model !== undefined) {
+    newConfig.openai.model = data.openai.model;
   }
   if (data?.debug?.enable !== undefined) {
     newConfig.debug.enable = data.debug.enable;
@@ -195,12 +241,44 @@ export function saveApiKey(apiKey: string) {
     }
 
     //  We might be updating an existing file, if so get its contents.
-
     const fileContents = fs.existsSync(configPath)
       ? fs.readFileSync(configPath, "utf8")
       : "";
     const yamlData = (yaml.load(fileContents) as Record<string, unknown>) || {};
     yamlData["openAiApiKey"] = apiKey;
+    const updatedYaml = yaml.dump(yamlData, { indent: 2 });
+    fs.writeFileSync(configPath, updatedYaml, "utf8");
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new TerminatingWarning(
+      `Error updating config file ${configPath}: ${error.message}`,
+    );
+  }
+}
+
+//  Update the config file. Needs to be extracted later on into a function
+//  that takes a partial.
+export function saveModel(model: ChatModel) {
+  const configPath = getConfigPath();
+  try {
+    //  Ensure the config directory exists.
+    // Check if the directory exists
+    if (!fs.existsSync(configDir)) {
+      fs.mkdirSync(configDir);
+    }
+
+    //  We might be updating an existing file, if so get its contents.
+    const fileContents = fs.existsSync(configPath)
+      ? fs.readFileSync(configPath, "utf8")
+      : "";
+    const yamlData = (yaml.load(fileContents) as Record<string, unknown>) || {};
+    if (yamlData.openai === undefined) {
+      yamlData.openai = {
+        model,
+      };
+    } else {
+      (yamlData.openai as Record<string, string>)["model"] = model;
+    }
     const updatedYaml = yaml.dump(yamlData, { indent: 2 });
     fs.writeFileSync(configPath, updatedYaml, "utf8");
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any

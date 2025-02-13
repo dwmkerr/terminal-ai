@@ -107,25 +107,9 @@ async function main() {
     isTTY: process.stdout.isTTY || false,
   };
 
-  //  Set all of the environment variables that can be used when hydrating
-  //  context.
-  hydrateContextEnvironmentVariables();
-
-  //  Load our initial configuration, best effort. Allows us to enable debug
-  //  tracing if configured.
-  const initialConfig = await getConfiguration();
-  if (initialConfig.debug.enable) {
-    dbg.enable(initialConfig.debug.namespace || "");
-  }
-
-  //  Now hydrate and reload our config.
-  hydrateDefaultConfig();
-  const config = await getConfiguration();
-
   //  Before we execute the command, we'll make sure we don't show a warning
   //  message if a user closes an inquirer prompt with Ctrl+C.
   process.on("uncaughtException", (error) => {
-    console.log(`uncauht exceptin`);
     if (error instanceof Error && error.name === "ExitPromptError") {
       console.log("👋 until next time!");
     } else {
@@ -135,6 +119,22 @@ async function main() {
   });
 
   try {
+    //  Set all of the environment variables that can be used when hydrating
+    //  context.
+    hydrateContextEnvironmentVariables();
+
+    //  Load our initial configuration, best effort. Allows us to enable debug
+    //  tracing if configured.
+    const initialConfig = await getConfiguration();
+    if (initialConfig.debug.enable) {
+      dbg.enable(initialConfig.debug.namespace || "");
+    }
+
+    //  Now hydrate and reload our config.
+    hydrateDefaultConfig();
+    const config = await getConfiguration();
+
+    //  Now create and execute the program.
     const program = new Command();
     await cli(program, executionContext, config);
     await program.parseAsync();
