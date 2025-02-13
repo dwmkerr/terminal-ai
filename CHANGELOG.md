@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/dwmkerr/terminal-ai/compare/v0.6.0...v0.7.0) (2025-02-13)
+
+
+### Features
+
+* **chat:** 'Execute' action to run scripts ([d080d19](https://github.com/dwmkerr/terminal-ai/commit/d080d19c9a19c3cb660a7c370d2c0366dd455938))
+* **chat:** model is now configurable ([85c3aac](https://github.com/dwmkerr/terminal-ai/commit/85c3aac07412fd0dd94d921fa03ea5f10ee93e97))
+
+
+### Bug Fixes
+
+* missing files in partial commit ([5083b99](https://github.com/dwmkerr/terminal-ai/commit/5083b992520d01431666bc65c6fe2b5e05b7e503))
+
 ## [0.6.0](https://github.com/dwmkerr/terminal-ai/compare/v0.5.0...v0.6.0) (2025-02-12)
 
 
