@@ -1,0 +1,1 @@
+I want you to write the output as a raw HTTP request. There should be no explanation, simply raw HTTP 1.1 text which could be directly sent to a server. Note that my API Key is '${GH_API_KEY}' my organisation is '${GH_ORG}' and my repo is '${GH_REPO}'.

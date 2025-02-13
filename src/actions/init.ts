@@ -2,9 +2,14 @@ import { confirm, password, select } from "@inquirer/prompts";
 import { TerminatingError } from "../lib/errors";
 import * as theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
-import { Configuration, saveApiKey } from "../configuration/configuration";
+import {
+  Configuration,
+  saveApiKey,
+  saveModel,
+} from "../configuration/configuration";
 import { Actions } from "./actions";
 import { check } from "./check";
+import { selectModel } from "../commands/init/select-model";
 
 export type InitResult = {
   nextAction: Actions;
@@ -49,6 +54,19 @@ export async function init(
     const apiKey = await password({ mask: true, message: "OpenAI API Key:" });
     updatedConfig.openAiApiKey = apiKey;
     saveApiKey(apiKey);
+  }
+
+  //  Offer advanced options.
+  const advanced = await confirm({
+    message: "Advanced Configuration (e.g. model)?",
+    default: false,
+  });
+  if (advanced) {
+    const model = await selectModel("gpt-3.5-turbo");
+    if (model !== undefined) {
+      updatedConfig.openai.model = model;
+      saveModel(model);
+    }
   }
 
   //  Offer to validate.

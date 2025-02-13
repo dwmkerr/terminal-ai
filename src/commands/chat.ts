@@ -16,7 +16,7 @@ export async function chat(
   try {
     const completion = await openai.chat.completions.create({
       messages,
-      model: "gpt-3.5-turbo",
+      model: config.openai.model,
     });
 
     //  Read the response. If we didn't get one, show an error. Otherwise

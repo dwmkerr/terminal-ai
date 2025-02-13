@@ -28,9 +28,10 @@ export async function check(
   console.log(theme.printMessage("Checking configuration...", interactive));
 
   try {
+    //  Call any API to check our key.
     const models = await openai.models.list();
     if (models) {
-      console.log(theme.printMessage("OpenAP API Key validated", interactive));
+      console.log(theme.printMessage("OpenAI API Key validated", interactive));
     }
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   } catch (err: any) {
@@ -42,6 +43,24 @@ export async function check(
     }
   }
 
+  //  We can check the model against the API models.
+  let page = await openai.models.list();
+  let apiModels: string[] = [];
+  while (page) {
+    apiModels = [...apiModels, ...page.data.map((m) => m.id)];
+    if (!page.hasNextPage()) {
+      break;
+    }
+    page = await page.getNextPage();
+  }
+  if (apiModels.includes(config.openai.model)) {
+    console.log(theme.printMessage("OpenAI Model validated", interactive));
+  } else {
+    throw new TerminatingWarning(
+      `Warning: Your OpenAI Model '${config.openai.model}' is not in any of the ${apiModels.length} models available, try 'ai init'`,
+      ERROR_CODE_INVALID_CONFIFGURATION,
+    );
+  }
   console.log(
     theme.printMessage(
       "Configuration validated",

@@ -7,6 +7,10 @@ Quick and dirty task-list.
 - [Version 0.6](#version-06)
 - [Version 0.7](#version-07)
 - [Version 0.8](#version-08)
+- [Epic - GitHub Intent/Tool](#epic---github-intenttool)
+- [Tobias Ideas](#tobias-ideas)
+- [Alpha](#alpha)
+- [Beta](#beta)
 - [Documentation](#documentation)
 - [Global](#global)
 - [Configuration](#configuration)
@@ -34,12 +38,38 @@ Quick and dirty task-list.
 
 ## Version 0.7
 
-- 'raw' output - not formatted / stripped markdown (for copy/file/clipbord/interactive)
+- [x] init: choose model
+- [ ] system prompts for context
+- [x] 'raw' output - not formatted / stripped markdown (for copy/file/clipbord/interactive)
+- [ ] execute scripts
+- [ ] local .ai config - context prompts only
 
 ## Version 0.8
 
+- [ ] file upload, e.g. ~/.vimrc how to check speeds
+
+- deepseek
 - If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
 - [ ] bug(chat): terminal overwrite bugs on multiline
+
+
+## Epic - GitHub Intent/Tool
+
+- Are tools available on Deepseek as well
+
+## Tobias Ideas
+
+- local promts
+- github copilo api
+- e.g. git diff - bug check - husky?
+
+## Alpha
+
+- Shell installer?
+
+## Beta
+
+- Brew installer?
 
 ## Documentation
 
