@@ -2,6 +2,8 @@ import dbg from "debug";
 import fs from "fs";
 import { input } from "@inquirer/prompts";
 import { select } from "@inquirer/prompts";
+import { editor } from "@inquirer/prompts";
+import { confirm } from "@inquirer/prompts";
 
 import { chat as chatCommand } from "../commands/chat";
 import theme from "../theme";
@@ -13,6 +15,7 @@ import { plainTextCode } from "../lib/markdown";
 import { OutputIntent, parseInput } from "../lib/input";
 import { expandPrompts } from "../context/context";
 import { writeClipboard } from "../lib/clipboard";
+import { execCommand } from "../lib/cli-helpers";
 
 const debug = dbg("ai:chat");
 
@@ -171,6 +174,19 @@ export async function nextOption(response: string) {
       throw new TerminatingError(
         "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
       );
+    }
+  } else if (answer === "exec") {
+    const code = await editor({
+      message: "Verify your script - AI can make mistakes!",
+      default: plainTextCode(response),
+      postfix: "sh",
+    });
+    const validate = await confirm({
+      message: "Are you sure you want to execute this code?",
+      default: false,
+    });
+    if (validate) {
+      await execCommand(code, true);
     }
   } else if (answer === "quit") {
     process.exit(0);
