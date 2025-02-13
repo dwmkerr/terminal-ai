@@ -143,6 +143,10 @@ export async function nextOption(response: string) {
         value: "save",
       },
       {
+        name: "Execute Response",
+        value: "exec",
+      },
+      {
         name: "Quit",
         value: "quit",
       },
