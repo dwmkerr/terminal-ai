@@ -70,11 +70,12 @@ Bigger questions:
 
 ## Alpha
 
+- Replace commonjs with modules (package.json type)
 - Shell installer?
 
 ## Beta
 
-- Brew installer?
+- Brew installer? Bundler? Note that local `prompts/` folder will need to be bundled
 
 ## Documentation
 
