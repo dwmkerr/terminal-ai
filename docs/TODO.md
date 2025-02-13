@@ -74,7 +74,7 @@ Bigger questions:
 
 ## Beta
 
-- Brew installer?
+- Brew installer? Bundler? Note that local `prompts/` folder will need to be bundled
 
 ## Documentation
 

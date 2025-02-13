@@ -44,16 +44,21 @@ export const configFilePath = `${configDir}/config.yaml`;
 export const chatPromptsPath = `${configDir}/prompts/chat/context`;
 export const codeOutputPromptsPath = `${configDir}/prompts/code/output`;
 
-export const promptFolders = {
-  chatPrompts: {
-    src: `./prompts/chat/context`,
-    dest: path.join(os.homedir(), `${configDir}/prompts/chat/context`),
-  },
-  codePrompts: {
-    src: `./prompts/code/output`,
-    dest: path.join(os.homedir(), `${configDir}/prompts/code/output`),
-  },
-};
+export function promptFolders() {
+  //  Build the path to the 'src' folder.
+  const __project_dir = path.resolve(__dirname, "../..");
+
+  return {
+    chatPrompts: {
+      src: path.join(__project_dir, `./prompts/chat/context`),
+      dest: path.join(os.homedir(), `${configDir}/prompts/chat/context`),
+    },
+    codePrompts: {
+      src: path.join(__project_dir, `./prompts/code/output`),
+      dest: path.join(os.homedir(), `${configDir}/prompts/code/output`),
+    },
+  };
+}
 
 export function getConfigPath(): string {
   return path.join(os.homedir(), configFilePath);
@@ -208,9 +213,10 @@ export function enrichConfiguration(
 
 export async function getConfiguration(): Promise<Configuration> {
   const defaultConfig = getDefaultConfiguration();
+  const folders = promptFolders();
   const promptsConfig = getConfigurationFromPromptsFolder(
-    promptFolders.chatPrompts.src,
-    promptFolders.codePrompts.src,
+    folders.chatPrompts.src,
+    folders.codePrompts.src,
   );
   const fileConfig = getConfigurationFromFile(getConfigPath());
   const envConfig = getConfigurationFromEnv(process.env);
