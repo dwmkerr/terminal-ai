@@ -20,7 +20,6 @@ env:
   NODE_LTS_VERSION: 22.x
 
 jobs:
-  # Linting / Building / Testing
   validate:
     name: Validate
 
