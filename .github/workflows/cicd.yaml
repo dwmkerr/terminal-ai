@@ -113,7 +113,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   release-please:
-     - name: Release PR/Deploy
+    name: Release PR/Deploy
 
     # The 'release please' job will only run if successfully complete the
     # 'validate-main' job. The deployment steps only occur if this is a release
