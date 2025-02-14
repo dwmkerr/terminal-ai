@@ -7,4 +7,9 @@ describe("expandEnvVars", () => {
     const expandedBraces = expandEnvVars("Hello ${SHELL}", { SHELL: "bash" });
     expect(expandedBraces).toBe("Hello bash");
   });
+
+  test("expands undefined vars to empty strings", () => {
+    const expanded = expandEnvVars("Hello $SHELL and $USER", {});
+    expect(expanded).toBe("Hello  and ");
+  });
 });
