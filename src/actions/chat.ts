@@ -13,9 +13,10 @@ import { Configuration } from "../configuration/configuration";
 import { ensureApiKey } from "./ensure-api-key";
 import { plainTextCode } from "../lib/markdown";
 import { OutputIntent, parseInput } from "../lib/input";
-import { expandPrompts } from "../context/context";
 import { writeClipboard } from "../lib/clipboard";
 import { execCommand } from "../lib/cli-helpers";
+import { expandContext } from "../context/context";
+import { OpenAIChatRoles } from "../lib/openai/openai-roles";
 
 const debug = dbg("ai:chat");
 
@@ -47,15 +48,17 @@ export async function chat(
 
   //  Create a converstion history that we will maintain as we interact.
   //  Add any chat prompts.
-  const conversationHistory: { role: "user" | "assistant"; content: string }[] =
-    [];
+  const conversationHistory: { role: OpenAIChatRoles; content: string }[] = [];
 
   //  If context prompts are enabled, add them now.
   if (enableContextPrompts) {
-    conversationHistory.push({
-      role: "user",
-      content: expandPrompts(cfg.prompts.chat.context, process.env).join("\n"),
-    });
+    const prompts = cfg.prompts.chat.context
+      .map((c) => expandContext(c, process.env))
+      .map((c) => ({
+        role: c.role,
+        content: c.value,
+      }));
+    conversationHistory.push(...prompts);
   }
 
   //  Repeatedly interact with ChatGPT as long as we have chat input.
@@ -68,12 +71,13 @@ export async function chat(
     if (inputAndIntent.outputIntent === OutputIntent.Code) {
       if (enableOutputPrompts) {
         debug("'code' output intent detected, adding prompt...");
-        conversationHistory.push({
-          role: "user",
-          content: expandPrompts(cfg.prompts.code.output, process.env).join(
-            "\n",
-          ),
-        });
+        const prompts = cfg.prompts.code.output
+          .map((c) => expandContext(c, process.env))
+          .map((c) => ({
+            role: c.role,
+            content: c.value,
+          }));
+        conversationHistory.push(...prompts);
       }
     }
 
