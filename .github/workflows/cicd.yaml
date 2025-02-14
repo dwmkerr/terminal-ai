@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - prerelease
   pull_request:
 
 # Release Please needs permisisons to write commits and open PRs.
@@ -130,61 +129,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           package-name: terminal-ai
-      
-      - name: Checkout
-        uses: actions/checkout@v3
-        if: ${{ steps.release.outputs.release_created }}
-
-      # Setup the right version of Node.js.
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_LTS_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-        if: ${{ steps.release.outputs.release_created }}
-
-      # Build the distributable code.
-      - name: Build Distributable
-        run: |
-          npm install
-          npm run build
-        if: ${{ steps.release.outputs.release_created }}
-
-      # Publish the module to NPM.
-      - name: Publish to NPM
-        run: |
-          # The 'npm publish' command will only run if an NPM_TOKEN secret is
-          # set. If it is not set, warn the user.
-          if [ "$NODE_AUTH_TOKEN" == "" ]; then
-            echo "The 'NPM_TOKEN' secret must be set to deploy to NPM"
-            exit 1
-          else
-            echo "The 'NPM_TOKEN' secret has been set - deploying to NPM..."
-            npm publish --access=public
-          fi
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        if: ${{ steps.release.outputs.release_created }}
-
-  release-please-prerelease:
-    name: Pre-Release PR/Deploy
-
-    # The 'release please (prerelease)' job will only run if successfully complete the
-    # 'validate' job. The deployment steps only occur if this is a release
-    # merge.
-    needs: validate
-
-    runs-on: ubuntu-24.04
-
-    steps:
-      - name: Release Please
-        uses: google-github-actions/release-please-action@v3
-        id: release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
-          package-name: terminal-ai
-          prerelease: true
       
       - name: Checkout
         uses: actions/checkout@v3
