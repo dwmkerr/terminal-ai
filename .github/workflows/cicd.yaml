@@ -114,7 +114,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   release-please:
-    name: Release
+     - name: Release PR/Deploy
 
     # The 'release please' job will only run if successfully complete the
     # 'validate-main' job. The deployment steps only occur if this is a release
@@ -134,6 +134,7 @@ jobs:
       
       - name: Checkout
         uses: actions/checkout@v3
+        if: ${{ steps.release.outputs.release_created }}
 
       # Setup the right version of Node.js.
       - name: Setup Node ${{ matrix.node-version }}
@@ -141,12 +142,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_LTS_VERSION }}
           registry-url: 'https://registry.npmjs.org'
+        if: ${{ steps.release.outputs.release_created }}
 
       # Build the distributable code.
       - name: Build Distributable
         run: |
           npm install
           npm run build
+        if: ${{ steps.release.outputs.release_created }}
 
       # Publish the module to NPM.
       - name: Publish to NPM
@@ -165,9 +168,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
 
   release-please-prerelease:
-    if: ${{ github.event.pull_request.base.ref == 'production' || github.ref == 'refs/heads/prerelease' }}
-
-    name: Prerelease
+    name: Pre-Release PR/Deploy
 
     # The 'release please (prerelease)' job will only run if successfully complete the
     # 'validate' job. The deployment steps only occur if this is a release
@@ -184,9 +185,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           package-name: terminal-ai
+          prerelease: beta
+        if: ${{ steps.release.outputs.release_created }}
       
       - name: Checkout
         uses: actions/checkout@v3
+        if: ${{ steps.release.outputs.release_created }}
 
       # Setup the right version of Node.js.
       - name: Setup Node ${{ matrix.node-version }}
@@ -194,12 +198,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_LTS_VERSION }}
           registry-url: 'https://registry.npmjs.org'
+        if: ${{ steps.release.outputs.release_created }}
 
       # Build the distributable code.
       - name: Build Distributable
         run: |
           npm install
           npm run build
+        if: ${{ steps.release.outputs.release_created }}
 
       # Publish the module to NPM.
       - name: Publish to NPM
