@@ -50,8 +50,8 @@ Bigger questions:
 ## Version 0.8
 
 - [ ] local .ai config - context prompts only
-- [ ] system prompts for context
 - [ ] file upload, e.g. ~/.vimrc how to check speeds
+- [ ] to check: system prompts for context
 
 - deepseek
 - If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
