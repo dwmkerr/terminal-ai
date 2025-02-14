@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - prerelease
+  pull_request:
 
 # Release Please needs permisisons to write commits and open PRs.
 permissions:
@@ -18,7 +20,9 @@ env:
   NODE_LTS_VERSION: 22.x
 
 jobs:
-  validate-main:
+  # Linting / Building / Testing
+  validate:
+    name: Validate
 
     runs-on: ubuntu-20.04
 
@@ -41,21 +45,23 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
 
-      # Lint and test.
+      # Install dependencies.
       - name: install
         run: npm install
+
+      # Lint the code.
       - name: lint
         run: npm run lint
+
+      # Build TypeScript.
+      - name: build
+        run: npm build
+
+      # Run all tests, including coverage.
       - name: test
         run: npm run test:cov
 
-      # Ensure we can build.
-      - name: test build
-        run: |
-          npm install
-          npm run build
-
-      # Ensure we can install and run.
+      # Validate that we can install wiht 'npm install' and then run 'ai'.
       - name: validate install
         run: |
           npm install -g .
@@ -78,9 +84,11 @@ jobs:
         if: ${{ matrix.node-version == env.NODE_LTS_VERSION }}
 
   upload-coverage:
+    name: Upload Coverage
+
     # The 'upload coverage' job will only run if successfully complete the
-    # 'validate-main' job.
-    needs: validate-main
+    # 'validate' job.
+    needs: validate
 
     runs-on: ubuntu-20.04
 
@@ -106,10 +114,65 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   release-please:
+    name: Release
+
     # The 'release please' job will only run if successfully complete the
     # 'validate-main' job. The deployment steps only occur if this is a release
     # merge.
-    needs: validate-main
+    needs: validate
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: terminal-ai
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup the right version of Node.js.
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_LTS_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Build the distributable code.
+      - name: Build Distributable
+        run: |
+          npm install
+          npm run build
+
+      # Publish the module to NPM.
+      - name: Publish to NPM
+        run: |
+          # The 'npm publish' command will only run if an NPM_TOKEN secret is
+          # set. If it is not set, warn the user.
+          if [ "$NODE_AUTH_TOKEN" == "" ]; then
+            echo "The 'NPM_TOKEN' secret must be set to deploy to NPM"
+            exit 1
+          else
+            echo "The 'NPM_TOKEN' secret has been set - deploying to NPM..."
+            npm publish --access=public
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        if: ${{ steps.release.outputs.release_created }}
+
+  release-please-prerelease:
+    if: ${{ github.event.pull_request.base.ref == 'production' || github.ref == 'refs/heads/prerelease' }}
+
+    name: Prerelease
+
+    # The 'release please (prerelease)' job will only run if successfully complete the
+    # 'validate' job. The deployment steps only occur if this is a release
+    # merge.
+    needs: validate
 
     runs-on: ubuntu-20.04
 
