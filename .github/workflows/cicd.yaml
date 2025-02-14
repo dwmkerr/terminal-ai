@@ -184,7 +184,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           package-name: terminal-ai
-          prerelease: beta
+          prerelease: true
       
       - name: Checkout
         uses: actions/checkout@v3
