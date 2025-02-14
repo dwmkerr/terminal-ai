@@ -55,7 +55,7 @@ jobs:
 
       # Build TypeScript.
       - name: build
-        run: npm build
+        run: npm run build
 
       # Run all tests, including coverage.
       - name: test
