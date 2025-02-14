@@ -174,7 +174,7 @@ jobs:
     # merge.
     needs: validate
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Release Please
@@ -185,7 +185,6 @@ jobs:
           release-type: node
           package-name: terminal-ai
           prerelease: beta
-        if: ${{ steps.release.outputs.release_created }}
       
       - name: Checkout
         uses: actions/checkout@v3
