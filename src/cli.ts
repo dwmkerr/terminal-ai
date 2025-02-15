@@ -31,16 +31,28 @@ const cli = async (
   executionContext: ExecutionContext,
   config: Configuration,
 ) => {
+  //  Collect sting parameters.
+  const collect = (value: string, previous: string[]): string[] =>
+    previous.concat([value]);
+
+  //  Execute the program.
   program
     .name("ai")
     .description("Effortless AI in the terminal")
     .version(packageJson.version)
-    //  'chat' is the default action when no command is specified.
+    //  Note the '[]' - this option is an array.
+    .option(
+      "-f, --file <path>",
+      "File to upload (can be used multiple times",
+      collect,
+      [],
+    )
     .option("-c, --copy", "Copy output to clipboard and exit")
     .option("--no-context-prompts", "Disable context prompts")
     .option("--no-output-prompts", "Disable output prompts")
     .argument("[input]", "Chat input")
-    .action(async (input, { contextPrompts, outputPrompts, copy }) => {
+    //  'chat' is the default action when no command is specified.
+    .action(async (input, { contextPrompts, outputPrompts, copy, file }) => {
       return chat(
         executionContext,
         config,
@@ -48,6 +60,7 @@ const cli = async (
         contextPrompts,
         outputPrompts,
         copy,
+        file,
       );
     });
 
@@ -69,6 +82,7 @@ const cli = async (
           true,
           true,
           false,
+          [],
         );
       }
     });

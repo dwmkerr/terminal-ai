@@ -1,13 +1,12 @@
 import dbg from "debug";
 
-import { ExecutionContext } from "../lib/execution-context";
+import { ExecutionContext } from "../../lib/execution-context";
 import {
   ERROR_CODE_INVALID_CONFIFGURATION,
   TerminatingWarning,
-} from "../lib/errors";
-import { Configuration } from "../configuration/configuration";
-import { init } from "./init";
-
+} from "../../lib/errors";
+import { Configuration } from "../../configuration/configuration";
+import { init } from "../../actions/init";
 const debug = dbg("ai:ensure-api-key");
 
 export async function ensureApiKey(

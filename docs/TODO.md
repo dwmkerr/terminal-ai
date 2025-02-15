@@ -49,8 +49,28 @@ Bigger questions:
 
 ## Version 0.8
 
+**Assistant**
+
+- [ ] test scripts
+- [ ] extract chat into chat pipeline
+- [ ] create assistant
+- [ ] migrate to assistant
+- [ ] re-test scenarios
+- [ ] use the assistants api
+
+**File Upload**
+
+- [ ] specify files in params
+- [ ] refactor to use assistants api
+- [ ] upload files, use spinner
+- [ ] add file action
+- [ ] pipe file in via stdin - use chat parameter (e.g. git diff | ai "summarise" | git commit)
+
+**Deploy**
+
+- [ ] deploy as prerelease and test for a week
+
 - [ ] local .ai config - context prompts only
-- [ ] file upload, e.g. ~/.vimrc how to check speeds
 - [ ] to check: system prompts for context
 
 - deepseek
