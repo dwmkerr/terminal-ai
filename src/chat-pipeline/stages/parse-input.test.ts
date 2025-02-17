@@ -1,4 +1,4 @@
-import { OutputIntent, parseInput } from "./input";
+import { OutputIntent, parseInput } from "./parse-input";
 
 describe("input", () => {
   describe("parseInput", () => {

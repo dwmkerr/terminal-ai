@@ -11,7 +11,7 @@ export async function check(
   executionContext: ExecutionContext,
   config: Configuration,
 ): Promise<string | null> {
-  const interactive = executionContext.isInteractive;
+  const interactive = executionContext.isTTYstdin;
 
   //  Check we have an API key.
   if (config.openAiApiKey === "") {
@@ -62,10 +62,7 @@ export async function check(
     );
   }
   console.log(
-    theme.printMessage(
-      "Configuration validated",
-      executionContext.isInteractive,
-    ),
+    theme.printMessage("Configuration validated", executionContext.isTTYstdout),
   );
 
   return "";
