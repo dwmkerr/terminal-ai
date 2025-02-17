@@ -6,7 +6,7 @@ Effortless AI in your terminal.
 
 ![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
 
-[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Developer Guide](#developer-guide)
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | | [Experimental](#experimental) | [Developer Guide](#developer-guide)
 
 ## Quickstart
 
@@ -118,11 +118,13 @@ ai -- "How do I install NodeJS?"
 
 The following parameters are available:
 
-| Parameter              | Description                                        |
-|------------------------|----------------------------------------------------|
-| `-c, --copy`           | Copy response to the clipboard and exit.           |
-| `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash'). |
-| `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').    |
+| Parameter              | Description                                                            |
+|------------------------|------------------------------------------------------------------------|
+| `-c, --copy`           | Copy response to the clipboard and exit.                               |
+| `-r, --raw`            | Do not format markdown or change the response in any way.              |
+| `--assistant`          | (Experimental). Use the Assistants API rather than the Completions API. |
+| `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash').                     |
+| `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').                        |
 
 **`ai init`**
 
@@ -177,6 +179,18 @@ An OpenAI API key is needed to be able to make calls to ChatGPT. At the time of 
 https://platform.openai.com/api-keys
 
 Once you have your API key you can configure it in the `ai` tool by running `ai` or `ai init`.
+
+## Experimental
+
+**Assistants API**
+
+You can try using the [Assistants APIs](https://platform.openai.com/docs/assistants/overview) rather than the [Completions APIs](https://platform.openai.com/docs/guides/completions) with the `--assistant` flag:
+
+```bash
+ai --assistant -- "Who are you?"
+```
+
+Note that responses will be considerably slower and more API calls will be made.
 
 ## Developer Guide
 
