@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/dwmkerr/terminal-ai/compare/v0.7.1...v0.8.0) (2025-02-17)
+
+
+### Features
+
+* **chat:** add the `-r, --raw` flag to disable formatting or manipulation of output ([07ff0c9](https://github.com/dwmkerr/terminal-ai/commit/07ff0c9cf93e0595a84f6ebeddf19bdae7763fbb))
+* experimental assistants api ([#39](https://github.com/dwmkerr/terminal-ai/issues/39)) ([07ff0c9](https://github.com/dwmkerr/terminal-ai/commit/07ff0c9cf93e0595a84f6ebeddf19bdae7763fbb))
+
 ## [0.7.1](https://github.com/dwmkerr/terminal-ai/compare/v0.7.0...v0.7.1) (2025-02-13)
 
 
