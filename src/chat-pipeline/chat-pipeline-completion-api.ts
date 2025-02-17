@@ -48,7 +48,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     //  Add the user's message and get the response.
     conversationHistory.push({ role: "user", content: inputAndIntent.message });
     const rawMarkdownResponse = await getResponse(params, conversationHistory);
-    const response = parseResponse(rawMarkdownResponse);
+    const response = parseResponse("chatgpt", rawMarkdownResponse);
 
     //  If the intent is to copy the response, copy it and we're done.
     if (await copyResponse(params, response)) {
@@ -75,7 +75,11 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     //  which triggers termination.
     chatInput = "";
     while (chatInput === "") {
-      chatInput = await nextInputOrAction(params, response);
+      chatInput = await nextInputOrAction(
+        params,
+        response,
+        conversationHistory,
+      );
     }
   }
 }

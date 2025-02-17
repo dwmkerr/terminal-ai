@@ -26,6 +26,6 @@ echo "Hello, World!"
 [Link to Google](https://www.google.com)
 \`\`\`
     `;
-    console.log(printResponse(markdown, true));
+    console.log(printResponse("chatgpt", markdown, true));
   }
 }

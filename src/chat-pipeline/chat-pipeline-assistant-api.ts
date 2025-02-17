@@ -45,23 +45,21 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       process.env,
       inputAndIntent.outputIntent,
     );
-    await openai.beta.threads.messages.create(thread.id, {
-      role: "user",
-      content: outputPrompts.map((p) => ({ type: "text", text: p.context })),
-    });
+    if (outputPrompts.length > 0) {
+      await openai.beta.threads.messages.create(thread.id, {
+        role: "user",
+        content: outputPrompts.map((p) => ({ type: "text", text: p.context })),
+      });
+    }
 
     //  Add the user's message and get the response.
     await openai.beta.threads.messages.create(thread.id, {
       role: "user",
       content: inputAndIntent.message,
     });
-    const rawMarkdownResponse = await getAssistantResponse(
-      params,
-      openai,
-      assistant.id,
-      thread.id,
-    );
-    const response = parseResponse(rawMarkdownResponse);
+    const { response: rawMarkdownResponse, messages } =
+      await getAssistantResponse(params, openai, assistant.id, thread.id);
+    const response = parseResponse("ai", rawMarkdownResponse);
 
     //  If the intent is to copy the response, copy it and we're done.
     if (await copyResponse(params, response)) {
@@ -85,7 +83,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     //  which triggers termination.
     chatInput = "";
     while (chatInput === "") {
-      chatInput = await nextInputOrAction(params, response);
+      chatInput = await nextInputOrAction(params, response, messages);
     }
   }
 }

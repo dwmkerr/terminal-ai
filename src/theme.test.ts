@@ -12,13 +12,17 @@ describe("theme", () => {
 
   describe("printResponse", () => {
     test("correctly prints single line response", () => {
-      expect(printResponse("Good morning", true)).toBeFormatted(true);
-      expect(printResponse("Good morning", true)).toMatchPlainText(
+      expect(printResponse("chatgpt", "Good morning", true)).toBeFormatted(
+        true,
+      );
+      expect(printResponse("chatgpt", "Good morning", true)).toMatchPlainText(
         "chatgpt: Good morning",
       );
 
-      expect(printResponse("Good morning", false)).toBeFormatted(false);
-      expect(printResponse("Good morning", false)).toMatchPlainText(
+      expect(printResponse("chatgpt", "Good morning", false)).toBeFormatted(
+        false,
+      );
+      expect(printResponse("chatgpt", "Good morning", false)).toMatchPlainText(
         "Good morning",
       );
     });
@@ -33,7 +37,7 @@ if not os.path.exists(folder_name):
     os.makedirs(folder_name)
 \`\`\``;
 
-      const formattedResponse = printResponse(rawResponse, true);
+      const formattedResponse = printResponse("chatgpt", rawResponse, true);
       expect(formattedResponse).toBeFormatted(true);
       //  Note the title, indentation and leading/trailing whitespace.
       expect(formattedResponse).toMatchPlainText(`chatgpt:

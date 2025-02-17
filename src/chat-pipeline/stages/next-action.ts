@@ -7,8 +7,30 @@ import theme from "../../theme";
 import { execCommand } from "../../lib/cli-helpers";
 import { writeClipboard } from "../../lib/clipboard";
 import { ChatResponse } from "./get-response";
+import { ChatPipelineParameters } from "../ChatPipelineParameters";
+import { OpenAIMessage } from "../../lib/openai/openai-message";
 
-export async function nextAction(response: ChatResponse) {
+export type OutputActions =
+  | "reply"
+  | "copy"
+  | "save"
+  | "exec"
+  | "dump"
+  | "quit";
+
+export async function nextAction(
+  params: ChatPipelineParameters,
+  response: ChatResponse,
+  messages: OpenAIMessage[],
+) {
+  //  Create the debug choices, which we may or may not use depending on context.
+  const debugChoices = [
+    {
+      name: "debug: Dump Conversation",
+      value: "dump",
+    },
+  ];
+
   //  Loop until we know we've got an option we can continue with.
   const answer = await select({
     message: theme.inputPrompt("What next?"),
@@ -30,6 +52,7 @@ export async function nextAction(response: ChatResponse) {
         name: "Execute Response",
         value: "exec",
       },
+      ...(params.config.debug ? debugChoices : []),
       {
         name: "Quit",
         value: "quit",
@@ -68,6 +91,20 @@ export async function nextAction(response: ChatResponse) {
     });
     if (validate) {
       await execCommand(code, true);
+    }
+  } else if (answer === "dump") {
+    const inputPrompt = theme.inputPrompt("Save As");
+    const path = await input({ message: inputPrompt });
+    try {
+      const content = messages
+        .map((m) => `**${m.role}**\n${m.content}`)
+        .join("\n");
+      fs.writeFileSync(path, content, "utf8");
+      console.log(`✅ Conversation history saved to ${path}!`);
+    } catch (err) {
+      throw new TerminatingError(
+        "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
+      );
     }
   } else if (answer === "quit") {
     process.exit(0);

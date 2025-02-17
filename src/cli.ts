@@ -49,12 +49,16 @@ const cli = async (
     )
     .option("-c, --copy", "Copy output to clipboard and exit")
     .option("-r, --raw", "Do not format or highlight markdown output")
+    .option("--assistant", "Experimental. Use the OpenAI Assistants API")
     .option("--no-context-prompts", "Disable context prompts")
     .option("--no-output-prompts", "Disable output prompts")
     .argument("[input]", "Chat input")
     //  'chat' is the default action when no command is specified.
     .action(
-      async (input, { contextPrompts, outputPrompts, copy, raw, file }) => {
+      async (
+        input,
+        { contextPrompts, outputPrompts, copy, raw, assistant, file },
+      ) => {
         return chat(
           executionContext,
           config,
@@ -63,6 +67,7 @@ const cli = async (
           outputPrompts,
           copy,
           raw,
+          assistant,
           file,
         );
       },
@@ -85,6 +90,7 @@ const cli = async (
           undefined,
           true,
           true,
+          false,
           false,
           false,
           [],
