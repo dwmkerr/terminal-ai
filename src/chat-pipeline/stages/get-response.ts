@@ -4,7 +4,7 @@ import theme from "../../theme";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 
 import { chat } from "../../commands/chat";
-import { plainTextCode } from "../../lib/markdown";
+import { formatMarkdown, plainTextCode } from "../../lib/markdown";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { Message } from "openai/resources/beta/threads/messages.mjs";
 
@@ -19,7 +19,7 @@ export type CodeBlock = {
 
 export type ChatResponse = {
   rawMarkdownResponse: string;
-  colourFormattedResponse: string;
+  colourFormattedResponseWithPrompt: string;
   plainTextFormattedResponse: string;
   codeBlocks: CodeBlock[];
 };
@@ -32,28 +32,29 @@ export function parseResponse(
   //  of it suitable for printing to a TTY, as well as a plain text version
   //  of it, suitable for writng to a file.
   //  Note that we're creating a coloured repsonse here no matter what...
-  const colourFormattedResponse = theme.printResponse(
+  const colourFormattedResponseWithPrompt = theme.printResponse(
     prompt,
     rawMarkdownResponse,
     true,
   );
+  const markdownResponse = formatMarkdown(rawMarkdownResponse);
+  const plainTextResponse = plainTextCode(rawMarkdownResponse);
 
   //  ...and here we remove the colour. We also do our best effort to extract
   //  the source code - this 'plainTextCode' only really makes sense if our
   //  output only contains code, so we could do better here.
   //  Issue: #X1
-  const plainTextFormattedResponse = plainTextCode(colourFormattedResponse);
   const codeBlock = {
     language: "",
     rawMarkdownCode: rawMarkdownResponse,
-    colourFormattedCode: colourFormattedResponse,
-    plainTextCode: plainTextFormattedResponse,
+    colourFormattedCode: markdownResponse,
+    plainTextCode: plainTextResponse,
   };
 
   return {
     rawMarkdownResponse,
-    colourFormattedResponse,
-    plainTextFormattedResponse,
+    colourFormattedResponseWithPrompt,
+    plainTextFormattedResponse: plainTextResponse,
     codeBlocks: [codeBlock],
   };
 }

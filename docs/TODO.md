@@ -35,16 +35,14 @@ Bigger questions:
 - [x] test scripts
 - [x] extract chat into chat pipeline
 - [x] create assistant
-- [ ] create debug 'dump' action that writes all messages to a file (also useful for generating raw content for unit tests)
+- [x] create debug 'dump' action that writes all messages to a file (also useful for generating raw content for unit tests)
+- [x] assistant/completion pipeline
+- [x] configuration to use assistant or completion
+- [x] configuration for debug actions
+- [x] re-test scenarios
 - [ ] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
-- [ ] assistant/completion pipeline
-- [ ] configuration to use assistant or completion
-- [ ] action: debug/dump messages
-- [ ] configuration for debug actions
-- [ ] if an assistant only feature is required offer the option to change
-- [ ] re-test scenarios
-- [ ] use the assistants api
 - [ ] consider whether to keep the completions agent
+- [ ] if an assistant only feature is required offer the option to change
 
 **Raw**
 

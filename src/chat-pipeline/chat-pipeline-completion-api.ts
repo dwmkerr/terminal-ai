@@ -58,9 +58,12 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     //  Print the response. Might be raw / code / std
     printResponse(params, response, inputAndIntent.outputIntent);
 
-    //  If we are not interactive on stdin, there's nothing left to do and we
-    //  can terminate.
-    if (!params.executionContext.isTTYstdin) {
+    //  If we are not interactive on stdin/stdout,
+    //  there's nothing left to do and we can terminate.
+    if (
+      !params.executionContext.isTTYstdin ||
+      !params.executionContext.isTTYstdout
+    ) {
       return;
     }
 

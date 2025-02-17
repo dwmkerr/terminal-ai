@@ -16,17 +16,18 @@ export async function printResponse(
   //  format based on whether we have an output TTY.
   if (outputIntent === OutputIntent.Code) {
     if (params.executionContext.isTTYstdout) {
-      console.log(response.codeBlocks[0]?.plainTextCode);
-    } else {
       console.log(response.codeBlocks[0]?.colourFormattedCode);
+    } else {
+      console.log(response.codeBlocks[0]?.plainTextCode);
     }
+    return;
   }
 
   //  Finally, write the response. If we have a TTY it'll be coloured, otherwise
   //  it'll be formatted as plain text.
   if (params.executionContext.isTTYstdout) {
-    console.log(response.colourFormattedResponse);
+    console.log(response.colourFormattedResponseWithPrompt);
   } else {
-    console.log(response.plainTextFormattedResponse);
+    console.log(response.codeBlocks[0]?.colourFormattedCode);
   }
 }

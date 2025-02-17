@@ -128,7 +128,6 @@ async function main() {
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   const executionContext: ExecutionContext = {
     firstTime: fs.existsSync(configFilePath),
-    isInteractiveXX: process.stdout.isTTY || false,
     isTTYstdin: process.stdin.isTTY || false,
     isTTYstdout: process.stdout.isTTY || false,
   };

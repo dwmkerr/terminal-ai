@@ -15,7 +15,7 @@
 - Expect the shell and OS to be returned.
 
 ```bash
-ai -- " chat: what's my current shell and OS?"
+ai -- "what's my current shell and OS?"
 
 chatgpt: Your current shell is /bin/bash and your operating system is linux.
 ```
@@ -81,5 +81,5 @@ ai -- "Who are you and what are you for?"
 - When using the `--no-context` flag test the same as the above
 
 ```bash
-ai == "I wrote you a message starting with 'for context' can you tell me what you have read from this."
+ai -- "I wrote you a message starting with 'for context' can you tell me what you have read from this."
 ```
