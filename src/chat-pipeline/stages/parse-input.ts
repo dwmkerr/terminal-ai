@@ -1,5 +1,5 @@
 import dbg from "debug";
-const debug = dbg("ai:input");
+const debug = dbg("ai:chat-pipeline:parse-input");
 
 //  Defines the potential output intents.
 export enum OutputIntent {
@@ -38,5 +38,7 @@ export function parseInput(input: string): InputMessage {
     }
   }
 
-  return { message, outputIntent };
+  const inputMessage: InputMessage = { message, outputIntent };
+  debug(`inputMessage: `, inputMessage);
+  return inputMessage;
 }

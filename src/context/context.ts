@@ -8,7 +8,7 @@ export type ExpandedContext = {
   role: OpenAIChatRoles;
   name: string;
   template: string;
-  value: string;
+  context: string;
 };
 
 //  Expands contextual data using environment variables.
@@ -23,6 +23,6 @@ export function expandContext(
     role: "user",
     name: "<Unnamed Context>",
     template: contextTemplate,
-    value: context,
+    context: context,
   };
 }

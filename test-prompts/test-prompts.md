@@ -3,6 +3,7 @@
 <!-- vim-markdown-toc GFM -->
 
 - [Effective Shell Samples](#effective-shell-samples)
+- [Basic Terminal AI](#basic-terminal-ai)
 - [Interrogating Context](#interrogating-context)
 
 <!-- vim-markdown-toc -->
@@ -64,6 +65,12 @@ chatgpt:
 
 ```bash
 ai -- "code: shell script for largest file in working directory, showing size" > find.sh
+```
+
+## Basic Terminal AI
+
+```bash
+ai -- "Who are you and what are you for?"
 ```
 
 ## Interrogating Context

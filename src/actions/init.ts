@@ -21,7 +21,7 @@ export async function init(
   config: Configuration,
   askNextAction: boolean,
 ): Promise<InitResult> {
-  const interactive = executionContext.isInteractive;
+  const interactive = executionContext.isTTYstdin;
   const updatedConfig = {
     ...config,
   };

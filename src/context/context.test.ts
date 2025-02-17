@@ -12,7 +12,7 @@ describe("expandContext", () => {
       role: "user",
       name: "<Unnamed Context>",
       template: contextTemplate,
-      value: expandedValue,
+      context: expandedValue,
     });
   });
 
@@ -27,6 +27,6 @@ describe("expandContext", () => {
     expect(result.role).toBe("user");
     expect(result.name).toBe("<Unnamed Context>");
     expect(result.template).toBe(contextTemplate);
-    expect(result.value).toBe(expandedValue);
+    expect(result.context).toBe(expandedValue);
   });
 });

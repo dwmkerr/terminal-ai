@@ -1,6 +1,6 @@
 import { ExecutionContext } from "../lib/execution-context";
 import { Configuration } from "../configuration/configuration";
-import { executeChatPipeline } from "../chat-pipeline/chat-pipeline";
+import { executeChatPipeline } from "../chat-pipeline/chat-pipeline-completion-api";
 
 export async function chat(
   executionContext: ExecutionContext,
@@ -9,6 +9,7 @@ export async function chat(
   enableContextPrompts: boolean,
   enableOutputPrompts: boolean,
   copy: boolean,
+  raw: boolean,
   files: string[],
 ) {
   return await executeChatPipeline({
@@ -20,6 +21,7 @@ export async function chat(
       enableContextPrompts,
       enableOutputPrompts,
       copy,
+      raw,
     },
   });
 }

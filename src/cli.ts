@@ -48,21 +48,25 @@ const cli = async (
       [],
     )
     .option("-c, --copy", "Copy output to clipboard and exit")
+    .option("-r, --raw", "Do not format or highlight markdown output")
     .option("--no-context-prompts", "Disable context prompts")
     .option("--no-output-prompts", "Disable output prompts")
     .argument("[input]", "Chat input")
     //  'chat' is the default action when no command is specified.
-    .action(async (input, { contextPrompts, outputPrompts, copy, file }) => {
-      return chat(
-        executionContext,
-        config,
-        input,
-        contextPrompts,
-        outputPrompts,
-        copy,
-        file,
-      );
-    });
+    .action(
+      async (input, { contextPrompts, outputPrompts, copy, raw, file }) => {
+        return chat(
+          executionContext,
+          config,
+          input,
+          contextPrompts,
+          outputPrompts,
+          copy,
+          raw,
+          file,
+        );
+      },
+    );
 
   program
     .command("init")
@@ -81,6 +85,7 @@ const cli = async (
           undefined,
           true,
           true,
+          false,
           false,
           [],
         );
@@ -117,8 +122,9 @@ async function main() {
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   const executionContext: ExecutionContext = {
     firstTime: fs.existsSync(configFilePath),
-    isInteractive: process.stdout.isTTY || false,
-    isTTY: process.stdout.isTTY || false,
+    isInteractiveXX: process.stdout.isTTY || false,
+    isTTYstdin: process.stdin.isTTY || false,
+    isTTYstdout: process.stdout.isTTY || false,
   };
 
   //  Before we execute the command, we'll make sure we don't show a warning
@@ -155,26 +161,26 @@ async function main() {
     // TODO(refactor): better error typing.
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    //  TODO: if the 'verbose' flag has been set, log the error object.
+    //  Note that when we write errors, we format them with colours only if
+    //  stdout appears to be a TTY.
+
     //  Handle inquirer Ctrl+C.
     if (err instanceof Error && err.name === "ExitPromptError") {
-      if (executionContext.isInteractive) {
+      if (executionContext.isTTYstdout) {
         console.log("Goodbye!");
       }
     } else if (err instanceof TerminatingWarning) {
       console.log(
-        theme.printWarning(err.message, executionContext.isInteractive),
+        theme.printWarning(err.message, executionContext.isTTYstdout),
       );
     } else if (err instanceof TerminatingError) {
-      console.log(
-        theme.printError(err.message, executionContext.isInteractive),
-      );
+      console.log(theme.printError(err.message, executionContext.isTTYstdout));
       process.exit(err.errorCode);
     } else if (err.code === "ENOTFOUND") {
       console.log(
         theme.printError(
           "Address not found - check internet connection",
-          executionContext.isInteractive,
+          executionContext.isTTYstdout,
         ),
       );
       process.exit(ERROR_CODE_CONNECTION);
@@ -182,7 +188,7 @@ async function main() {
       console.log(
         theme.printError(
           "Invalid certificate - check internet connection",
-          executionContext.isInteractive,
+          executionContext.isTTYstdout,
         ),
       );
       process.exit(ERROR_CODE_CONNECTION);

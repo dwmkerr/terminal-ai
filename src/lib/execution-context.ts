@@ -2,9 +2,11 @@ export type ExecutionContext = {
   //  This is a first-time run.
   firstTime: boolean;
 
-  //  The user is interfacing via a terminal.
-  isInteractive: boolean;
+  //  The user is interfacing via a terminal. This is inferred from stdin
+  //  being a tty.
+  isInteractiveXX: boolean;
 
   //  More explicity, do we believe we have a TTY?
-  isTTY: boolean;
+  isTTYstdin: boolean;
+  isTTYstdout: boolean;
 };

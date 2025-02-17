@@ -8,9 +8,8 @@ Bigger questions:
 
 <!-- vim-markdown-toc GFM -->
 
-- [Version 0.6](#version-06)
-- [Version 0.7](#version-07)
 - [Version 0.8](#version-08)
+- [Epic - Assisants API](#epic---assisants-api)
 - [Epic - GitHub Intent/Tool](#epic---github-intenttool)
 - [Tobias Ideas](#tobias-ideas)
 - [Alpha](#alpha)
@@ -29,34 +28,27 @@ Bigger questions:
 - [Random Ideas](#random-ideas)
 
 <!-- vim-markdown-toc -->
-
-## Version 0.6
-
-- [x] feat(check): basic check command
-- [x] bug(chat): when non-interactive if API key is not set, error message must be plain text
-- [x] nth: unhandled error prettier printing
-- [x] bug: printError shows an empty square brackets at the end
-- [x] nth: chat command needs error handling
-- [x] feat(init): create config (OpenAI key / leave empty for default), validate key, choose model
-- [x] feat(chat): copy to clipboard flag
-- [x] bug(build): don't include source - just dist
-
-## Version 0.7
-
-- [x] init: choose model
-- [x] 'raw' output - not formatted / stripped markdown (for copy/file/clipbord/interactive)
-- [x] execute scripts
-
 ## Version 0.8
 
 **Assistant**
 
-- [ ] test scripts
-- [ ] extract chat into chat pipeline
-- [ ] create assistant
-- [ ] migrate to assistant
+- [x] test scripts
+- [x] extract chat into chat pipeline
+- [x] create assistant
+- [ ] create debug 'dump' action that writes all messages to a file (also useful for generating raw content for unit tests)
+- [ ] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
+- [ ] assistant/completion pipeline
+- [ ] configuration to use assistant or completion
+- [ ] action: debug/dump messages
+- [ ] configuration for debug actions
+- [ ] if an assistant only feature is required offer the option to change
 - [ ] re-test scenarios
 - [ ] use the assistants api
+- [ ] consider whether to keep the completions agent
+
+**Raw**
+
+- [ ] nth: 'raw' flag (no prompts) - or one to not format markdown?
 
 **File Upload**
 
@@ -77,6 +69,10 @@ Bigger questions:
 - If running for the first time, choose 'init'. Note that if running `ai init` this is not needed... (`await firstTimeInit` in each command? what about `ai config` - also, first time init should have a very clear API message (see 'ensureApiKey'), but maybe only for the first time? EnsureAPIKey can then likely be removed from 'chat' - and possibly completely.
 - [ ] bug(chat): terminal overwrite bugs on multiline
 
+## Epic - Assisants API
+
+- first option is to run in parallel
+- option to enable/disable streaming
 
 ## Epic - GitHub Intent/Tool
 
@@ -106,7 +102,7 @@ Bigger questions:
 ## Global
 
 - [ ] feat: no tty flag
-- [ ] nth: 'vanilla' flag (no prompts) - or one to not format markdown?
+//  TODO: if the 'verbose' flag has been set, log the error object.
 - [ ] bug(build): remove the disable deprecation warnings code and fix the punycode issues (requires ESLint 9)
 - [ ] minor: consider what heading/title to run when init-ing or running any action.
 - [ ] Spinners

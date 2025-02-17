@@ -19,9 +19,9 @@ export async function ensureApiKey(
     return config;
   }
 
-  //  We don't have a key, if we're not interactive we cannot continue.
+  //  We don't have a key, if we're not interactive on stdin we cannot continue.
   //  Note that the error message will be in the output, so keep it short.
-  if (!executionContext.isInteractive) {
+  if (!executionContext.isTTYstdin) {
     throw new TerminatingWarning(
       "error: OpenAI API Key not set",
       ERROR_CODE_INVALID_CONFIFGURATION,
