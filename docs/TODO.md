@@ -2,6 +2,10 @@
 
 Quick and dirty task-list.
 
+My personal most wanted:
+
+- Show pull requests, merge locally, push remote (e.g. hacker laws weekly update).
+
 Bigger questions:
 
 - When we 'copy' or 'exec' - should we try and grab the latest code block?
@@ -24,10 +28,12 @@ Bigger questions:
 - [GitHub Output Intent](#github-output-intent)
 - [File Output Intent](#file-output-intent)
 - [NTH: Vim Integration / Demo](#nth-vim-integration--demo)
+- [Epic: Model Comparison](#epic-model-comparison)
 - [Testing](#testing)
 - [Random Ideas](#random-ideas)
 
 <!-- vim-markdown-toc -->
+
 ## Version 0.8
 
 **Assistant**
@@ -40,13 +46,10 @@ Bigger questions:
 - [x] configuration to use assistant or completion
 - [x] configuration for debug actions
 - [x] re-test scenarios
-- [ ] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
+- [x] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
 - [ ] consider whether to keep the completions agent
 - [ ] if an assistant only feature is required offer the option to change
 
-**Raw**
-
-- [ ] nth: 'raw' flag (no prompts) - or one to not format markdown?
 
 **File Upload**
 
@@ -154,6 +157,10 @@ Bigger questions:
 ## NTH: Vim Integration / Demo
 
 - [ ] Call from vi example
+
+## Epic: Model Comparison
+
+Essentially what was done earlier with the Assistants API - an option to run the chats through multiple models to compare results.
 
 ## Testing
 

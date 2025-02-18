@@ -1,9 +1,9 @@
 import { input } from "@inquirer/prompts";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import theme from "../../theme";
-import { ChatResponse } from "./get-response";
 import { nextAction } from "./next-action";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
+import { ChatResponse } from "./parse-response";
 
 export async function nextInputOrAction(
   params: ChatPipelineParameters,

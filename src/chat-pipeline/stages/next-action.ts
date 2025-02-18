@@ -6,9 +6,9 @@ import { TerminatingError } from "../../lib/errors";
 import theme from "../../theme";
 import { execCommand } from "../../lib/cli-helpers";
 import { writeClipboard } from "../../lib/clipboard";
-import { ChatResponse } from "./get-response";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
+import { ChatResponse } from "./parse-response";
 
 export type OutputActions =
   | "reply"

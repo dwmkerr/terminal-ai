@@ -1,6 +1,6 @@
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
-import { ChatResponse } from "./get-response";
 import { OutputIntent } from "./parse-input";
+import { ChatResponse } from "./parse-response";
 
 export async function printResponse(
   params: ChatPipelineParameters,
