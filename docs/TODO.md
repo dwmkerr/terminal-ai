@@ -13,6 +13,9 @@ Bigger questions:
 <!-- vim-markdown-toc GFM -->
 
 - [Version 0.8](#version-08)
+- [Version 0.9](#version-09)
+- [Version 0.10](#version-010)
+- [Version 0.10](#version-010-1)
 - [Epic - Assisants API](#epic---assisants-api)
 - [Epic - GitHub Intent/Tool](#epic---github-intenttool)
 - [Tobias Ideas](#tobias-ideas)
@@ -47,9 +50,29 @@ Bigger questions:
 - [x] configuration for debug actions
 - [x] re-test scenarios
 - [x] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
-- [ ] consider whether to keep the completions agent
+
+## Version 0.9
+
+- [ ] bug: pasting multi-line code doesn't work for input. Fix: on 'paste', if we detect multi line input open the editor input. This should also be an action in the actions menu. We could probably do the upload file input at the same time
+- [ ] `ai usage` to check credits
+- [ ] show model quickly/easily - change model easily?
+- [ ] copy code block would be nice
+- [ ] test each action - input / debug / output
+
+## Version 0.10
+
+- stream from stdin, eg. `ai -- "cleanup my vimrc" < ~/.vimrc`
+- [ ] shell shortcut such as Mac+I (see how sgpt did it?)
+
+## Version 0.10
+
 - [ ] if an assistant only feature is required offer the option to change
 
+**Code Blocks**
+
+- [ ] execute code blocks should extract last block
+- [ ] copy code blocks should copy last block
+- [ ] save code blocks should save last block
 
 **File Upload**
 

@@ -2,6 +2,7 @@ import { input } from "@inquirer/prompts";
 import { TerminatingWarning } from "../../lib/errors";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import theme from "../../theme";
+import { nextAction } from "./next-action";
 
 export async function initialInput(
   params: ChatPipelineParameters,
@@ -34,6 +35,10 @@ export async function initialInput(
   let inputMessage = "";
   do {
     inputMessage = await input({ message: chatInputPrompt });
+
+    //  If the input message is empty then the user has just pressed 'enter' at
+    //  the input prompt. This means we can show the initial input actions.
+    await nextAction(params, true, [], undefined);
   } while (inputMessage === "");
   return inputMessage;
 }

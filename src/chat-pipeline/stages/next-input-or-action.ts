@@ -26,7 +26,7 @@ export async function nextInputOrAction(
   //  action.
   process.stdout.write("\u001b[1A\u001b[K"); // Delete previous line and move cursor up
   process.stdout.write("\u001b[1A\u001b[K"); // Delete previous line and move cursor up
-  await nextAction(params, response, messages);
+  await nextAction(params, false, messages, response);
 
   //  We performed an action, but still don't have input. Return an empty
   //  string, if the caller sees this they can close or they can simply

@@ -1,3 +1,27 @@
+#!/bin/sh
+
+echo "🔧 Running pre-commit checks..."
+
+# Ensure dependencies are installed
+if [ ! -d "node_modules" ]; then
+  echo "📦 Installing dependencies..."
+  npm install
+fi
+
+# Lint/build/test.
 npm run lint:fix
 npm run build
 npm test
+
+# Lint GitHub Actions workflow files with actionlint (optional)
+if command -v actionlint >/dev/null 2>&1; then
+  echo "🛠️  Running actionlint..."
+  actionlint
+else
+  echo "⚠️  actionlint not found. Your GitHub Actions workflow files are not being linted."
+  echo "   👉 Install it via: brew install actionlint (Mac)"
+  echo "   👉 More options: https://github.com/rhysd/actionlint"
+fi
+
+echo "✅ Pre-commit checks complete."
+
