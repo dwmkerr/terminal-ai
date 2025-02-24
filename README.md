@@ -30,6 +30,7 @@ Quick links:
 
 - [Simple Chat](#simple-chat)
 - [Initialising or Updating Config](#initialising-or-updating-config)
+- [Multiline Input](#multiline-input)
 - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
@@ -64,6 +65,12 @@ Run this command with:
 ai init
 ```
 
+### Multiline Input
+
+To provide multiline input (or paste multiple lines input input) you can use the Actions Menu to select the 'Chat (Multiline)' action. Just press <code>Enter</code> at the prompt. Your `$EDITOR` will open:
+
+![Demo Recording of Multiline Input](./docs/casts/ai-chat-multiline.svg)
+
 ### Copying to the Clipboard or Saving to a File
 
 Open the Actions menu with 'Enter' and choose 'Copy Response'. The most recent message will be copied. To save a file, use the 'Save Response' action.
@@ -79,6 +86,12 @@ You can also copy to the clipboard by piping to a program like `pbcopy`. This ex
 ```bash
 ai -- "code: bash script to zip all files in current directory" | pbcopy
 ```
+
+### Multliline Input
+
+To provide multiline input (or paste multiple lines input input) you can use the Actions Menu to select the 'Chat (Multiline)' action. Just press <code>Enter</code> at the prompt. Your `$EDITOR` will open:
+
+![Demo Recording of Multiline Input](./docs/casts/ai-chat-multiline.svg)
 
 ### Writing Code
 
