@@ -1,112 +1,67 @@
-import fs from "fs";
-import { input, select } from "@inquirer/prompts";
-import { editor } from "@inquirer/prompts";
-import { confirm } from "@inquirer/prompts";
-import { TerminatingError } from "../../lib/errors";
+import { select } from "@inquirer/prompts";
 import theme from "../../theme";
-import { execCommand } from "../../lib/cli-helpers";
-import { writeClipboard } from "../../lib/clipboard";
-import { ChatResponse } from "./get-response";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
+import { ChatResponse } from "./parse-response";
+import { ChatActions } from "../../chat-actions";
+import { TerminatingError } from "../../lib/errors";
 
-export type OutputActions =
-  | "reply"
-  | "copy"
-  | "save"
-  | "exec"
-  | "dump"
-  | "quit";
-
+//  If a truthy string is returned, then it should be considered the next part
+//  of the input to a chat.
 export async function nextAction(
   params: ChatPipelineParameters,
-  response: ChatResponse,
+  initialInputActions: boolean,
   messages: OpenAIMessage[],
-) {
-  //  Create the debug choices, which we may or may not use depending on context.
-  const debugChoices = [
-    {
-      name: "debug: Dump Conversation",
-      value: "dump",
-    },
-  ];
+  response?: ChatResponse,
+): Promise<string | undefined> {
+  //  Create the input choices for the actions. This will likely later be a
+  //  search input with some defaults shown.
+  //  Only show debug actions if we're in debug mode.
+  //  Only show initial actions if we're in the initial prompt.
+  const choices = ChatActions.filter((ca) =>
+    ca.isDebugAction ? params.config.debug.enable : true,
+  )
+    .filter((ca) =>
+      initialInputActions ? ca.isInitialInteractionAction : true,
+    )
+    .map((ca) => ({
+      name: initialInputActions ? ca.displayNameInitial : ca.displayNameReply,
+      value: ca.id,
+    }));
 
   //  Loop until we know we've got an option we can continue with.
-  const answer = await select({
-    message: theme.inputPrompt("What next?"),
-    default: "reply",
-    choices: [
-      {
-        name: "Reply",
-        value: "reply",
-      },
-      {
-        name: "Copy Response",
-        value: "copy",
-      },
-      {
-        name: "Save Response",
-        value: "save",
-      },
-      {
-        name: "Execute Response",
-        value: "exec",
-      },
-      ...(params.config.debug ? debugChoices : []),
-      {
-        name: "Quit",
-        value: "quit",
-      },
-    ],
-  });
+  //  If we receive a 'ctrl+c' then rather than quitting we'll just close the
+  //  action menu.
+  let answer = "";
+  try {
+    answer = await select({
+      message: theme.inputPrompt("What next?"),
+      default: "reply",
+      choices,
+    });
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    if (err instanceof Error && err.name === "ExitPromptError") {
+      // return undefined;
+      return "";
+    } else {
+      throw err;
+    }
+  }
 
-  //  Delete the previous line, i.e. the selection line, so that the output
-  //  stays clean.
+  //  Delete the previous two lines, i.e. the selection and hint lines, so that
+  //  the output stays clean.
+  process.stdout.write("\u001b[1A" + "\u001b[2K");
   process.stdout.write("\u001b[1A" + "\u001b[2K");
 
-  //  If the answer is copy, copy the response to the clipboard.
-  if (answer === "reply") {
-  } else if (answer === "copy") {
-    await writeClipboard(response.plainTextFormattedResponse, true);
-  } else if (answer === "save") {
-    const inputPrompt = theme.inputPrompt("Save As");
-    const path = await input({ message: inputPrompt });
-    try {
-      fs.writeFileSync(path, response.plainTextFormattedResponse, "utf8");
-      console.log(`✅ Response saved to ${path}!`);
-    } catch (err) {
-      throw new TerminatingError(
-        "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
-      );
-    }
-  } else if (answer === "exec") {
-    const code = await editor({
-      message: "Verify your script - AI can make mistakes!",
-      default: response.codeBlocks[0]?.plainTextCode,
-      postfix: "sh",
-    });
-    const validate = await confirm({
-      message: "Are you sure you want to execute this code?",
-      default: false,
-    });
-    if (validate) {
-      await execCommand(code, true);
-    }
-  } else if (answer === "dump") {
-    const inputPrompt = theme.inputPrompt("Save As");
-    const path = await input({ message: inputPrompt });
-    try {
-      const content = messages
-        .map((m) => `**${m.role}**\n${m.content}`)
-        .join("\n");
-      fs.writeFileSync(path, content, "utf8");
-      console.log(`✅ Conversation history saved to ${path}!`);
-    } catch (err) {
-      throw new TerminatingError(
-        "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
-      );
-    }
-  } else if (answer === "quit") {
-    process.exit(0);
+  //  Find the action that was selected.
+  const action = ChatActions.find((ca) => ca.id === answer);
+  if (!action) {
+    throw new TerminatingError(
+      `Unable to find definition for action '${answer}'`,
+    );
   }
+
+  //  Execute the action.
+  return await action.execute(params, messages, response);
 }

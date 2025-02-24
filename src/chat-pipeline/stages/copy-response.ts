@@ -1,6 +1,6 @@
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { writeClipboard } from "../../lib/clipboard";
-import { ChatResponse } from "./get-response";
+import { ChatResponse } from "./parse-response";
 
 export async function copyResponse(
   params: ChatPipelineParameters,

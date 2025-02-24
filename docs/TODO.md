@@ -2,6 +2,10 @@
 
 Quick and dirty task-list.
 
+My personal most wanted:
+
+- Show pull requests, merge locally, push remote (e.g. hacker laws weekly update).
+
 Bigger questions:
 
 - When we 'copy' or 'exec' - should we try and grab the latest code block?
@@ -9,6 +13,11 @@ Bigger questions:
 <!-- vim-markdown-toc GFM -->
 
 - [Version 0.8](#version-08)
+- [Version 0.9](#version-09)
+- [Version 0.10](#version-010)
+- [Version next](#version-next)
+- [Version next+1](#version-next1)
+- [Inquirer Fixes / Features](#inquirer-fixes--features)
 - [Epic - Assisants API](#epic---assisants-api)
 - [Epic - GitHub Intent/Tool](#epic---github-intenttool)
 - [Tobias Ideas](#tobias-ideas)
@@ -24,10 +33,12 @@ Bigger questions:
 - [GitHub Output Intent](#github-output-intent)
 - [File Output Intent](#file-output-intent)
 - [NTH: Vim Integration / Demo](#nth-vim-integration--demo)
+- [Epic: Model Comparison](#epic-model-comparison)
 - [Testing](#testing)
 - [Random Ideas](#random-ideas)
 
 <!-- vim-markdown-toc -->
+
 ## Version 0.8
 
 **Assistant**
@@ -40,13 +51,42 @@ Bigger questions:
 - [x] configuration to use assistant or completion
 - [x] configuration for debug actions
 - [x] re-test scenarios
-- [ ] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
-- [ ] consider whether to keep the completions agent
+- [x] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
+
+## Version 0.9
+
+- [x] bug: 'fullscreen input' name needs to be sensible for initial/later
+- [x] bug: 'chat' should be an action in the initial menu
+- [x] bug: repeatedly opening the action menu creates unnecessary spaces
+- [ ] bug: 'save as' errors if no path provided
+- [ ] test each action - input / debug / output
+
+## Version 0.10
+
+- [ ] bug: ctrl+c on actions menu doesn't close it
+- [ ] bug: pasting multi-line code doesn't work for input. Fix: on 'paste', if we detect multi line input open the editor input. This should also be an action in the actions menu. We could probably do the upload file input at the same time. This also requires a fix at the InquirerJS level.
+
+## Version next
+
+- [ ] `ai usage` to check credits
+- [ ] show model quickly/easily - change model easily?
+- [ ] copy code block would be nice
+
+## Version next+1
+
+- stream from stdin, eg. `ai -- "cleanup my vimrc" < ~/.vimrc`
+- [ ] shell shortcut such as Mac+I (see how sgpt did it?)
 - [ ] if an assistant only feature is required offer the option to change
 
-**Raw**
+## Inquirer Fixes / Features
 
-- [ ] nth: 'raw' flag (no prompts) - or one to not format markdown?
+- [ ] feat: hint / prompt / placeholder: grey placeholder text would really help, 
+
+**Code Blocks**
+
+- [ ] execute code blocks should extract last block
+- [ ] copy code blocks should copy last block
+- [ ] save code blocks should save last block
 
 **File Upload**
 
@@ -106,6 +146,8 @@ Bigger questions:
 - [ ] Spinners
 - [ ] Handle asymmetric TTY eg pipe /dev/stdin as input and pipe to output file, or pipe echo into interactive or pipe echo into file- use context to inform if the output should use markdown or not?
 - [ ] TAI: files flag, folder flag best effort
+- [ ] bug: on connectivity, we see an OpenAI Error rather than connection error - related:
+- [ ] feat(check): check connectivity
 
 ## Actions: Execute
 
@@ -154,6 +196,10 @@ Bigger questions:
 ## NTH: Vim Integration / Demo
 
 - [ ] Call from vi example
+
+## Epic: Model Comparison
+
+Essentially what was done earlier with the Assistants API - an option to run the chats through multiple models to compare results.
 
 ## Testing
 

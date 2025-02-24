@@ -6,10 +6,11 @@ import { ChatPipelineParameters } from "./ChatPipelineParameters";
 import { initialInput } from "./stages/initial-input";
 import { buildContext } from "./stages/build-context";
 import { buildOutputIntentContext } from "./stages/build-output-intent-context";
-import { getAssistantResponse, parseResponse } from "./stages/get-response";
+import { getAssistantResponse } from "./stages/get-response";
 import { copyResponse } from "./stages/copy-response";
 import { printResponse } from "./stages/print-response";
 import { nextInputOrAction } from "./stages/next-input-or-action";
+import { parseResponse } from "./stages/parse-response";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
