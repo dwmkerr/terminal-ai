@@ -58,13 +58,14 @@ Bigger questions:
 - [x] bug: 'fullscreen input' name needs to be sensible for initial/later
 - [x] bug: 'chat' should be an action in the initial menu
 - [x] bug: repeatedly opening the action menu creates unnecessary spaces
-- [ ] bug: 'save as' errors if no path provided
-- [ ] test each action - input / debug / output
+- [x] test each action - input / debug / output
 
 ## Version 0.10
 
+- [ ] feat: select/show model on actions menu
 - [ ] bug: ctrl+c on actions menu doesn't close it
 - [ ] bug: pasting multi-line code doesn't work for input. Fix: on 'paste', if we detect multi line input open the editor input. This should also be an action in the actions menu. We could probably do the upload file input at the same time. This also requires a fix at the InquirerJS level.
+- [ ] bug: 'save as' errors if no path provided
 
 ## Version next
 

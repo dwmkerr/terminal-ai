@@ -30,6 +30,7 @@ Quick links:
 
 - [Simple Chat](#simple-chat)
 - [Initialising or Updating Config](#initialising-or-updating-config)
+- [Multiline Input](#multiline-input)
 - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
@@ -63,6 +64,12 @@ Run this command with:
 ```bash
 ai init
 ```
+
+### Multliline Input
+
+To provide multiline input (or paste multiple lines input input) you can use the Actions Menu to select the 'Chat (Multiline)' action. Just press <code>Enter</code> at the prompt. Your `$EDITOR` will open:
+
+![Demo Recording of Multiline Input](./docs/casts/ai-chat-multiline.svg)
 
 ### Copying to the Clipboard or Saving to a File
 
