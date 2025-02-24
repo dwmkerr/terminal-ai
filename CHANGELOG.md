@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/dwmkerr/terminal-ai/compare/v0.8.0...v0.9.0) (2025-02-24)
+
+
+### Features
+
+* **chat:** multiline chat ([#43](https://github.com/dwmkerr/terminal-ai/issues/43)) ([a58b187](https://github.com/dwmkerr/terminal-ai/commit/a58b187b40acce2f4b24919bc057dea59dbd042d))
+
 ## [0.8.0](https://github.com/dwmkerr/terminal-ai/compare/v0.7.1...v0.8.0) (2025-02-17)
 
 
