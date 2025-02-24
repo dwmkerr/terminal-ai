@@ -7,12 +7,16 @@ import { ChatAction } from "./ChatAction";
 import { TerminatingError } from "../lib/errors";
 
 export const DumpConversationAction: ChatAction = {
-  id: "Dump Conversation (Debug)",
-  displayName: "dump",
+  id: "dump",
+  displayNameInitial: "Save Conversation",
+  displayNameReply: "Save Conversation",
   isInitialInteractionAction: false,
   isDebugAction: true,
   weight: 0,
-  execute: async (_: ChatPipelineParameters, messages: OpenAIMessage[]) => {
+  execute: async (
+    _: ChatPipelineParameters,
+    messages: OpenAIMessage[],
+  ): Promise<string | undefined> => {
     const inputPrompt = theme.inputPrompt("Save As");
     const path = await input({ message: inputPrompt });
     try {
@@ -26,5 +30,7 @@ export const DumpConversationAction: ChatAction = {
         "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
       );
     }
+
+    return undefined;
   },
 };

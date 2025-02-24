@@ -6,14 +6,16 @@ export type ExecuteActionHandler = (
   params: ChatPipelineParameters,
   messages: OpenAIMessage[],
   response?: ChatResponse,
-) => Promise<void>;
+) => Promise<string | undefined>;
 
 export type ChatAction = {
   //  The internal name, e.g. 'exec'.
   id: string;
 
-  //  The display name, e.g. 'Execute Script'.
-  displayName: string;
+  //  The display name, e.g. 'Execute Script', for both initial and then
+  //  replies.
+  displayNameInitial: string;
+  displayNameReply: string;
 
   //  Is this action available on the first interaction, e.g. before any
   //  conversation has started?

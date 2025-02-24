@@ -8,11 +8,11 @@ import { ReplyAction } from "./ReplyAction";
 import { SaveResponseAction } from "./SaveResponseAction";
 
 export const ChatActions: ChatAction[] = [
-  DumpConversationAction,
-  FullscreenInputAction,
   ReplyAction,
+  FullscreenInputAction,
   CopyResponseAction,
   SaveResponseAction,
   ExecuteResponseAction,
+  DumpConversationAction,
   QuitAction,
 ];

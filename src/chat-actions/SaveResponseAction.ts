@@ -8,8 +8,9 @@ import { ChatAction } from "./ChatAction";
 import { TerminatingError } from "../lib/errors";
 
 export const SaveResponseAction: ChatAction = {
-  id: "Save Response",
-  displayName: "save_response",
+  id: "save_response",
+  displayNameInitial: "Save Response",
+  displayNameReply: "Save Response",
   isInitialInteractionAction: false,
   isDebugAction: false,
   weight: 1,
@@ -17,7 +18,7 @@ export const SaveResponseAction: ChatAction = {
     _: ChatPipelineParameters,
     __: OpenAIMessage[],
     response?: ChatResponse,
-  ) => {
+  ): Promise<string | undefined> => {
     if (response === undefined) {
       throw new TerminatingError(
         `a response must be provided to the 'save' action`,
@@ -33,5 +34,7 @@ export const SaveResponseAction: ChatAction = {
         "Error saving response - you might be overwriting a file or saving in a folder that doesn't exist?",
       );
     }
+
+    return undefined;
   },
 };

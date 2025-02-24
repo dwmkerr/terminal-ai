@@ -7,8 +7,9 @@ import { TerminatingError } from "../lib/errors";
 import { execCommand } from "../lib/cli-helpers";
 
 export const ExecuteResponseAction: ChatAction = {
-  id: "Execute Response",
-  displayName: "execute_response",
+  id: "execute_response",
+  displayNameInitial: "Execute Response",
+  displayNameReply: "Execute Response",
   isInitialInteractionAction: false,
   isDebugAction: false,
   weight: 1,
@@ -16,7 +17,7 @@ export const ExecuteResponseAction: ChatAction = {
     _: ChatPipelineParameters,
     __: OpenAIMessage[],
     response?: ChatResponse,
-  ) => {
+  ): Promise<string | undefined> => {
     if (response === undefined) {
       throw new TerminatingError(
         `a response must be provided to the 'execute' action`,
@@ -34,5 +35,7 @@ export const ExecuteResponseAction: ChatAction = {
     if (validate) {
       await execCommand(code, true);
     }
+
+    return undefined;
   },
 };

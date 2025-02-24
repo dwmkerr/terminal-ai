@@ -2,8 +2,9 @@ import { ChatAction } from "./ChatAction";
 
 export const QuitAction: ChatAction = {
   id: "quit",
-  displayName: "Quit",
-  isInitialInteractionAction: false,
+  displayNameInitial: "Quit",
+  displayNameReply: "Quit",
+  isInitialInteractionAction: true,
   isDebugAction: false,
   weight: 1,
   execute: async () => {

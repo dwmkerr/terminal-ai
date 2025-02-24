@@ -37,8 +37,12 @@ export async function initialInput(
     inputMessage = await input({ message: chatInputPrompt });
 
     //  If the input message is empty then the user has just pressed 'enter' at
-    //  the input prompt. This means we can show the initial input actions.
-    await nextAction(params, true, [], undefined);
+    //  the input prompt. This means we can show the initial input actions. This
+    //  action might provide us with input, or it might not. If it doesn't,
+    //  just keep on asking.
+    if (inputMessage === "") {
+      inputMessage = (await nextAction(params, true, [], undefined)) || "";
+    }
   } while (inputMessage === "");
   return inputMessage;
 }

@@ -2,9 +2,10 @@ import { ChatAction } from "./ChatAction";
 
 export const ReplyAction: ChatAction = {
   id: "reply",
-  displayName: "Reply",
-  isInitialInteractionAction: false,
+  displayNameInitial: "Chat",
+  displayNameReply: "Reply",
+  isInitialInteractionAction: true,
   isDebugAction: false,
   weight: 1,
-  execute: async () => {},
+  execute: async (): Promise<string | undefined> => undefined,
 };
