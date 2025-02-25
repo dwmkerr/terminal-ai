@@ -6,19 +6,22 @@ import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
 import { TerminatingError } from "../lib/errors";
 
-export const DumpConversationAction: ChatAction = {
-  id: "dump",
+export const SaveConversationAction: ChatAction = {
+  id: "save_conversation",
   displayNameInitial: "Save Conversation",
   displayNameReply: "Save Conversation",
   isInitialInteractionAction: false,
-  isDebugAction: true,
+  isDebugAction: false,
   weight: 0,
   execute: async (
     _: ChatPipelineParameters,
     messages: OpenAIMessage[],
   ): Promise<string | undefined> => {
-    const inputPrompt = theme.inputPrompt("Save As");
-    const path = await input({ message: inputPrompt });
+    const inputPrompt = theme.inputPrompt("Save Conversation");
+    let path = "";
+    while (!path) {
+      path = await input({ message: inputPrompt });
+    }
     try {
       const content = messages
         .map((m) => `**${m.role}**\n${m.content}`)

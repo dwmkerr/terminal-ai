@@ -24,8 +24,10 @@ export const SaveResponseAction: ChatAction = {
         `a response must be provided to the 'save' action`,
       );
     }
-    const inputPrompt = theme.inputPrompt("Save As");
-    const path = await input({ message: inputPrompt });
+    let path = "";
+    while (!path) {
+      path = await input({ message: theme.inputPrompt("Save As") });
+    }
     try {
       fs.writeFileSync(path, response.plainTextFormattedResponse, "utf8");
       console.log(`✅ Response saved to ${path}!`);

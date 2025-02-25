@@ -2,11 +2,11 @@
 
 Effortless AI in your terminal.
 
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | | [Experimental](#experimental) | [Developer Guide](#developer-guide)
+
 [![cicd](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
 
 ![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
-
-[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | | [Experimental](#experimental) | [Developer Guide](#developer-guide)
 
 ## Quickstart
 
