@@ -1,6 +1,6 @@
 import { input } from "@inquirer/prompts";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
-import theme from "../../theme";
+import theme, { deleteLinesAboveCursor } from "../../theme";
 import { nextAction } from "./next-action";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
@@ -23,9 +23,8 @@ export async function nextInputOrAction(
   }
 
   //  Otherwise, we're going to show the actions menu and execute the next
-  //  action.
-  process.stdout.write("\u001b[1A\u001b[K"); // Delete previous line and move cursor up
-  process.stdout.write("\u001b[1A\u001b[K"); // Delete previous line and move cursor up
+  //  action. Clear the Chat prompt and Hint to make this cleaner.
+  deleteLinesAboveCursor(2);
   await nextAction(params, false, messages, response);
 
   //  We performed an action, but still don't have input. Return an empty

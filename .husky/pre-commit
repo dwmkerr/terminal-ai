@@ -16,7 +16,9 @@ npm test
 # Lint GitHub Actions workflow files with actionlint (optional)
 if command -v actionlint >/dev/null 2>&1; then
   echo "🛠️  Running actionlint..."
-  actionlint
+  # ignore the 'node-version' in matrix as actionlint seems to not understand
+  # it...
+  actionlint -ignore 'node-version'
 else
   echo "⚠️  actionlint not found. Your GitHub Actions workflow files are not being linted."
   echo "   👉 Install it via: brew install actionlint (Mac)"
