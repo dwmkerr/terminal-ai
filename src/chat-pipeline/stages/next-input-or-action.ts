@@ -24,11 +24,13 @@ export async function nextInputOrAction(
 
   //  Otherwise, we're going to show the actions menu and execute the next
   //  action. Clear the Chat prompt and Hint to make this cleaner.
+  //  If the action provides input, great, we can return it. If it doesn't
+  //  then the caller will most likely just re-trigger this menu.
   deleteLinesAboveCursor(2);
-  await nextAction(params, false, messages, response);
+  return (await nextAction(params, false, messages, response)) || "";
 
-  //  We performed an action, but still don't have input. Return an empty
-  //  string, if the caller sees this they can close or they can simply
-  //  ask for input again.
-  return "";
+  // //  We performed an action, but still don't have input. Return an empty
+  // //  string, if the caller sees this they can close or they can simply
+  // //  ask for input again.
+  // return "";
 }
