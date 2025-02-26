@@ -8,7 +8,7 @@ import {
   saveModel,
 } from "../configuration/configuration";
 import { Actions } from "./actions";
-import { check } from "./check";
+import { check } from "../commands/check";
 import { selectModel } from "../commands/init/select-model";
 
 export type InitResult = {

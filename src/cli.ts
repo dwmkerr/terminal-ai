@@ -23,9 +23,10 @@ import {
 } from "./configuration/configuration";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
 import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
-import { check } from "./actions/check";
+import { check } from "./commands/check";
 import { init } from "./actions/init";
 import { Actions } from "./actions/actions";
+import { usage } from "./commands/usage";
 const cli = async (
   program: Command,
   executionContext: ExecutionContext,
@@ -111,6 +112,16 @@ const cli = async (
     .action(async () => {
       await check(executionContext, config);
     });
+
+  //  The usage command is still very much work in progress.
+  if (config.debug.enable) {
+    program
+      .command("usage")
+      .description("View API usage statistics")
+      .action(async () => {
+        await usage(executionContext, config);
+      });
+  }
 
   program
     .command("debug")
