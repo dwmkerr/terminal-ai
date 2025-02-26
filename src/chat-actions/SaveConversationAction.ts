@@ -1,30 +1,22 @@
 import { input } from "@inquirer/prompts";
 import theme, { deleteLinesAboveCursor } from "../theme";
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
-import { ChatResponse } from "../chat-pipeline/stages/parse-response";
 import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
 import { TerminatingError } from "../lib/errors";
 import { saveAs } from "../lib/save-as";
 
-export const SaveResponseAction: ChatAction = {
-  id: "save_response",
-  displayNameInitial: "Save Response",
-  displayNameReply: "Save Response",
+export const SaveConversationAction: ChatAction = {
+  id: "save_conversation",
+  displayNameInitial: "Save Conversation",
+  displayNameReply: "Save Conversation",
   isInitialInteractionAction: false,
   isDebugAction: false,
-  weight: 1,
+  weight: 0,
   execute: async (
     _: ChatPipelineParameters,
-    __: OpenAIMessage[],
-    response?: ChatResponse,
+    messages: OpenAIMessage[],
   ): Promise<string | undefined> => {
-    if (response === undefined) {
-      throw new TerminatingError(
-        `a response must be provided to the 'save' action`,
-      );
-    }
-
     //  Get the path. If nothing is provided, try again.
     let path = await input({ message: theme.inputPrompt("Save As") });
     while (!path) {
@@ -35,11 +27,14 @@ export const SaveResponseAction: ChatAction = {
     //  Try and save. If overwriting and the user says 'no' then keep asking for
     //  paths.
     try {
-      if (await saveAs(path, response.plainTextFormattedResponse, true)) {
-        console.log(`✅ Response saved to ${path}!`);
+      const content = messages
+        .map((m) => `**${m.role}**\n${m.content}`)
+        .join("\n");
+      if (await saveAs(path, content, true)) {
+        console.log(`✅ Conversation history saved to ${path}!`);
       }
     } catch (err) {
-      throw new TerminatingError("Error saving response");
+      throw new TerminatingError("Error saving conversation");
     }
 
     return undefined;

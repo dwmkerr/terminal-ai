@@ -12,8 +12,6 @@ Bigger questions:
 
 <!-- vim-markdown-toc GFM -->
 
-- [Version 0.8](#version-08)
-- [Version 0.9](#version-09)
 - [Version 0.10](#version-010)
 - [Version next](#version-next)
 - [Version next+1](#version-next1)
@@ -39,33 +37,14 @@ Bigger questions:
 
 <!-- vim-markdown-toc -->
 
-## Version 0.8
-
-**Assistant**
-
-- [x] test scripts
-- [x] extract chat into chat pipeline
-- [x] create assistant
-- [x] create debug 'dump' action that writes all messages to a file (also useful for generating raw content for unit tests)
-- [x] assistant/completion pipeline
-- [x] configuration to use assistant or completion
-- [x] configuration for debug actions
-- [x] re-test scenarios
-- [x] #X1 bug: build response should be able to explicitly extract code blocks - tests for this (parse response)
-
-## Version 0.9
-
-- [x] bug: 'fullscreen input' name needs to be sensible for initial/later
-- [x] bug: 'chat' should be an action in the initial menu
-- [x] bug: repeatedly opening the action menu creates unnecessary spaces
-- [x] test each action - input / debug / output
-
 ## Version 0.10
 
+- [ ] bug: 'save as' errors if no path provided
+- [ ] feat(actions): 'save conversation'
+- [ ] bug: save actions don't create subdirs
 - [ ] feat: select/show model on actions menu
 - [ ] bug: ctrl+c on actions menu doesn't close it
 - [ ] bug: pasting multi-line code doesn't work for input. Fix: on 'paste', if we detect multi line input open the editor input. This should also be an action in the actions menu. We could probably do the upload file input at the same time. This also requires a fix at the InquirerJS level.
-- [ ] bug: 'save as' errors if no path provided
 
 ## Version next
 
@@ -82,6 +61,11 @@ Bigger questions:
 ## Inquirer Fixes / Features
 
 - [ ] feat: hint / prompt / placeholder: grey placeholder text would really help, 
+
+**Resilience**
+
+- [ ] bug: on connectivity, we see an OpenAI Error rather than connection error - related:
+- [ ] if a chat fails due to connection offer option to retry
 
 **Code Blocks**
 
@@ -147,7 +131,6 @@ Bigger questions:
 - [ ] Spinners
 - [ ] Handle asymmetric TTY eg pipe /dev/stdin as input and pipe to output file, or pipe echo into interactive or pipe echo into file- use context to inform if the output should use markdown or not?
 - [ ] TAI: files flag, folder flag best effort
-- [ ] bug: on connectivity, we see an OpenAI Error rather than connection error - related:
 - [ ] feat(check): check connectivity
 
 ## Actions: Execute

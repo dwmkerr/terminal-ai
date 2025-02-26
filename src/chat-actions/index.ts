@@ -1,6 +1,6 @@
 import { ChatAction } from "./ChatAction";
 import { CopyResponseAction } from "./CopyResponseAction";
-import { DumpConversationAction } from "./DumpConversationAction";
+import { SaveConversationAction } from "./SaveConversationAction";
 import { ExecuteResponseAction } from "./ExecuteResponseAction";
 import { FullscreenInputAction } from "./FullscreenInputAction";
 import { QuitAction } from "./QuitAction";
@@ -13,6 +13,6 @@ export const ChatActions: ChatAction[] = [
   CopyResponseAction,
   SaveResponseAction,
   ExecuteResponseAction,
-  DumpConversationAction,
+  SaveConversationAction,
   QuitAction,
 ];

@@ -1,6 +1,6 @@
 import { input } from "@inquirer/prompts";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
-import theme from "../../theme";
+import theme, { deleteLinesAboveCursor } from "../../theme";
 import { nextAction } from "./next-action";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
@@ -23,13 +23,14 @@ export async function nextInputOrAction(
   }
 
   //  Otherwise, we're going to show the actions menu and execute the next
-  //  action.
-  process.stdout.write("\u001b[1A\u001b[K"); // Delete previous line and move cursor up
-  process.stdout.write("\u001b[1A\u001b[K"); // Delete previous line and move cursor up
-  await nextAction(params, false, messages, response);
+  //  action. Clear the Chat prompt and Hint to make this cleaner.
+  //  If the action provides input, great, we can return it. If it doesn't
+  //  then the caller will most likely just re-trigger this menu.
+  deleteLinesAboveCursor(2);
+  return (await nextAction(params, false, messages, response)) || "";
 
-  //  We performed an action, but still don't have input. Return an empty
-  //  string, if the caller sees this they can close or they can simply
-  //  ask for input again.
-  return "";
+  // //  We performed an action, but still don't have input. Return an empty
+  // //  string, if the caller sees this they can close or they can simply
+  // //  ask for input again.
+  // return "";
 }

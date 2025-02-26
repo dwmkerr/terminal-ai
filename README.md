@@ -2,11 +2,11 @@
 
 Effortless AI in your terminal.
 
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | | [Experimental](#experimental) | [Developer Guide](#developer-guide)
+
 [![cicd](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
 
 ![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
-
-[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | | [Experimental](#experimental) | [Developer Guide](#developer-guide)
 
 ## Quickstart
 
@@ -216,34 +216,23 @@ git clone git@github.com:dwmkerr/boxes.git
 # nvm use --lts
 npm install
 npm start
+
+# If 'actionlint' is installed, the GitHub workflows will be linted.
+brew install actionlint
 ```
 
 If you want to install the `ai` command run the following:
 
 ```bash
-npm run build
-npm link ai
+npm run build # or 'npm run build:watch' to live rebuild...
+npm install -g .
 
 # Now run ai commands such as:
-ai "ask me anything"
+ai "ask me anything" # run 'ai' again if the build has updated...
 
 # Clean up when you are done...
-npm unlink
+npm uninstall -g .
 ```
-
-Note that you will need to rebuild the code if you change it, so run `npm run build` before using the `ai` alias. A quick way to do this is to run:
-
-```bash
-npm run relink
-```
-
-If you are developing and would like to run `ai` without relinking, just build, link, then run:
-
-```bash
-npm run build:watch
-```
-
-This will keep the `./build` folder up-to-date and the `ai` command will use the latest compiled code. This can *sometimes* miss certain changes, so `relink` is the safer option. `build:watch` works well if you are making small changes to existing files, but not if you are adding new files.
 
 ### Debugging
 
