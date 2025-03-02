@@ -1,3 +1,4 @@
+import fs from "fs";
 import { ensureApiKey } from "./stages/ensure-api-key";
 import { parseInput } from "./stages/parse-input";
 import { createAssistant } from "./stages/create-assistant";
@@ -20,6 +21,22 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   );
   const params = { ...parameters, config };
   const openai = new OpenAI({ apiKey: config.openAiApiKey });
+
+  //  If we are non-interactive on stdin but have requested interactive, reopen
+  //  stdin now.
+  if (
+    params.executionContext.isTTYstdin === false &&
+    params.options.reopenStdin
+  ) {
+    // Reopen stdin for interactive use
+    //  TODO consider moving the stdin ReadStream to execution context.
+    const ttyPath = process.platform === "win32" ? "CONIN$" : "/dev/tty";
+    const newStdin = fs.createReadStream(ttyPath);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (process as any).stdin = newStdin;
+    //process.stdin.setRawMode(true);
+    params.executionContext.isTTYstdin = true;
+  }
 
   //  Create the assistant.
   const assistant = await createAssistant(openai, config);

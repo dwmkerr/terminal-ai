@@ -9,6 +9,7 @@ export async function chat(
   inputMessage: string | undefined,
   enableContextPrompts: boolean,
   enableOutputPrompts: boolean,
+  interactive: boolean,
   copy: boolean,
   raw: boolean,
   assistant: boolean,
@@ -21,6 +22,7 @@ export async function chat(
       inputMessage,
       inputFilePaths: files,
       options: {
+        reopenStdin: interactive,
         enableContextPrompts,
         enableOutputPrompts,
         copy,
@@ -34,6 +36,7 @@ export async function chat(
       inputMessage,
       inputFilePaths: files,
       options: {
+        reopenStdin: interactive,
         enableContextPrompts,
         enableOutputPrompts,
         copy,

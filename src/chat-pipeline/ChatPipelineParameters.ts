@@ -11,5 +11,9 @@ export type ChatPipelineParameters = {
     enableOutputPrompts: boolean;
     copy: boolean;
     raw: boolean;
+
+    //  If set to true, then after stdin is read we will actually re-attach
+    //  stdin to /dev/stdin and allow more input.
+    reopenStdin: boolean;
   };
 };
