@@ -10,6 +10,7 @@ describe("buildContext", () => {
       inputMessage: "",
       inputFilePaths: [],
       options: {
+        reopenStdin: false,
         copy: false,
         raw: false,
         enableContextPrompts: true,
@@ -35,6 +36,7 @@ describe("buildContext", () => {
       inputMessage: "",
       inputFilePaths: [],
       options: {
+        reopenStdin: false,
         copy: false,
         raw: false,
         enableContextPrompts: true,
@@ -58,6 +60,7 @@ describe("buildContext", () => {
       inputMessage: "",
       inputFilePaths: [],
       options: {
+        reopenStdin: false,
         copy: false,
         raw: false,
         enableContextPrompts: true,

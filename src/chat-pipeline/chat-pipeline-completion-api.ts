@@ -1,3 +1,4 @@
+import fs from "fs";
 import { ensureApiKey } from "./stages/ensure-api-key";
 import { parseInput } from "./stages/parse-input";
 import { OpenAIChatRoles } from "../lib/openai/openai-roles";
@@ -25,6 +26,22 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   conversationHistory.push(
     ...contextPrompts.map((c) => ({ role: c.role, content: c.context })),
   );
+
+  //  If we are non-interactive on stdin but have requested interactive, reopen
+  //  stdin now.
+  if (
+    params.executionContext.isTTYstdin === false &&
+    params.options.reopenStdin
+  ) {
+    // Reopen stdin for interactive use
+    //  TODO consider moving the stdin ReadStream to execution context.
+    const ttyPath = process.platform === "win32" ? "CONIN$" : "/dev/tty";
+    const newStdin = fs.createReadStream(ttyPath);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (process as any).stdin = newStdin;
+    //process.stdin.setRawMode(true);
+    params.executionContext.isTTYstdin = true;
+  }
 
   //  Determine our initial input. Might be from the command line params, user
   //  entry, stdin, etc...

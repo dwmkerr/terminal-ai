@@ -49,6 +49,10 @@ const cli = async (
       collect,
       [],
     )
+    .option(
+      "-i, --interactive",
+      "[Linux/macos] interactive mode (even after reading piped stdin)",
+    )
     .option("-c, --copy", "Copy output to clipboard and exit")
     .option("-r, --raw", "Do not format or highlight markdown output")
     .option("--assistant", "Experimental. Use the OpenAI Assistants API")
@@ -59,7 +63,15 @@ const cli = async (
     .action(
       async (
         input,
-        { contextPrompts, outputPrompts, copy, raw, assistant, file },
+        {
+          contextPrompts,
+          outputPrompts,
+          interactive,
+          copy,
+          raw,
+          assistant,
+          file,
+        },
       ) => {
         return chat(
           executionContext,
@@ -67,6 +79,7 @@ const cli = async (
           input,
           contextPrompts,
           outputPrompts,
+          interactive,
           copy,
           raw,
           assistant,
@@ -92,6 +105,7 @@ const cli = async (
           undefined,
           true,
           true,
+          false,
           false,
           false,
           false,
