@@ -39,6 +39,10 @@ Bigger questions:
 
 ## Version 0.10
 
+- [ ] feat(shell): accept stdin content and send as a file named 'stdin'
+- [ ] docs(shell): 'summarise this diff in 10 lines max'
+- [ ] refactor(shell): tech debt task in v11 to stabalise input and extract/test
+- [ ] feat(shell): consider 'forceTTY' to allow the user to restart chat by reading all of stdin then reopening it for user input
 - [ ] bug: 'save as' errors if no path provided
 - [ ] feat(actions): 'save conversation'
 - [ ] bug: save actions don't create subdirs

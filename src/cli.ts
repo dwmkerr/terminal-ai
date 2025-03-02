@@ -27,6 +27,7 @@ import { check } from "./commands/check";
 import { init } from "./actions/init";
 import { Actions } from "./actions/actions";
 import { usage } from "./commands/usage";
+import { readStdin } from "./lib/read-stdin";
 const cli = async (
   program: Command,
   executionContext: ExecutionContext,
@@ -129,18 +130,27 @@ const cli = async (
     .argument("<command>", 'debug command to use, e.g. "test-detach"')
     .argument("[parameters...]", 'parameters for the command, e.g. "one two"')
     .action(async (command, parameters) => {
-      const result = await debugCommand(command, parameters);
+      const result = await debugCommand(
+        executionContext,
+        config,
+        command,
+        parameters,
+      );
       console.log(JSON.stringify(result));
     });
 };
 
 async function main() {
+  //  If we have anything piped to stdin, read it.
+  const stdinContent = await readStdin(process.stdin);
+
   //  Create an initial execution context. This may evolve as we run various commands etc.
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   const executionContext: ExecutionContext = {
     firstTime: fs.existsSync(configFilePath),
     isTTYstdin: process.stdin.isTTY || false,
     isTTYstdout: process.stdout.isTTY || false,
+    stdinContent,
   };
 
   //  Before we execute the command, we'll make sure we don't show a warning
@@ -164,6 +174,7 @@ async function main() {
     const initialConfig = await getConfiguration();
     if (initialConfig.debug.enable) {
       dbg.enable(initialConfig.debug.namespace || "");
+      dbg.log(`initialisiing and hydrating config...`);
     }
 
     //  Now hydrate and reload our config.
