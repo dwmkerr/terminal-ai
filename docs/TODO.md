@@ -41,7 +41,9 @@ Bigger questions:
 ## Version 0.10
 
 - [x] feat(shell): accept stdin content and send as a file named 'stdin'
+- [ ] bug(shell): piped input into interactive stdout is not shown in color
 - [ ] docs(shell): 'summarise this diff in 10 lines max'
+- [ ] test scripts (just descriptive) git diff should show color in interactive
 
 ## Version 0.11
 
