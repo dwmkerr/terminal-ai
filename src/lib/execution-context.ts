@@ -5,4 +5,7 @@ export type ExecutionContext = {
   //  More explicity, do we believe we have a TTY?
   isTTYstdin: boolean;
   isTTYstdout: boolean;
+
+  //  If we have piped input to stdin, it'll be here.
+  stdinContent: string | undefined;
 };

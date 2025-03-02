@@ -41,6 +41,8 @@ export const OpenAIChatModels = [
   "gpt-3.5-turbo-1106",
   "gpt-3.5-turbo-0125",
   "gpt-3.5-turbo-16k-0613",
+  "gpt-4.5-preview",
+  "gpt-4.5-preview-2025-02-27",
 ];
 
 export function toChatModel(model: string): ChatModel | undefined {

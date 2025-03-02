@@ -1,6 +1,14 @@
+import OpenAI from "openai";
+import { Configuration } from "../configuration/configuration";
+import { ExecutionContext } from "../lib/execution-context";
 import { printResponse } from "../theme";
 
-export async function debug(command: string, parameters: string[]) {
+export async function debug(
+  executionContext: ExecutionContext,
+  config: Configuration,
+  command: string,
+  parameters: string[],
+) {
   console.log(`debug: command - ${command} with parameters ${parameters}`);
   if (command === "markdown") {
     const markdown = `# Markdown Formatting
@@ -27,5 +35,12 @@ echo "Hello, World!"
 \`\`\`
     `;
     console.log(printResponse("chatgpt", markdown, true));
+  } else if (command === "models") {
+    const openai = new OpenAI({
+      apiKey: config.openAiApiKey,
+    });
+    //  Call any API to check our key.
+    const models = await openai.models.list();
+    console.log(models);
   }
 }

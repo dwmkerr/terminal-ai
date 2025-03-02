@@ -7,6 +7,9 @@ import * as theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
 import { Configuration } from "../configuration/configuration";
 
+//  Note there is a good overview of new features here:
+//  https://openai.com/index/new-embedding-models-and-api-updates/
+
 export async function usage(
   executionContext: ExecutionContext,
   config: Configuration,
