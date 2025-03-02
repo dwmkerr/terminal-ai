@@ -2,7 +2,7 @@
 
 Effortless AI in your terminal.
 
-[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | | [Experimental](#experimental) | [Developer Guide](#developer-guide)
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Experimental](#experimental) | [Developer Guide](#developer-guide)
 
 [![cicd](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
 
@@ -34,6 +34,7 @@ Quick links:
 - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
+- [Piping Input](#piping-input)
 
 ### Simple Chat
 
@@ -112,6 +113,18 @@ The `code` output intent tries to ensure that a _single_ code block is created, 
 You can execute scripts by asking for `code` output, pressing 'Enter' in the response prompt to open the Actions menu and then choosing 'Execute Response'. Terminal AI will ask you to verify the code (using your configured `$EDITOR`) and then ask for confirmation before executing:
 
 ![Demo Recording of Execute Response](./docs/casts/ai-chat-exec.svg)
+
+### Piping Input
+
+You can pipe content to `ai` - in this example the current uncommitted changes in a repo are analysed:
+
+![Demo Recording of Piping Stdin](./docs/casts/stdin-pipe-git-diff.gif)
+
+Tips:
+
+- You must provide a prompt, e.g: `git diff | ai -- 'do I have enough tests?`
+- You can also pipe the results, e.g: `gif diff | ai -- 'write a git patch that adds tests' > tests.patch`
+- You can refer to the input with the file name `stdin`, e.g: `ai -- 'how many words?' < dictionary.txt`
 
 ## Commands
 
