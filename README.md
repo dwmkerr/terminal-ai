@@ -124,7 +124,7 @@ Tips:
 
 - You must provide a prompt, e.g: `git diff | ai -- 'do I have enough tests?`
 - You can also pipe the results, e.g: `gif diff | ai -- 'write a git patch that adds tests' > tests.patch`
-- You can refer to the input with the file name `stdin`, e.g: `ai -- 'how many words?' < dictionary.txt`
+- You can refer to the input with the file name `stdin`, e.g: `ai -- 'how many words in stdin?' < dictionary.txt`
 
 ## Commands
 
