@@ -1,8 +1,5 @@
-import dbg from "debug";
 import expandEnvVars from "../lib/expand-env-vars";
 import { OpenAIChatRoles } from "../lib/openai/openai-roles";
-
-const debug = dbg("ai:context");
 
 export type ExpandedContext = {
   role: OpenAIChatRoles;
@@ -18,7 +15,6 @@ export function expandContext(
   env: NodeJS.ProcessEnv,
 ): ExpandedContext {
   const context = expandEnvVars(contextTemplate, env);
-  debug(`expanded context: ${context}`);
   return {
     role: "user",
     name: "<Unnamed Context>",

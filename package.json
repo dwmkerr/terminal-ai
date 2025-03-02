@@ -40,6 +40,7 @@
   "dependencies": {
     "@inquirer/prompts": "^7.3.1",
     "@types/js-yaml": "^4.0.9",
+    "axios": "^1.8.1",
     "clipboardy": "^4.0.0",
     "colors": "^1.4.0",
     "commander": "^11.1.0",
