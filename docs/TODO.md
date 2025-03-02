@@ -41,7 +41,7 @@ Bigger questions:
 ## Version 0.10
 
 - [x] feat(shell): accept stdin content and send as a file named 'stdin'
-- [ ] docs(shell): 'summarise this diff in 10 lines max'
+- [x] docs(shell): 'summarise this diff in 10 lines max'
 
 ## Version 0.11
 
