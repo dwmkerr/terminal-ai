@@ -8,4 +8,4 @@ coverage:
     patch:
       default:
         # Try and at least get *some* testing in new code...
-        target: 20%
+        target: 25%

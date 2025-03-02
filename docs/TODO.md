@@ -13,6 +13,7 @@ Bigger questions:
 <!-- vim-markdown-toc GFM -->
 
 - [Version 0.10](#version-010)
+- [Version 0.11](#version-011)
 - [Version next](#version-next)
 - [Version next+1](#version-next1)
 - [Inquirer Fixes / Features](#inquirer-fixes--features)
@@ -39,16 +40,24 @@ Bigger questions:
 
 ## Version 0.10
 
-- [ ] feat(shell): accept stdin content and send as a file named 'stdin'
+- [x] feat(shell): accept stdin content and send as a file named 'stdin'
 - [ ] docs(shell): 'summarise this diff in 10 lines max'
+
+## Version 0.11
+
 - [ ] refactor(shell): tech debt task in v11 to stabalise input and extract/test
-- [ ] feat(shell): consider 'forceTTY' to allow the user to restart chat by reading all of stdin then reopening it for user input
-- [ ] bug: 'save as' errors if no path provided
-- [ ] feat(actions): 'save conversation'
-- [ ] bug: save actions don't create subdirs
-- [ ] feat: select/show model on actions menu
 - [ ] bug: ctrl+c on actions menu doesn't close it
 - [ ] bug: pasting multi-line code doesn't work for input. Fix: on 'paste', if we detect multi line input open the editor input. This should also be an action in the actions menu. We could probably do the upload file input at the same time. This also requires a fix at the InquirerJS level.
+- [ ] feat(shell): consider 'forceTTY' to allow the user to restart chat by reading all of stdin then reopening it for user input: NOTE doesn't seem possible
+
+**10 Stars - Automated Quality & Tooling**
+
+- [ ] github action
+- [ ] fix(chat): save conversation shouldn't include context
+
+**30 Stars - Providers + Models**
+
+- [ ] feat(providers): select provider
 
 ## Version next
 
