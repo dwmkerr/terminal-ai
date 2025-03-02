@@ -146,6 +146,14 @@ async function main() {
 
   //  Create an initial execution context. This may evolve as we run various commands etc.
   //  Make a guess at the interactive mode based on whether the output is a TTY.
+  //  If 'FORCE_COLOR' has been set (used for colors.js) then just pretend
+  //  we're a TTY - this means we can have colors when doing 'vhs' screen
+  //  recordings for example (we don't have a TTY in vhs but obviously still
+  //  want ANSI colors). Better would be to have our own config but this'll do
+  //  for now.
+  if (process.env["FORCE_COLOR"] === "1") {
+    process.stdout.isTTY = true;
+  }
   const executionContext: ExecutionContext = {
     firstTime: fs.existsSync(configFilePath),
     isTTYstdin: process.stdin.isTTY || false,

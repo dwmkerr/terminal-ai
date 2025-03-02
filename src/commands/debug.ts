@@ -1,4 +1,7 @@
 import OpenAI from "openai";
+
+import { marked } from "marked";
+import { markedTerminal } from "marked-terminal";
 import { Configuration } from "../configuration/configuration";
 import { ExecutionContext } from "../lib/execution-context";
 import { printResponse } from "../theme";
@@ -20,9 +23,13 @@ export async function debug(
 ***Bold and Italic Text***
 
 ## List of Items:
-1. Item 1
+1. Item 1 - also **bold**
 2. Item 2
 3. Item 3
+
+### more lists
+
+1. \`code\` goes here
 
 ### Code Block Example:
 \`\`\`bash
@@ -35,6 +42,10 @@ echo "Hello, World!"
 \`\`\`
     `;
     console.log(printResponse("chatgpt", markdown, true));
+
+    marked.use(markedTerminal());
+    const formatted = marked.parse(markdown) as string;
+    console.log(formatted);
   } else if (command === "models") {
     const openai = new OpenAI({
       apiKey: config.openAiApiKey,

@@ -156,6 +156,7 @@ Bigger questions:
 
 ## Configuration
 
+- [ ] feat: `--force-color` flag to always show colors in output, useful for CI/CD and VHS
 - [ ] feat: openai model configuration
 - [ ] feat: advanced config option
 - [ ] use local `.ai` files:
