@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.0](https://github.com/dwmkerr/terminal-ai/compare/v0.9.0...v0.10.0) (2025-03-02)
+
+
+### Features
+
+* **actions:** 'save conversation' action ([119b27d](https://github.com/dwmkerr/terminal-ai/commit/119b27d334757e91907e6895c16b8a7bae4601aa))
+* **chat:** save response/convo overwrite and create folders ([143c4fe](https://github.com/dwmkerr/terminal-ai/commit/143c4feeee126d12dbbefd564381ba04628ce249))
+* **shell:** pipe to stdin uploads a file named `stdin` ([9f06cad](https://github.com/dwmkerr/terminal-ai/commit/9f06cad9de0cf679f2af92714114b55b1f65767f))
+* **usage:** experimental 'usage' command (debug only) ([4f016ec](https://github.com/dwmkerr/terminal-ai/commit/4f016eccc23ef3690f196552fc5de816217a38ed))
+
+
+### Bug Fixes
+
+* **chat:** fullscreen chat input now sends correctly ([5f074b5](https://github.com/dwmkerr/terminal-ai/commit/5f074b5dd5d98d10e387271c4d749ef76be73128))
+* **docs:** add missing piping demo ([5c50f99](https://github.com/dwmkerr/terminal-ai/commit/5c50f9932b21fd0c7a9224e2b7ab48f86d8d48da))
+* **docs:** corrected stdin sample ([800c869](https://github.com/dwmkerr/terminal-ai/commit/800c8694e89de6c75105d1781cd46befb2e3dc00))
+
 ## [0.9.0](https://github.com/dwmkerr/terminal-ai/compare/v0.8.0...v0.9.0) (2025-02-24)
 
 
