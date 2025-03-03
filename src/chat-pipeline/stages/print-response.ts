@@ -28,6 +28,6 @@ export async function printResponse(
   if (params.executionContext.isTTYstdout) {
     console.log(response.colourFormattedResponseWithPrompt);
   } else {
-    console.log(response.codeBlocks[0]?.colourFormattedCode);
+    console.log(response.plainTextFormattedResponse);
   }
 }
