@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.1](https://github.com/dwmkerr/terminal-ai/compare/v0.10.0...v0.10.1) (2025-03-03)
+
+
+### Bug Fixes
+
+* fix output when piping to stdout ([4084bc1](https://github.com/dwmkerr/terminal-ai/commit/4084bc1ca5474fd7b8aff86431d04478f3d7df63))
+
+
+### Miscellaneous Chores
+
+* release 0.10.1 ([9e6fe0f](https://github.com/dwmkerr/terminal-ai/commit/9e6fe0fb4da1b1a4be1a9c97bdeefc4253a0de9e))
+
 ## [0.10.0](https://github.com/dwmkerr/terminal-ai/compare/v0.9.0...v0.10.0) (2025-03-02)
 
 
