@@ -96,7 +96,7 @@ Bigger questions:
 
 **Deploy**
 
-- [ ] deploy as prerelease and test for a week
+- [ ] deploy as prerelease and est for a week
 
 - [ ] local .ai config - context prompts only
 - [ ] to check: system prompts for context

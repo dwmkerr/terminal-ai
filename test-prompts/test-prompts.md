@@ -5,6 +5,7 @@
 - [Effective Shell Samples](#effective-shell-samples)
 - [Basic Terminal AI](#basic-terminal-ai)
 - [Interrogating Context](#interrogating-context)
+- [Other tests](#other-tests)
 
 <!-- vim-markdown-toc -->
 
@@ -83,3 +84,8 @@ ai -- "Who are you and what are you for?"
 ```bash
 ai -- "I wrote you a message starting with 'for context' can you tell me what you have read from this."
 ```
+
+## Other tests
+
+- `git diff | ai 'summarise'` should give colored output
+- `git diff | ai 'add tests' > tests.ts` should create file

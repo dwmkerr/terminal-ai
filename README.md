@@ -2,7 +2,7 @@
 
 Effortless AI in your terminal.
 
-[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Experimental](#experimental) | [Developer Guide](#developer-guide)
+[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Experimental](#experimental) | [Configuration](#configuration) | [Developer Guide](#developer-guide)
 
 [![cicd](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
 
@@ -35,6 +35,7 @@ Quick links:
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
 - [Piping Input](#piping-input)
+- [Advanced](#advanced)
 
 ### Simple Chat
 
@@ -125,6 +126,18 @@ Tips:
 - You must provide a prompt, e.g: `git diff | ai -- 'do I have enough tests?`
 - You can also pipe the results, e.g: `gif diff | ai -- 'write a git patch that adds tests' > tests.patch`
 - You can refer to the input with the file name `stdin`, e.g: `ai -- 'how many words in stdin?' < dictionary.txt`
+
+### Advanced
+
+Advanced or experimental features:
+
+```bash
+# Force color output:
+# - set FORCE_COLOR=1
+# - ascii formatting will be applied even if stdout is not a tty
+# - use 'less -r' (-r = raw, render color codes) as a way to quickly test.
+FORCE_COLOR=1 ai 'show me some markdown features' | less -r
+```
 
 ## Commands
 
@@ -217,6 +230,14 @@ ai --assistant -- "Who are you?"
 ```
 
 Note that responses will be considerably slower and more API calls will be made.
+
+## Configuration
+
+Most 'stable' configuration can be specified in the `~/.ai/config.yaml` file. Experimental features might only be available in the form of environment variables:
+
+| Configuration | Environment     | Config | Description                                             |
+|---------------|-----------------|--------|---------------------------------------------------------|
+| Force colors. | `FORCE_COLOR=1` | n/a    | Force ASCII color codes in output even if it not a TTY. |
 
 ## Developer Guide
 

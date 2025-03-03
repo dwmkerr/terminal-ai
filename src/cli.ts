@@ -146,10 +146,12 @@ async function main() {
 
   //  Create an initial execution context. This may evolve as we run various commands etc.
   //  Make a guess at the interactive mode based on whether the output is a TTY.
+  //  The 'colors.js' force color we will also use.
+  const forceColor = process.env["FORCE_COLOR"] === "1";
   const executionContext: ExecutionContext = {
     firstTime: fs.existsSync(configFilePath),
     isTTYstdin: process.stdin.isTTY || false,
-    isTTYstdout: process.stdout.isTTY || false,
+    isTTYstdout: forceColor || process.stdout.isTTY || false,
     stdinContent,
   };
 
