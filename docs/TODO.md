@@ -154,6 +154,7 @@ Bigger questions:
 
 ## Configuration
 
+- [ ] feat: FORCE_COLOR standardise
 - [ ] feat: openai model configuration
 - [ ] feat: advanced config option
 - [ ] use local `.ai` files:
