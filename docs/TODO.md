@@ -12,7 +12,6 @@ Bigger questions:
 
 <!-- vim-markdown-toc GFM -->
 
-- [Version 0.10](#version-010)
 - [Version 0.11](#version-011)
 - [Version next](#version-next)
 - [Version next+1](#version-next1)
@@ -38,21 +37,13 @@ Bigger questions:
 
 <!-- vim-markdown-toc -->
 
-## Version 0.10
-
-- [x] feat(shell): accept stdin content and send as a file named 'stdin'
-- [x] docs(shell): 'summarise this diff in 10 lines max'
-
 ## Version 0.11
 
+- [ ] feat: spinner
 - [ ] refactor(shell): tech debt task in v11 to stabalise input and extract/test
 - [ ] bug: ctrl+c on actions menu doesn't close it
-- [ ] bug: pasting multi-line code doesn't work for input. Fix: on 'paste', if we detect multi line input open the editor input. This should also be an action in the actions menu. We could probably do the upload file input at the same time. This also requires a fix at the InquirerJS level.
+- [ ] bug: paste multi line
 - [ ] feat(shell): consider 'forceTTY' to allow the user to restart chat by reading all of stdin then reopening it for user input: NOTE doesn't seem possible
-
-**10 Stars - Automated Quality & Tooling**
-
-- [ ] github action
 - [ ] fix(chat): save conversation shouldn't include context
 
 **30 Stars - Providers + Models**
