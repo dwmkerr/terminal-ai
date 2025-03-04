@@ -145,9 +145,7 @@ Example of how to interactively stage, generate a conventional commit:
 
 - [`aigac.sh`](./docs/casts/aigac.sh) - AI Git Add Commit shell script
 
-<a href="./docs/casts/aigac.svg"><img width="480px" src="./docs/casts/ai-chat-exec.svg" /></a>
-
-- [Screen Recording](./docs/casts/ai-chat-exec.gif) - AI Git Add Commit shell script
+<a href="./docs/casts/aigac.svg"><img width="480px" src="./docs/casts/aigac.svg" /></a>
 
 ## Commands
 
