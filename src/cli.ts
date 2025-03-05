@@ -202,6 +202,8 @@ async function main() {
       console.log(
         theme.printWarning(err.message, executionContext.isTTYstdout),
       );
+      //  Note: warnings do *not* fail the app, but this is likely a bad pattern.
+      process.exit(0);
     } else if (err instanceof TerminatingError) {
       console.log(theme.printError(err.message, executionContext.isTTYstdout));
       process.exit(err.errorCode);
