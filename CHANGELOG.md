@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/dwmkerr/terminal-ai/compare/v0.10.1...v0.10.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* **api-key:** fail on missing key (i.e. return non-zero) ([b2d8514](https://github.com/dwmkerr/terminal-ai/commit/b2d8514e35341e7267571323218a57dd78c8ab1c))
+
 ## [0.10.1](https://github.com/dwmkerr/terminal-ai/compare/v0.10.0...v0.10.1) (2025-03-03)
 
 
