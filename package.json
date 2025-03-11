@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/dwmkerr/terminal-ai#readme",
   "dependencies": {
+    "@dwmkerr/inquirer-advanced-input-prompt": "^0.1.0",
     "@inquirer/prompts": "^7.3.1",
     "@types/js-yaml": "^4.0.9",
     "axios": "^1.8.1",
@@ -52,13 +53,11 @@
     "openai": "^4.83.0"
   },
   "devDependencies": {
-    "@aws-sdk/types": "3.10.0",
     "@types/debug": "^4.1.12",
     "@types/jest": "^29.5.11",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.11.5",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "aws-sdk-client-mock-jest": "^3.0.0",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-prettier": "^5.0.1",

@@ -1,6 +1,6 @@
-import { input } from "@inquirer/prompts";
+import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
-import theme, { deleteLinesAboveCursor } from "../../theme";
+import theme from "../../theme";
 import { nextAction } from "./next-action";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
@@ -11,10 +11,11 @@ export async function nextInputOrAction(
   messages: OpenAIMessage[],
 ): Promise<string> {
   //  Give the user a hint that they need to reply or show actions.
-  theme.printHint("(Reply below or press Enter for more options...)");
+  // theme.printHint("(Reply below or press Enter for more options...)");
   const chatInputPrompt = theme.inputPrompt("chat");
-  const chatInput = await input({
+  const chatInput = await advancedInput({
     message: chatInputPrompt,
+    hint: "<Enter> Show Menu",
   });
 
   //  If the user gave us input, we can return it to the caller.
@@ -26,7 +27,6 @@ export async function nextInputOrAction(
   //  action. Clear the Chat prompt and Hint to make this cleaner.
   //  If the action provides input, great, we can return it. If it doesn't
   //  then the caller will most likely just re-trigger this menu.
-  deleteLinesAboveCursor(2);
   return (await nextAction(params, false, messages, response)) || "";
 
   // //  We performed an action, but still don't have input. Return an empty
