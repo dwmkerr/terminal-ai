@@ -16,7 +16,7 @@ export function expandContext(
 ): ExpandedContext {
   const context = expandEnvVars(contextTemplate, env);
   return {
-    role: "user",
+    role: "system",
     name: "<Unnamed Context>",
     template: contextTemplate,
     context: context,
