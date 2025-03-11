@@ -120,6 +120,7 @@ const cli = async (
       .command("usage")
       .description("View API usage statistics")
       .action(async () => {
+        //  TODO: better just to open: https://platform.openai.com/usage
         await usage(executionContext, config);
       });
   }

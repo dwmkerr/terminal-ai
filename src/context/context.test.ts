@@ -9,7 +9,7 @@ describe("expandContext", () => {
     const result: ExpandedContext = expandContext(contextTemplate, env);
 
     expect(result).toEqual({
-      role: "user",
+      role: "system",
       name: "<Unnamed Context>",
       template: contextTemplate,
       context: expandedValue,
@@ -24,7 +24,7 @@ describe("expandContext", () => {
 
     const result: ExpandedContext = expandContext(contextTemplate, env);
 
-    expect(result.role).toBe("user");
+    expect(result.role).toBe("system");
     expect(result.name).toBe("<Unnamed Context>");
     expect(result.template).toBe(contextTemplate);
     expect(result.context).toBe(expandedValue);

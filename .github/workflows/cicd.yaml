@@ -22,7 +22,7 @@ jobs:
   validate:
     name: Validate
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -88,7 +88,7 @@ jobs:
     # 'validate' job.
     needs: validate
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       # The source files must be present for codecov to be upload the file list
@@ -113,7 +113,7 @@ jobs:
 
   release-please:
     name: Release PR/Deploy
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     # The 'release please' job will only run if successfully complete the
     # 'validate-main' job. The deployment steps only occur if this is a release

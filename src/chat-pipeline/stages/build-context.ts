@@ -30,7 +30,7 @@ ${params.executionContext.stdinContent}
     params.executionContext.stdinContent !== undefined
       ? [
           {
-            role: "user",
+            role: "system",
             name: "stdin",
             template: stdinTemplate,
             context: stdinTemplate,
