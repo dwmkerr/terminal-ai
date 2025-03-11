@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import { Configuration } from "../configuration/configuration";
 import { ExecutionContext } from "../lib/execution-context";
 import { printResponse } from "../theme";
+import { debugInput } from "./debug/input";
 
 export async function debug(
   executionContext: ExecutionContext,
@@ -42,5 +43,7 @@ echo "Hello, World!"
     //  Call any API to check our key.
     const models = await openai.models.list();
     console.log(models);
+  } else if (command === "input") {
+    await debugInput(executionContext, config);
   }
 }

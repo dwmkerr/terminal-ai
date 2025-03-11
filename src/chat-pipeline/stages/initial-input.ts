@@ -1,4 +1,4 @@
-import { input } from "@inquirer/prompts";
+import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
 import { TerminatingWarning } from "../../lib/errors";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import theme from "../../theme";
@@ -34,7 +34,10 @@ export async function initialInput(
   const chatInputPrompt = theme.inputPrompt("chat");
   let inputMessage = "";
   do {
-    inputMessage = await input({ message: chatInputPrompt });
+    inputMessage = await advancedInput({
+      message: chatInputPrompt,
+      hint: "<Enter> Show Menu",
+    });
 
     //  If the input message is empty then the user has just pressed 'enter' at
     //  the input prompt. This means we can show the initial input actions. This

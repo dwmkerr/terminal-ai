@@ -34,8 +34,11 @@ export async function nextAction(
   //  action menu.
   let answer = "";
   try {
+    //  Delete the line above us - this would be the 'chat' input prompt. We
+    //  write our own, which looks just like it, but takes a menu of options.
+    process.stdout.write("\u001b[1A" + "\u001b[2K");
     answer = await select({
-      message: theme.inputPrompt("What next?"),
+      message: theme.inputPrompt("chat"),
       default: "reply",
       choices,
     });
@@ -49,9 +52,8 @@ export async function nextAction(
     }
   }
 
-  //  Delete the previous two lines, i.e. the selection and hint lines, so that
-  //  the output stays clean.
-  process.stdout.write("\u001b[1A" + "\u001b[2K");
+  //  Delete the previous line so that the output still lines up once we've
+  //  selected an option.
   process.stdout.write("\u001b[1A" + "\u001b[2K");
 
   //  Find the action that was selected.
