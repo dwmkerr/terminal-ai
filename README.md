@@ -1,6 +1,6 @@
 # terminal-ai
 
-Effortless AI in your terminal.
+Effortless AI in the shell. Maintain your flow and be more effective.
 
 [Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Experimental](#experimental) | [Configuration](#configuration) | [Developer Guide](#developer-guide)
 
