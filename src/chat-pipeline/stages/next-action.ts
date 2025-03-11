@@ -1,5 +1,5 @@
 import { select } from "@inquirer/prompts";
-import theme from "../../theme";
+import theme, { deleteLinesAboveCursor } from "../../theme";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
@@ -36,7 +36,8 @@ export async function nextAction(
   try {
     //  Delete the line above us - this would be the 'chat' input prompt. We
     //  write our own, which looks just like it, but takes a menu of options.
-    process.stdout.write("\u001b[1A" + "\u001b[2K");
+    deleteLinesAboveCursor(1);
+
     answer = await select({
       message: theme.inputPrompt("chat"),
       default: "reply",
@@ -54,7 +55,7 @@ export async function nextAction(
 
   //  Delete the previous line so that the output still lines up once we've
   //  selected an option.
-  process.stdout.write("\u001b[1A" + "\u001b[2K");
+  deleteLinesAboveCursor(1);
 
   //  Find the action that was selected.
   const action = ChatActions.find((ca) => ca.id === answer);
