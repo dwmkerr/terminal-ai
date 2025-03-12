@@ -1,6 +1,6 @@
 import axios from "axios";
 import {
-  ERROR_CODE_INVALID_CONFIFGURATION,
+  ERROR_CODE_INVALID_CONFIGURATION,
   TerminatingWarning,
 } from "../lib/errors";
 import * as theme from "../theme";
@@ -26,7 +26,7 @@ export async function usage(
   if (config.openAiApiKey === "") {
     throw new TerminatingWarning(
       "Warning: Your OpenAI API key is not set, try 'ai init'",
-      ERROR_CODE_INVALID_CONFIFGURATION,
+      ERROR_CODE_INVALID_CONFIGURATION,
     );
   }
 

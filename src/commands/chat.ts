@@ -54,7 +54,7 @@ export async function chat(
     //  Try and get an error code, fall back to the generic error message.
     const code = err["code"] || "<unknown>";
     throw new TerminatingError(
-      `OpenAI Error ${code}' - try 'ai check' to validate your config`,
+      `OpenAI Error '${code}' - try 'ai check' to validate your config`,
       ERROR_CODE_OPENAI_ERROR,
     );
   }

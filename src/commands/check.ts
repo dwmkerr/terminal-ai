@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import {
-  ERROR_CODE_INVALID_CONFIFGURATION,
+  ERROR_CODE_INVALID_CONFIGURATION,
   ERROR_CODE_OPENAI_ERROR,
   TerminatingError,
 } from "../lib/errors";
@@ -18,7 +18,7 @@ export async function check(
   if (config.openAiApiKey === "") {
     throw new TerminatingError(
       "Error: Your OpenAI API key is not set, try 'ai init'",
-      ERROR_CODE_INVALID_CONFIFGURATION,
+      ERROR_CODE_INVALID_CONFIGURATION,
     );
   }
 
@@ -40,7 +40,7 @@ export async function check(
     if (err instanceof OpenAI.AuthenticationError) {
       throw new TerminatingError(
         "Error: Your API key appears to be invalid, try 'ai init'",
-        ERROR_CODE_INVALID_CONFIFGURATION,
+        ERROR_CODE_INVALID_CONFIGURATION,
       );
     }
   }
@@ -78,7 +78,7 @@ export async function check(
     if (err instanceof OpenAI.PermissionDeniedError) {
       throw new TerminatingError(
         `Error: failed to call chat API - your model '${config.openai.model}' may be invalid...`,
-        ERROR_CODE_INVALID_CONFIFGURATION,
+        ERROR_CODE_INVALID_CONFIGURATION,
       );
     }
     if (err instanceof OpenAI.RateLimitError) {
@@ -90,7 +90,7 @@ export async function check(
     //  Try and get an error code, fall back to the generic error message.
     const code = err["code"] || "<unknown>";
     throw new TerminatingError(
-      `Unexpected OpenAI Error ${code}'`,
+      `Unexpected OpenAI Error '${code}'`,
       ERROR_CODE_OPENAI_ERROR,
     );
   }
