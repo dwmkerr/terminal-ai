@@ -84,7 +84,7 @@ export async function check(
     if (err instanceof OpenAI.RateLimitError) {
       throw new TerminatingError(
         "Warning: OpenAI rate limit exceeded for token, check your plan and billing details",
-        ERROR_CODE_INVALID_CONFIFGURATION,
+        ERROR_CODE_INVALID_CONFIGURATION,
       );
     }
     //  Try and get an error code, fall back to the generic error message.
