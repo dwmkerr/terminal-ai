@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.11.0](https://github.com/dwmkerr/terminal-ai/compare/v0.10.2...v0.11.0) (2025-03-12)
+
+
+### Features
+
+* **chat:** better hints for showing the menu ([f7d521e](https://github.com/dwmkerr/terminal-ai/commit/f7d521e957cd79e13081f1ef397f2464e3e9c46e))
+* **chat:** better hints for showing the menu ([4c6967d](https://github.com/dwmkerr/terminal-ai/commit/4c6967d4db55185c9d74b2cdc8b481a0f5d1b297))
+* **ci:** update ubuntu version in CI configurations ([a011829](https://github.com/dwmkerr/terminal-ai/commit/a01182904b7c8efbecf90ba81a4e5470a83de278))
+* **ci:** update ubuntu version in CI configurations ([0e9c298](https://github.com/dwmkerr/terminal-ai/commit/0e9c2980ac8307d93222ca733ceafb8253650979))
+
+
+### Bug Fixes
+
+* **chat:** correctly show 'menu' hint ([8853668](https://github.com/dwmkerr/terminal-ai/commit/88536680435e420b2c7bee97a30ad712ab10584f))
+* **context:** change role from user to system ([0e9c298](https://github.com/dwmkerr/terminal-ai/commit/0e9c2980ac8307d93222ca733ceafb8253650979))
+
 ## [0.10.2](https://github.com/dwmkerr/terminal-ai/compare/v0.10.1...v0.10.2) (2025-03-05)
 
 

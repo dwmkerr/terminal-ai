@@ -2,7 +2,7 @@
   "name": "@dwmkerr/terminal-ai",
   "description": "Effortless AI in your terminal.",
   "type": "commonjs",
-  "version": "0.10.2",
+  "version": "0.11.0",
   "main": "./dist/cli.js",
   "bin": {
     "ai": "dist/cli.js"
