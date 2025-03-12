@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/dwmkerr/terminal-ai#readme",
   "dependencies": {
+    "@dwmkerr/ai-providers-and-models": "^0.1.6",
     "@dwmkerr/inquirer-advanced-input-prompt": "^0.1.0",
     "@inquirer/prompts": "^7.3.1",
     "@types/js-yaml": "^4.0.9",
