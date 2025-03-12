@@ -1,3 +1,4 @@
+import colors from "colors/safe";
 import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
 import { TerminatingWarning } from "../../lib/errors";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
@@ -32,11 +33,14 @@ export async function initialInput(
   //  up when you just hit enter.
   //  See Issue: #41
   const chatInputPrompt = theme.inputPrompt("chat");
+  const hint = `<Enter> Show Menu | ${colors.gray(params.config.provider + " " + colors.bold(params.config.openai.model))} `;
+
   let inputMessage = "";
   do {
     inputMessage = await advancedInput({
       message: chatInputPrompt,
-      hint: "<Enter> Show Menu",
+      // hint: "<Enter> Show Menu",
+      hint,
     });
 
     //  If the input message is empty then the user has just pressed 'enter' at

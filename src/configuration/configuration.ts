@@ -14,8 +14,11 @@ import { toChatModel } from "../lib/openai/openai-models";
 
 const debug = dbg("ai:configuration");
 
+export type Provider = "openai";
+
 export interface Configuration {
   openAiApiKey: string;
+  provider: Provider;
   openai: {
     model: ChatModel;
   };
@@ -66,6 +69,7 @@ export function getConfigPath(): string {
 
 export function getDefaultConfiguration(): Configuration {
   return {
+    provider: "openai",
     openAiApiKey: "",
     openai: {
       model: "gpt-3.5-turbo",
