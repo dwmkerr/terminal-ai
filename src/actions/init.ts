@@ -62,7 +62,7 @@ export async function init(
     default: false,
   });
   if (advanced) {
-    const model = await selectModel("gpt-3.5-turbo");
+    const model = await selectModel(config.openai.model);
     if (model !== undefined) {
       updatedConfig.openai.model = model;
       saveModel(model);

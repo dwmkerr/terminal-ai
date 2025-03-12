@@ -38,6 +38,7 @@ echo "Hello, World!"
     console.log(printResponse("chatgpt", markdown, true));
   } else if (command === "models") {
     const openai = new OpenAI({
+      baseURL: config.openai.baseURL,
       apiKey: config.openAiApiKey,
     });
     //  Call any API to check our key.

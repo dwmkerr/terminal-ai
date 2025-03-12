@@ -4,20 +4,17 @@ import path from "path";
 import yaml from "js-yaml";
 import dbg from "debug";
 
-import {
-  ERROR_CODE_INVALID_CONFIFGURATION,
-  TerminatingError,
-  TerminatingWarning,
-} from "../lib/errors";
-import { ChatModel } from "openai/resources/index.mjs";
-import { toChatModel } from "../lib/openai/openai-models";
+import { TerminatingError, TerminatingWarning } from "../lib/errors";
 
 const debug = dbg("ai:configuration");
 
 export interface Configuration {
   openAiApiKey: string;
   openai: {
-    model: ChatModel;
+    baseURL: string;
+    //  If a new model comes out, we want users to be able to enter it in their
+    //  config. We'll try and validate with 'ai check'.
+    model: string;
   };
   prompts: {
     chat: {
@@ -68,6 +65,7 @@ export function getDefaultConfiguration(): Configuration {
   return {
     openAiApiKey: "",
     openai: {
+      baseURL: "https://api.openai.com/v1/",
       model: "gpt-3.5-turbo",
     },
     prompts: {
@@ -97,17 +95,6 @@ export function getConfigurationFromFile(
   try {
     const fileContents = fs.readFileSync(path, "utf8");
     const contents = yaml.load(fileContents) as DeepPartial<Configuration>;
-
-    const fileModel = contents?.openai?.model;
-    if (fileModel !== undefined) {
-      const model = toChatModel(fileModel);
-      if (model === undefined) {
-        throw new TerminatingError(
-          `Error: Config file value 'openai.model' set to invalid value '${fileModel}'`,
-          ERROR_CODE_INVALID_CONFIFGURATION,
-        );
-      }
-    }
     return contents;
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -130,15 +117,7 @@ export function getConfigurationFromEnv(
     if (newConfig.openai === undefined) {
       newConfig.openai = {};
     }
-    const envModel = env.AI_OPENAI_MODEL;
-    const model = toChatModel(envModel);
-    if (model === undefined) {
-      throw new TerminatingError(
-        `Error: Environment Variable AI_OPENAI_MODEL set to invalid value '${envModel}'`,
-        ERROR_CODE_INVALID_CONFIFGURATION,
-      );
-    }
-    newConfig.openai.model = model;
+    newConfig.openai.model = env.AI_OPENAI_MODEL;
   }
   if (env.AI_DEBUG_ENABLE !== undefined) {
     if (newConfig.debug === undefined) {
@@ -193,6 +172,9 @@ export function enrichConfiguration(
   }
   if (data?.openai?.model !== undefined) {
     newConfig.openai.model = data.openai.model;
+  }
+  if (data?.openai?.baseURL !== undefined) {
+    newConfig.openai.baseURL = data.openai.baseURL;
   }
   if (data?.debug?.enable !== undefined) {
     newConfig.debug.enable = data.debug.enable;
@@ -264,7 +246,7 @@ export function saveApiKey(apiKey: string) {
 
 //  Update the config file. Needs to be extracted later on into a function
 //  that takes a partial.
-export function saveModel(model: ChatModel) {
+export function saveModel(model: string) {
   const configPath = getConfigPath();
   try {
     //  Ensure the config directory exists.

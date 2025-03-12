@@ -1,12 +1,9 @@
 import { search } from "@inquirer/prompts";
-import { OpenAIChatModels, toChatModel } from "../../lib/openai/openai-models";
-import { ChatModel } from "openai/resources/index.mjs";
+import { OpenAIChatModels } from "../../lib/openai/openai-models";
 
-export async function selectModel(
-  defaultModel: ChatModel,
-): Promise<ChatModel | undefined> {
+export async function selectModel(defaultModel: string): Promise<string> {
   const answer = (await search({
-    message: `Select model [leave blank to use ${defaultModel}]:`,
+    message: `Select model [leave blank for existing ${defaultModel}]:`,
     source: async (input): Promise<string[]> => {
       //  Search models.
       const search = (models: string[], val: string) =>
@@ -22,5 +19,5 @@ export async function selectModel(
     },
   })) as string;
 
-  return answer === "" ? defaultModel : toChatModel(answer);
+  return answer || defaultModel;
 }

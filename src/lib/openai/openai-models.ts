@@ -1,6 +1,5 @@
-import { ChatModel } from "openai/resources/index.mjs";
-
-//  TODO how to programatically get this list?
+//  Note that in time we will likely just use:
+//  https://github.com/dwmkerr/ai-providers-and-models
 export const OpenAIChatModels = [
   "o3-mini",
   "o3-mini-2025-01-31",
@@ -44,10 +43,3 @@ export const OpenAIChatModels = [
   "gpt-4.5-preview",
   "gpt-4.5-preview-2025-02-27",
 ];
-
-export function toChatModel(model: string): ChatModel | undefined {
-  if (OpenAIChatModels.includes(model)) {
-    return model as ChatModel;
-  }
-  return undefined;
-}
