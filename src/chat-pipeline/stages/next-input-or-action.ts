@@ -15,7 +15,7 @@ export async function nextInputOrAction(
   const chatInputPrompt = theme.inputPrompt("chat");
   const chatInput = await advancedInput({
     message: chatInputPrompt,
-    hint: "<Enter> Show Menu",
+    hint: "<Enter> Menu",
   });
 
   //  If the user gave us input, we can return it to the caller.

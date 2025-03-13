@@ -9,6 +9,7 @@ export async function chat(
   messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
 ): Promise<string> {
   const openai = new OpenAI({
+    baseURL: config.openai.baseURL,
     apiKey: config.openAiApiKey,
   });
 
@@ -24,7 +25,7 @@ export async function chat(
     const response = completion.choices[0]?.message?.content;
     if (!response) {
       throw new TerminatingError(
-        "OpenAI Error - no response received. Try 'ai check' to validate API key",
+        "OpenAI Error - no response received. Try 'ai check' to validate your config",
         ERROR_CODE_OPENAI_ERROR,
       );
     }
@@ -32,14 +33,28 @@ export async function chat(
     return response;
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    if (err instanceof OpenAI.AuthenticationError) {
+    if (err instanceof OpenAI.PermissionDeniedError) {
       throw new TerminatingError(
-        "OpenAI Authentication Error - try 'ai check' to validate API key",
+        "OpenAI Permission Error - try 'ai check' to validate your config (model may be invalid)",
         ERROR_CODE_OPENAI_ERROR,
       );
     }
+    if (err instanceof OpenAI.AuthenticationError) {
+      throw new TerminatingError(
+        "OpenAI Authentication Error - try 'ai check' to validate your config (API key may be invalid)",
+        ERROR_CODE_OPENAI_ERROR,
+      );
+    }
+    if (err instanceof OpenAI.RateLimitError) {
+      throw new TerminatingError(
+        "OpenAI Rate Limit Error - try 'ai check' and check your plan and billing details",
+        ERROR_CODE_OPENAI_ERROR,
+      );
+    }
+    //  Try and get an error code, fall back to the generic error message.
+    const code = err["code"] || "<unknown>";
     throw new TerminatingError(
-      "OpenAI Error - try 'ai check' to validate API key",
+      `OpenAI Error '${code}' - try 'ai check' to validate your config`,
       ERROR_CODE_OPENAI_ERROR,
     );
   }

@@ -1,8 +1,8 @@
-import OpenAI from "openai";
 import { Configuration } from "../configuration/configuration";
 import { ExecutionContext } from "../lib/execution-context";
 import { printResponse } from "../theme";
 import { debugInput } from "./debug/input";
+import { debugModels } from "./debug/models";
 
 export async function debug(
   executionContext: ExecutionContext,
@@ -37,12 +37,7 @@ echo "Hello, World!"
     `;
     console.log(printResponse("chatgpt", markdown, true));
   } else if (command === "models") {
-    const openai = new OpenAI({
-      apiKey: config.openAiApiKey,
-    });
-    //  Call any API to check our key.
-    const models = await openai.models.list();
-    console.log(models);
+    await debugModels();
   } else if (command === "input") {
     await debugInput(executionContext, config);
   }

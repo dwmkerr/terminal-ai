@@ -2,7 +2,7 @@ import dbg from "debug";
 
 import { ExecutionContext } from "../../lib/execution-context";
 import {
-  ERROR_CODE_INVALID_CONFIFGURATION,
+  ERROR_CODE_INVALID_CONFIGURATION,
   TerminatingError,
 } from "../../lib/errors";
 import { Configuration } from "../../configuration/configuration";
@@ -24,7 +24,7 @@ export async function ensureApiKey(
   if (!executionContext.isTTYstdin) {
     throw new TerminatingError(
       "error: OpenAI API Key not set",
-      ERROR_CODE_INVALID_CONFIFGURATION,
+      ERROR_CODE_INVALID_CONFIGURATION,
     );
   }
 

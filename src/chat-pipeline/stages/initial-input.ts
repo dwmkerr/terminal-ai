@@ -36,7 +36,7 @@ export async function initialInput(
   do {
     inputMessage = await advancedInput({
       message: chatInputPrompt,
-      hint: "<Enter> Show Menu",
+      hint: "<Enter> Menu",
     });
 
     //  If the input message is empty then the user has just pressed 'enter' at

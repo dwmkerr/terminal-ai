@@ -241,11 +241,18 @@ Note that responses will be considerably slower and more API calls will be made.
 
 ## Configuration
 
-Most 'stable' configuration can be specified in the `~/.ai/config.yaml` file. Experimental features might only be available in the form of environment variables:
+Most 'stable' configuration can be specified in the `~/.ai/config.yaml` file. Experimental features might only be available in the form of environment variables.
 
-| Configuration | Environment     | Config | Description                                             |
-|---------------|-----------------|--------|---------------------------------------------------------|
-| Force colors. | `FORCE_COLOR=1` | n/a    | Force ASCII color codes in output even if it not a TTY. |
+The configuration schema is changing rapidly, the file [`./src/configuration/configuration.ts`](./src/configuration/configuration.ts) is the most authoritative source of configuration options. However, some important values are:
+
+| Configuration | Environment     | Config         | Description                                             |
+|---------------|-----------------|----------------|---------------------------------------------------------|
+| Force colors. | `FORCE_COLOR=1` | n/a            | Force ASCII color codes in output even if it not a TTY. |
+| OpenAI Model  | n/a             | `openai.model` | OpenAI API model to use, default is `gpt-3.5-turbo`     |
+
+**OpenAI Model**
+
+Any text value can be used for the model. The `ai check` command will make a best-effort attempt to validate that the model is correct by calling a chat API. The `ai init` command also tries to be helpful by showing a list of pre-defined models that have been loaded from the OpenAI APIs, and validated against [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). However models are changing rapidly and new ones may take time to be incorporated. However there is nothing stopping you from simply entering any new model ID in the config file.
 
 ## Developer Guide
 
