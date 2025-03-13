@@ -51,7 +51,8 @@
     "marked": "^15.0.6",
     "marked-terminal": "^7.3.0",
     "open": "^9.1.0",
-    "openai": "^4.83.0"
+    "openai": "^4.83.0",
+    "ora": "^8.2.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",

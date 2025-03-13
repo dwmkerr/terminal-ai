@@ -66,6 +66,14 @@ export function printHint(hint: string) {
   // process.stdout.write("\u001b[1A"); // Move cursor up by 1 line
 }
 
+export async function startSpinner(interactive: boolean, text: string = "") {
+  if (!interactive) {
+    return { stop: () => undefined };
+  }
+  const ora = (await import("ora")).default;
+  return ora(text).start();
+}
+
 export default {
   printMessage,
   printWarning,
