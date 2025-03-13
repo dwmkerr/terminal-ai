@@ -48,7 +48,9 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
 
     //  Add the user's message and get the response.
     conversationHistory.push({ role: "user", content: inputAndIntent.message });
+    const spinner = await startSpinner(params.executionContext.isTTYstdout);
     const rawMarkdownResponse = await getResponse(params, conversationHistory);
+    spinner.stop();
     const response = parseResponse("chatgpt", rawMarkdownResponse);
 
     //  If the intent is to copy the response, copy it and we're done.
