@@ -40,15 +40,7 @@ Bigger questions:
 ## Version 0.11
 
 - [ ] feat: spinner
-- [ ] refactor(shell): tech debt task in v11 to stabalise input and extract/test
-- [ ] bug: ctrl+c on actions menu doesn't close it
-- [ ] bug: paste multi line
-- [ ] feat(shell): consider 'forceTTY' to allow the user to restart chat by reading all of stdin then reopening it for user input: NOTE doesn't seem possible
 - [ ] fix(chat): save conversation shouldn't include context
-
-**30 Stars - Providers + Models**
-
-- [ ] feat(providers): select provider
 
 ## Version next
 

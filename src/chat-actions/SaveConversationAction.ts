@@ -28,6 +28,7 @@ export const SaveConversationAction: ChatAction = {
     //  paths.
     try {
       const content = messages
+        .filter((m) => m.role !== "system")
         .map((m) => `**${m.role}**\n${m.content}`)
         .join("\n");
       if (await saveAs(path, content, true)) {
