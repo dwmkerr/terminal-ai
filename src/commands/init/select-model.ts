@@ -31,7 +31,7 @@ export async function selectModel(defaultModel: string): Promise<string> {
       const model = validatedOpenAImodels[m];
       return {
         value: model.id,
-        name: model.id,
+        name: `${model.name} (${model.id})`,
         description: model.description_short,
         disabled: false,
       };
