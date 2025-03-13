@@ -12,22 +12,17 @@ Bigger questions:
 
 <!-- vim-markdown-toc GFM -->
 
-- [Version 0.11](#version-011)
 - [Version next](#version-next)
 - [Version next+1](#version-next1)
-- [Inquirer Fixes / Features](#inquirer-fixes--features)
 - [Epic - Assisants API](#epic---assisants-api)
 - [Epic - GitHub Intent/Tool](#epic---github-intenttool)
 - [Tobias Ideas](#tobias-ideas)
-- [Alpha](#alpha)
-- [Beta](#beta)
 - [Documentation](#documentation)
 - [Global](#global)
 - [Actions: Execute](#actions-execute)
 - [Configuration](#configuration)
 - [Commands: Chat](#commands-chat)
 - [Commands: Config](#commands-config)
-- [Commands: Init](#commands-init)
 - [GitHub Output Intent](#github-output-intent)
 - [File Output Intent](#file-output-intent)
 - [NTH: Vim Integration / Demo](#nth-vim-integration--demo)
@@ -37,26 +32,14 @@ Bigger questions:
 
 <!-- vim-markdown-toc -->
 
-## Version 0.11
-
-- [ ] feat: spinner
-- [ ] fix(chat): save conversation shouldn't include context
-
 ## Version next
 
-- [ ] `ai usage` to check credits
-- [ ] show model quickly/easily - change model easily?
 - [ ] copy code block would be nice
 
 ## Version next+1
 
-- stream from stdin, eg. `ai -- "cleanup my vimrc" < ~/.vimrc`
 - [ ] shell shortcut such as Mac+I (see how sgpt did it?)
 - [ ] if an assistant only feature is required offer the option to change
-
-## Inquirer Fixes / Features
-
-- [ ] feat: hint / prompt / placeholder: grey placeholder text would really help, 
 
 **Resilience**
 
@@ -102,15 +85,6 @@ Bigger questions:
 - local promts
 - github copilo api
 - e.g. git diff - bug check - husky?
-
-## Alpha
-
-- Replace commonjs with modules (package.json type)
-- Shell installer?
-
-## Beta
-
-- Brew installer? Bundler? Note that local `prompts/` folder will need to be bundled
 
 ## Documentation
 
@@ -159,10 +133,6 @@ Bigger questions:
 ## Commands: Config
 
 - [ ] fix(config): hide sensitive values by default
-
-## Commands: Init
-
-- [ ] nth: init command
 
 ## GitHub Output Intent
 
