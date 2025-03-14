@@ -1,3 +1,4 @@
+import OpenAI from "openai";
 import { ensureApiKey } from "./stages/ensure-api-key";
 import { parseInput } from "./stages/parse-input";
 import { OpenAIChatRoles } from "../lib/openai/openai-roles";
@@ -5,12 +6,11 @@ import { ChatPipelineParameters } from "./ChatPipelineParameters";
 import { initialInput } from "./stages/initial-input";
 import { buildContext } from "./stages/build-context";
 import { buildOutputIntentContext } from "./stages/build-output-intent-context";
-import { getResponse } from "./stages/get-response";
+import { getCompletionsResponse } from "./stages/get-response";
 import { copyResponse } from "./stages/copy-response";
 import { printResponse } from "./stages/print-response";
 import { nextInputOrAction } from "./stages/next-input-or-action";
 import { parseResponse } from "./stages/parse-response";
-import { startSpinner } from "../theme";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
@@ -19,6 +19,10 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     parameters.config,
   );
   const params = { ...parameters, config };
+  const openai = new OpenAI({
+    baseURL: config.openai.baseURL,
+    apiKey: config.openAiApiKey,
+  });
 
   //  Get all context prompts and add them to a new conversation.
   const contextPrompts = await buildContext(params, process.env);
@@ -49,9 +53,11 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
 
     //  Add the user's message and get the response.
     conversationHistory.push({ role: "user", content: inputAndIntent.message });
-    const spinner = await startSpinner(params.executionContext.isTTYstdout);
-    const rawMarkdownResponse = await getResponse(params, conversationHistory);
-    spinner.stop();
+    const rawMarkdownResponse = await getCompletionsResponse(
+      params,
+      openai,
+      conversationHistory,
+    );
     const response = parseResponse("chatgpt", rawMarkdownResponse);
 
     //  If the intent is to copy the response, copy it and we're done.
