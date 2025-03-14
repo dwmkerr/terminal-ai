@@ -1,25 +1,88 @@
 import dbg from "debug";
 import OpenAI from "openai";
-import { ChatPipelineParameters } from "../ChatPipelineParameters";
-
-import { chat } from "../../commands/chat";
-import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { Message } from "openai/resources/beta/threads/messages.mjs";
+import { ChatPipelineParameters } from "../ChatPipelineParameters";
+import { OpenAIMessage } from "../../lib/openai/openai-message";
+import { ERROR_CODE_OPENAI_ERROR, TerminatingError } from "../../lib/errors";
+import { startSpinner } from "../../theme";
+import { translateError } from "../../lib/translate-error";
 
 const debug = dbg("ai:chat-pipeline:get-response");
-
-export async function getResponse(
-  params: ChatPipelineParameters,
-  messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
-): Promise<string> {
-  const response = await chat(params.executionContext, params.config, messages);
-  return response;
-}
 
 export type AssistantsResponse = {
   messages: OpenAIMessage[];
   response: string;
 };
+
+export async function getCompletionsResponse(
+  params: ChatPipelineParameters,
+  openai: OpenAI,
+  messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+): Promise<string> {
+  //  Send the input to ChatGPT and read the response.
+  const spinner = await startSpinner(params.executionContext.isTTYstdout);
+  try {
+    const completion = await openai.chat.completions.create({
+      messages,
+      model: params.config.openai.model,
+    });
+    spinner.stop();
+
+    //  Read the response. If we didn't get one, show an error. Otherwise
+    //  print the response and add to the conversation history.
+    const response = completion.choices[0]?.message?.content;
+    if (!response) {
+      throw new TerminatingError(
+        "OpenAI Error - no response received. Try 'ai check' to validate your config",
+        ERROR_CODE_OPENAI_ERROR,
+      );
+    }
+
+    return response;
+  } catch (err) {
+    spinner.stop();
+    throw translateError(err);
+  }
+}
+
+export async function getAssistantResponse(
+  params: ChatPipelineParameters,
+  openai: OpenAI,
+  assistantId: string,
+  threadId: string,
+): Promise<AssistantsResponse> {
+  const spinner = await startSpinner(params.executionContext.isTTYstdout);
+  try {
+    const run = await openai.beta.threads.runs.createAndPoll(threadId, {
+      assistant_id: assistantId,
+    });
+    spinner.stop();
+
+    // We're going to do best effort while still learning the assistants api...
+    // Note that we're not event catching errors at the moment.
+    let openAImessages: OpenAIMessage[] = [];
+    if (run.status === "completed") {
+      const messages = await openai.beta.threads.messages.list(run.thread_id);
+      openAImessages = openAImessages.concat(
+        messages.data.reverse().map(messageToResponse),
+      );
+    } else {
+      debug(`run ended with status: `, run.status);
+    }
+
+    //  Return the full set of messages. The response is the most recent message.
+    return {
+      messages: openAImessages,
+      response:
+        openAImessages.length > 0
+          ? openAImessages[openAImessages.length - 1].content
+          : "",
+    };
+  } catch (err) {
+    spinner.stop();
+    throw translateError(err);
+  }
+}
 
 export function messageToResponse(message: Message): OpenAIMessage {
   const role = message.role;
@@ -43,36 +106,5 @@ export function messageToResponse(message: Message): OpenAIMessage {
   return {
     role,
     content: messageText,
-  };
-}
-
-export async function getAssistantResponse(
-  params: ChatPipelineParameters,
-  openai: OpenAI,
-  assistantId: string,
-  threadId: string,
-): Promise<AssistantsResponse> {
-  const run = await openai.beta.threads.runs.createAndPoll(threadId, {
-    assistant_id: assistantId,
-  });
-
-  // we're going to do best effort while still learning the assistants api...
-  let openAImessages: OpenAIMessage[] = [];
-  if (run.status === "completed") {
-    const messages = await openai.beta.threads.messages.list(run.thread_id);
-    openAImessages = openAImessages.concat(
-      messages.data.reverse().map(messageToResponse),
-    );
-  } else {
-    debug(`run ended with status: `, run.status);
-  }
-
-  //  Return the full set of messages. The response is the most recent message.
-  return {
-    messages: openAImessages,
-    response:
-      openAImessages.length > 0
-        ? openAImessages[openAImessages.length - 1].content
-        : "",
   };
 }

@@ -2,6 +2,7 @@ export const ERROR_CODE_WARNING = 1;
 export const ERROR_CODE_INVALID_CONFIGURATION = 2;
 export const ERROR_CODE_CONNECTION = 3;
 export const ERROR_CODE_OPENAI_ERROR = 4;
+export const ERROR_CODE_UNKNOWN = 99;
 
 export class TerminatingWarning extends Error {
   errorCode: number;
