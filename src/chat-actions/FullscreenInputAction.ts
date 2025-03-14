@@ -4,7 +4,7 @@ import { ChatAction } from "./ChatAction";
 export const FullscreenInputAction: ChatAction = {
   id: "fullscreen_input",
   displayNameInitial: "Chat (Fullscreen)",
-  displayNameReply: "Chat (Fullscreen)",
+  displayNameReply: "Reply (Fullscreen)",
   isInitialInteractionAction: true,
   isDebugAction: false,
   weight: 1,

@@ -1,6 +1,6 @@
 <p align="center">
   <h2 align="center"><code>🧠 terminal-ai</code></h2>
-      <p align="center">Effortless AI in the shell. Maintain your flow and be more effective.</p>
+      <h3 align="center">Effortless AI in the shell. Maintain your flow and be more effective.</h3>
   <p align="center">
       <img src="./docs/casts/terminal-ai-homepage.svg" alt="Demo Recording of Terminal AI" style="max-width: 100%;">
   </p>

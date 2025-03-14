@@ -57,7 +57,7 @@ export async function selectModel(defaultModel: string): Promise<string> {
   const empty: ModelChoice = {
     name: `(Keep existing) ${defaultModel}`,
     value: "",
-    description: `(Keep existing) ${defaultModel}`,
+    description: "",
     disabled: false,
   };
   const choices: ModelChoices = [
@@ -74,11 +74,11 @@ export async function selectModel(defaultModel: string): Promise<string> {
       //  Search models.
       const search = (models: ModelChoices, val: string) =>
         models.filter((m) => {
-          const mod = m as ModelChoice;
-          if (mod) {
-            return mod.value.toLowerCase().indexOf(val.toLowerCase()) !== -1;
+          const value = (m as ModelChoice)?.value;
+          if (value) {
+            return value.toLowerCase().indexOf(val.toLowerCase()) !== -1;
           } else {
-            return true;
+            return false;
           }
         });
 
