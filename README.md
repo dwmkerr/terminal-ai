@@ -2,7 +2,7 @@
 
 Effortless AI in the shell. Maintain your flow and be more effective.
 
-[Quickstart](#quickstart) | [Examples](#examples) | [Commands](#commands) | [Experimental](#experimental) | [Configuration](#configuration) | [Developer Guide](#developer-guide)
+[Quickstart](#quickstart) | [Examples](#examples) | [Actions](#Actions) | [Commands](#commands) | [Experimental](#experimental) | [Configuration](#configuration) | [Developer Guide](#developer-guide)
 
 [![cicd](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
 
@@ -146,6 +146,22 @@ Example of how to interactively stage, generate a conventional commit:
 - [`aigac.sh`](./docs/casts/aigac.sh) - AI Git Add Commit shell script
 
 <a href="./docs/casts/aigac.svg"><img width="480px" src="./docs/casts/aigac.svg" /></a>
+
+## Actions
+
+When you press `Enter` in the chat prompt, the Actions menu will pop up. These actions offer additional features to work with AI.
+
+### Change Model
+
+The 'Change Model' action allows you to change the model that is in use:
+
+![Cast: The 'Change Model' Action](./docs/casts/actions-select-model.svg)
+
+Models which have been extensively tested and verified to work with Terminal AI are shown in the list first, along with a short description of the model and its capabilities. Models which are offered by AI APIs but have not been extensively tested are shown next.
+
+You can also provide the ID of any model that is _not_ in the list by changing the `model` setting in the [Configuration](#Configuration).
+
+Verified models are provided by the [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models) project.
 
 ## Commands
 
