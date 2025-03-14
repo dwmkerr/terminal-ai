@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/dwmkerr/terminal-ai/compare/v0.11.1...v0.11.2) (2025-03-14)
+
+
+### Bug Fixes
+
+* errors and spinners ([#67](https://github.com/dwmkerr/terminal-ai/issues/67)) ([9cc87e6](https://github.com/dwmkerr/terminal-ai/commit/9cc87e6629a1199652ad7c25c59a3602c00be2af))
+
 ## [0.11.1](https://github.com/dwmkerr/terminal-ai/compare/v0.11.0...v0.11.1) (2025-03-14)
 
 
