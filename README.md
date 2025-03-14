@@ -155,7 +155,7 @@ When you press `Enter` in the chat prompt, the Actions menu will pop up. These a
 
 The 'Change Model' action allows you to change the model that is in use:
 
-![Cast: The 'Change Model' Action](./docs/casts/actions-select-model.cast)
+![Cast: The 'Change Model' Action](./docs/casts/actions-select-model.svg)
 
 Models which have been extensively tested and verified to work with Terminal AI are shown in the list first, along with a short description of the model and its capabilities. Models which are offered by AI APIs but have not been extensively tested are shown next.
 
