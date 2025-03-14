@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.11.1](https://github.com/dwmkerr/terminal-ai/compare/v0.11.0...v0.11.1) (2025-03-14)
+
+
+### Features
+
+* advanced model selection ([#61](https://github.com/dwmkerr/terminal-ai/issues/61)) ([c33179f](https://github.com/dwmkerr/terminal-ai/commit/c33179fc2ae978caffbc129dbef02d7772e32a66))
+* **chat:** spinner while waiting for response ([#65](https://github.com/dwmkerr/terminal-ai/issues/65)) ([197f0b7](https://github.com/dwmkerr/terminal-ai/commit/197f0b75e801903dfa2dd64026911e729d203afc))
+* **docs:** 'select model' action ([#66](https://github.com/dwmkerr/terminal-ai/issues/66)) ([192c00e](https://github.com/dwmkerr/terminal-ai/commit/192c00e3e4d3de51f87e012dc65b8e2019eb901b))
+* model selection improvements ([#64](https://github.com/dwmkerr/terminal-ai/issues/64)) ([a9ea073](https://github.com/dwmkerr/terminal-ai/commit/a9ea0736f37b22d30d5896630a1842dc8c03dc3c))
+
+
+### Bug Fixes
+
+* **chat:** select model search bug ([2fa901a](https://github.com/dwmkerr/terminal-ai/commit/2fa901aaba4015b9266a03a118f21726049c1e4c))
+* skip system context when save conversation ([2d01c64](https://github.com/dwmkerr/terminal-ai/commit/2d01c64814319c8b20a88d0e1cf46e4d90fbbf8e))
+
+
+### Miscellaneous Chores
+
+* release 0.11.1 ([a0af76c](https://github.com/dwmkerr/terminal-ai/commit/a0af76c3209e397683d61d897add6fc70abe7c8d))
+* release 0.11.1 ([754cdff](https://github.com/dwmkerr/terminal-ai/commit/754cdffd867fbabe85fcfdc6b476bdb62bdecdc1))
+* release 0.11.2 ([e696049](https://github.com/dwmkerr/terminal-ai/commit/e6960497577eea2b85af9d9f79d53ee8bae69b06))
+* release 0.11.3 ([b2efd43](https://github.com/dwmkerr/terminal-ai/commit/b2efd43dad0fc587a28d1a5069fe239b87faed8a))
+
 ## [0.11.0](https://github.com/dwmkerr/terminal-ai/compare/v0.10.2...v0.11.0) (2025-03-12)
 
 
