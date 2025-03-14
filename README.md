@@ -1,12 +1,24 @@
-# terminal-ai
-
-Effortless AI in the shell. Maintain your flow and be more effective.
-
-[Quickstart](#quickstart) | [Examples](#examples) | [Actions](#Actions) | [Commands](#commands) | [Experimental](#experimental) | [Configuration](#configuration) | [Developer Guide](#developer-guide)
-
-[![cicd](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg)](https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml) ![npm (scoped)](https://img.shields.io/npm/v/%40dwmkerr/terminal-ai) [![codecov](https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd)](https://codecov.io/gh/dwmkerr/terminal-ai)
-
-![Demo Recording of Terminal AI](./docs/casts/terminal-ai-homepage.svg)
+<p align="center">
+  <h2 align="center"><code>🧠 terminal-ai</code></h2>
+      <p align="center">Effortless AI in the shell. Maintain your flow and be more effective.</p>
+  <p align="center">
+      <img src="./docs/casts/terminal-ai-homepage.svg" alt="Demo Recording of Terminal AI" style="max-width: 100%;">
+  </p>
+  <p align="center">
+    <a href="#quickstart">Quickstart</a> |
+    <a href="#examples">Examples</a> |
+    <a href="#actions">Actions</a> |
+    <a href="#commands">Commands</a> |
+    <a href="#configuration">Configuration</a> |
+    <a href="#experimental">Experimental</a> |
+    <a href="#developer-guide">Developer Guide</a>
+  </p>
+  <p align="center">
+    <a href="https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml"><img src="https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
+    <a href="https://www.npmjs.com/package/@dwmkerr/terminal-ai"><img src="https://img.shields.io/npm/v/%40dwmkerr/terminal-ai" alt="terminal-ai"></a>
+    <a href="https://codecov.io/gh/dwmkerr/terminal-ai"><img src="https://codecov.io/gh/dwmkerr/terminal-ai/graph/badge.svg?token=oHFSLfOHGd" alt="codecov"></a>
+  </p>
+</p>
 
 ## Quickstart
 
@@ -155,7 +167,7 @@ When you press `Enter` in the chat prompt, the Actions menu will pop up. These a
 
 The 'Change Model' action allows you to change the model that is in use:
 
-![Cast: The 'Change Model' Action](./docs/casts/actions-select-model.svg)
+![Cast: The 'Change Model' Action](./docs/casts/actions-select-model.cast.svg)
 
 Models which have been extensively tested and verified to work with Terminal AI are shown in the list first, along with a short description of the model and its capabilities. Models which are offered by AI APIs but have not been extensively tested are shown next.
 
@@ -243,18 +255,6 @@ https://platform.openai.com/api-keys
 
 Once you have your API key you can configure it in the `ai` tool by running `ai` or `ai init`.
 
-## Experimental
-
-**Assistants API**
-
-You can try using the [Assistants APIs](https://platform.openai.com/docs/assistants/overview) rather than the [Completions APIs](https://platform.openai.com/docs/guides/completions) with the `--assistant` flag:
-
-```bash
-ai --assistant -- "Who are you?"
-```
-
-Note that responses will be considerably slower and more API calls will be made.
-
 ## Configuration
 
 Most 'stable' configuration can be specified in the `~/.ai/config.yaml` file. Experimental features might only be available in the form of environment variables.
@@ -269,6 +269,18 @@ The configuration schema is changing rapidly, the file [`./src/configuration/con
 **OpenAI Model**
 
 Any text value can be used for the model. The `ai check` command will make a best-effort attempt to validate that the model is correct by calling a chat API. The `ai init` command also tries to be helpful by showing a list of pre-defined models that have been loaded from the OpenAI APIs, and validated against [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). However models are changing rapidly and new ones may take time to be incorporated. However there is nothing stopping you from simply entering any new model ID in the config file.
+
+## Experimental
+
+**Assistants API**
+
+You can try using the [Assistants APIs](https://platform.openai.com/docs/assistants/overview) rather than the [Completions APIs](https://platform.openai.com/docs/guides/completions) with the `--assistant` flag:
+
+```bash
+ai --assistant -- "Who are you?"
+```
+
+Note that responses will be considerably slower and more API calls will be made.
 
 ## Developer Guide
 

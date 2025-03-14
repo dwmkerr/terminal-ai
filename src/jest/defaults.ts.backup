@@ -1,0 +1,42 @@
+import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
+import { getDefaultConfiguration } from "../configuration/configuration";
+
+/**
+ * Creates a default ChatPipelineParameters object.
+ * You can override any properties by passing a partial object.
+ */
+export function createChatPipelineParameters(
+  overrides?: Partial<ChatPipelineParameters>,
+): ChatPipelineParameters {
+  const defaultParameters: ChatPipelineParameters = {
+    executionContext: {
+      firstTime: true,
+      isTTYstdin: true,
+      isTTYstdout: true,
+      stdinContent: undefined,
+    },
+    config: getDefaultConfiguration(),
+    inputMessage: undefined,
+    inputFilePaths: [],
+    options: {
+      enableContextPrompts: false,
+      enableOutputPrompts: false,
+      copy: false,
+      raw: false,
+    },
+  };
+
+  return {
+    ...defaultParameters,
+    ...overrides,
+    // Merge nested objects so that you can override only specific fields
+    executionContext: {
+      ...defaultParameters.executionContext,
+      ...(overrides?.executionContext || {}),
+    },
+    options: {
+      ...defaultParameters.options,
+      ...(overrides?.options || {}),
+    },
+  };
+}
