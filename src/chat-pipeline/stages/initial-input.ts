@@ -1,8 +1,8 @@
 import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
-import { TerminatingWarning } from "../../lib/errors";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import theme from "../../theme";
 import { nextAction } from "./next-action";
+import { ErrorCode, TerminalAIError } from "../../lib/errors";
 
 export async function initialInput(
   params: ChatPipelineParameters,
@@ -21,8 +21,9 @@ export async function initialInput(
   //  We have no initial message. If we are non-interactive at stdin, we are
   //  going to have to fail (as there is no way we can ask for input).
   if (!params.executionContext.isTTYstdin) {
-    throw new TerminatingWarning(
-      "The 'input' argument is required, try 'ai -- \"good morning\"",
+    throw new TerminalAIError(
+      ErrorCode.InvalidConfiguration,
+      "the 'input' argument is required, try 'ai -- \"good morning\"",
     );
   }
 

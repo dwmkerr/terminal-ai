@@ -3,9 +3,9 @@ import OpenAI from "openai";
 import { Message } from "openai/resources/beta/threads/messages.mjs";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
-import { ERROR_CODE_OPENAI_ERROR, TerminatingError } from "../../lib/errors";
 import { startSpinner } from "../../theme";
 import { translateError } from "../../lib/translate-error";
+import { ErrorCode, TerminalAIError } from "../../lib/errors";
 
 const debug = dbg("ai:chat-pipeline:get-response");
 
@@ -22,19 +22,29 @@ export async function getCompletionsResponse(
   //  Send the input to ChatGPT and read the response.
   const spinner = await startSpinner(params.executionContext.isTTYstdout);
   try {
+    const lf = params.executionContext.integrations?.langfuse;
+    let generation = null;
+    if (lf) {
+      generation = lf.trace.generation({
+        name: "chat-completion",
+        model: params.config.openai.model,
+        input: messages,
+      });
+    }
     const completion = await openai.chat.completions.create({
       messages,
       model: params.config.openai.model,
     });
+    generation?.end({ output: completion });
     spinner.stop();
 
     //  Read the response. If we didn't get one, show an error. Otherwise
     //  print the response and add to the conversation history.
     const response = completion.choices[0]?.message?.content;
     if (!response) {
-      throw new TerminatingError(
-        "OpenAI Error - no response received. Try 'ai check' to validate your config",
-        ERROR_CODE_OPENAI_ERROR,
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
+        "no OpenAI response received - try 'ai check' to validate your config",
       );
     }
 

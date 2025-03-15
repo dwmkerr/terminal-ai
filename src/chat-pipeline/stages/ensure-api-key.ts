@@ -1,12 +1,9 @@
 import dbg from "debug";
 
 import { ExecutionContext } from "../../lib/execution-context";
-import {
-  ERROR_CODE_INVALID_CONFIGURATION,
-  TerminatingError,
-} from "../../lib/errors";
 import { Configuration } from "../../configuration/configuration";
 import { init } from "../../actions/init";
+import { ErrorCode, TerminalAIError } from "../../lib/errors";
 const debug = dbg("ai:ensure-api-key");
 
 export async function ensureApiKey(
@@ -22,9 +19,9 @@ export async function ensureApiKey(
   //  We don't have a key, if we're not interactive on stdin we cannot continue.
   //  Note that the error message will be in the output, so keep it short.
   if (!executionContext.isTTYstdin) {
-    throw new TerminatingError(
-      "error: OpenAI API Key not set",
-      ERROR_CODE_INVALID_CONFIGURATION,
+    throw new TerminalAIError(
+      ErrorCode.InvalidConfiguration,
+      "api key not configured",
     );
   }
 

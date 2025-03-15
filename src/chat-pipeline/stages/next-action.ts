@@ -4,7 +4,7 @@ import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
 import { ChatActions } from "../../chat-actions";
-import { TerminatingError } from "../../lib/errors";
+import { ErrorCode, TerminalAIError } from "../../lib/errors";
 
 //  If a truthy string is returned, then it should be considered the next part
 //  of the input to a chat.
@@ -60,8 +60,9 @@ export async function nextAction(
   //  Find the action that was selected.
   const action = ChatActions.find((ca) => ca.id === answer);
   if (!action) {
-    throw new TerminatingError(
-      `Unable to find definition for action '${answer}'`,
+    throw new TerminalAIError(
+      ErrorCode.InvalidOperation,
+      `unable to find definition for action '${answer}' - try updating your installation`,
     );
   }
 
