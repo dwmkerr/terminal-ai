@@ -150,15 +150,13 @@ export function enrichConfiguration(
   data: DeepPartial<Configuration>,
 ): Configuration {
   const newConfig = { ...config };
-  if (data.openAiApiKey !== undefined) {
-    newConfig.openAiApiKey = data.openAiApiKey;
-  }
-  if (data?.openai?.model !== undefined) {
-    newConfig.openai.model = data.openai.model;
-  }
-  if (data?.openai?.baseURL !== undefined) {
-    newConfig.openai.baseURL = data.openai.baseURL;
-  }
+
+  //  OpenAI configuration.
+  enrichProperty(newConfig, "openAiApiKey", data.openAiApiKey);
+  enrichProperty(newConfig, "openai.model", data.openai?.model);
+  enrichProperty(newConfig, "openai.baseURL", data.openai?.baseURL);
+
+  //  Prompt configuration.
   if (data?.prompts?.chat?.context !== undefined) {
     const prompts = data.prompts.chat.context.filter((p) => p !== undefined);
     newConfig.prompts.chat.context.push(...prompts);
@@ -167,6 +165,8 @@ export function enrichConfiguration(
     const prompts = data.prompts.code.output.filter((p) => p !== undefined);
     newConfig.prompts.code.output.push(...prompts);
   }
+
+  //  Langfuse configuration.
   if (data?.integrations?.langfuse !== undefined) {
     const lf = data.integrations.langfuse;
     if (!newConfig.integrations.langfuse) {
@@ -178,12 +178,10 @@ export function enrichConfiguration(
     enrichProperty(newConfig, "integrations.langfuse.baseUrl", lf.baseUrl);
     enrichProperty(newConfig, "integrations.langfuse.traceName", lf.traceName);
   }
-  if (data?.debug?.enable !== undefined) {
-    newConfig.debug.enable = data.debug.enable;
-  }
-  if (data?.debug?.namespace !== undefined) {
-    newConfig.debug.namespace = data.debug.namespace;
-  }
+
+  //  Debug configuration.
+  enrichProperty(newConfig, "debug.enable", data.debug?.enable);
+  enrichProperty(newConfig, "debug.namespace", data.debug?.namespace);
   return newConfig;
 }
 
