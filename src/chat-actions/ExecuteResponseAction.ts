@@ -3,8 +3,8 @@ import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters"
 import { ChatResponse } from "../chat-pipeline/stages/parse-response";
 import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
-import { TerminatingError } from "../lib/errors";
 import { execCommand } from "../lib/cli-helpers";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 export const ExecuteResponseAction: ChatAction = {
   id: "execute_response",
@@ -19,7 +19,8 @@ export const ExecuteResponseAction: ChatAction = {
     response?: ChatResponse,
   ): Promise<string | undefined> => {
     if (response === undefined) {
-      throw new TerminatingError(
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
         `a response must be provided to the 'execute' action`,
       );
     }

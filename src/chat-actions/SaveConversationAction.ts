@@ -3,8 +3,8 @@ import theme, { deleteLinesAboveCursor } from "../theme";
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
 import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
-import { TerminatingError } from "../lib/errors";
 import { saveAs } from "../lib/save-as";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 export const SaveConversationAction: ChatAction = {
   id: "save_conversation",
@@ -35,7 +35,11 @@ export const SaveConversationAction: ChatAction = {
         console.log(`✅ Conversation history saved to ${path}!`);
       }
     } catch (err) {
-      throw new TerminatingError("Error saving conversation");
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
+        `saving conversation error: ${err}`,
+        err as Error,
+      );
     }
 
     return undefined;

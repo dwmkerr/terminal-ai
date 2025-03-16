@@ -1,11 +1,8 @@
 import axios from "axios";
-import {
-  ERROR_CODE_INVALID_CONFIGURATION,
-  TerminatingWarning,
-} from "../lib/errors";
 import * as theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
 import { Configuration } from "../configuration/configuration";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 //  Note there is a good overview of new features here:
 //  https://openai.com/index/new-embedding-models-and-api-updates/
@@ -24,9 +21,9 @@ export async function usage(
 
   //  Check we have an API key.
   if (config.openAiApiKey === "") {
-    throw new TerminatingWarning(
-      "Warning: Your OpenAI API key is not set, try 'ai init'",
-      ERROR_CODE_INVALID_CONFIGURATION,
+    throw new TerminalAIError(
+      ErrorCode.InvalidConfiguration,
+      "your OpenAI API key is not set, try 'ai init'",
     );
   }
 

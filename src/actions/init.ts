@@ -1,15 +1,12 @@
 import { confirm, password, select } from "@inquirer/prompts";
-import { TerminatingError } from "../lib/errors";
 import * as theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
-import {
-  Configuration,
-  saveApiKey,
-  saveModel,
-} from "../configuration/configuration";
+import { Configuration } from "../configuration/configuration";
 import { Actions } from "./actions";
-import { check } from "../commands/check";
+import { check } from "../commands/check/check";
 import { selectModel } from "../commands/init/select-model";
+import { saveApiKey, saveModel } from "../configuration/utils";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 export type InitResult = {
   nextAction: Actions;
@@ -28,7 +25,10 @@ export async function init(
 
   //  We can only init when interactive.
   if (!interactive) {
-    throw new TerminatingError("Error: 'init' can only be run interactively");
+    throw new TerminalAIError(
+      ErrorCode.InvalidOperation,
+      "'init' must be run interactively (TTY)",
+    );
   }
 
   //  If we have an API key, offer to change it.

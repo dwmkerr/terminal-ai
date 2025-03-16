@@ -2,8 +2,8 @@ import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters"
 import { ChatResponse } from "../chat-pipeline/stages/parse-response";
 import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
-import { TerminatingError } from "../lib/errors";
 import { writeClipboard } from "../lib/clipboard";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 export const CopyResponseAction: ChatAction = {
   id: "copy_response",
@@ -18,7 +18,8 @@ export const CopyResponseAction: ChatAction = {
     response?: ChatResponse,
   ): Promise<string | undefined> => {
     if (response === undefined) {
-      throw new TerminatingError(
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
         `a response must be provided to the 'copy' action`,
       );
     }

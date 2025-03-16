@@ -4,8 +4,8 @@ import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters"
 import { ChatResponse } from "../chat-pipeline/stages/parse-response";
 import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
-import { TerminatingError } from "../lib/errors";
 import { saveAs } from "../lib/save-as";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 export const SaveResponseAction: ChatAction = {
   id: "save_response",
@@ -20,8 +20,9 @@ export const SaveResponseAction: ChatAction = {
     response?: ChatResponse,
   ): Promise<string | undefined> => {
     if (response === undefined) {
-      throw new TerminatingError(
-        `a response must be provided to the 'save' action`,
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
+        "response is missing in 'save response'",
       );
     }
 
@@ -39,7 +40,11 @@ export const SaveResponseAction: ChatAction = {
         console.log(`✅ Response saved to ${path}!`);
       }
     } catch (err) {
-      throw new TerminatingError("Error saving response");
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
+        `error saving response: ${err}`,
+        err as Error,
+      );
     }
 
     return undefined;

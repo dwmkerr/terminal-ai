@@ -1,5 +1,3 @@
-// __tests__/buildContext.test.js
-
 import { getDefaultConfiguration } from "../../configuration/configuration";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { buildContext } from "./build-context";

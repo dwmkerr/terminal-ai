@@ -1,27 +1,65 @@
-export const ERROR_CODE_WARNING = 1;
-export const ERROR_CODE_INVALID_CONFIGURATION = 2;
-export const ERROR_CODE_CONNECTION = 3;
-export const ERROR_CODE_OPENAI_ERROR = 4;
-export const ERROR_CODE_UNKNOWN = 99;
+export const enum ErrorCode {
+  //  Fallback when we cannot determine what the error is (e.g. we cannot
+  //  translate an upstream error).
+  Unknown = 1,
+  Warning = 10,
+  ExitPrompt = 11,
+  InvalidConfiguration = 12,
+  Connection = 13,
+  InvalidOperation = 14,
+  OpenAIError = 20,
+  OpenAIPermissionDeniedError = 21,
+  OpenAIAuthenticationError = 22,
+  OpenAIRateLimitError = 23,
 
-export class TerminatingWarning extends Error {
-  errorCode: number;
-  constructor(message: string, errorCode: number = ERROR_CODE_WARNING) {
-    super(message);
-    this.name = this.constructor.name;
-    this.errorCode = errorCode;
-    Object.setPrototypeOf(this, TerminatingWarning.prototype);
-    Error.captureStackTrace(this, this.constructor);
+  //  Integrations.
+  LangfuseError = 30,
+}
+
+export function errorCodeName(errorCode: ErrorCode): string {
+  switch (errorCode) {
+    case ErrorCode.Unknown:
+      return "Unknown Error";
+    case ErrorCode.ExitPrompt:
+      return "Exit Prompt";
+    case ErrorCode.InvalidConfiguration:
+      return "Invalid Configuration";
+    case ErrorCode.Connection:
+      return "Connection Error";
+    case ErrorCode.InvalidOperation:
+      return "Invaoid Operation";
+    case ErrorCode.OpenAIError:
+      return "OpenAI Error";
+    case ErrorCode.OpenAIPermissionDeniedError:
+      return "OpenAI Permission Denied";
+    case ErrorCode.OpenAIAuthenticationError:
+      return "OpenAI Authentication Error";
+    case ErrorCode.OpenAIRateLimitError:
+      return "OpenAI Rate Limit Error";
+
+    //  Integrations.
+    case ErrorCode.LangfuseError:
+      return "Langfuse Error";
+
+    default:
+      return "Unknown Error";
   }
 }
 
-export class TerminatingError extends Error {
-  errorCode: number;
-  constructor(message: string, errorCode: number = ERROR_CODE_WARNING) {
+//  When we call 'translateError' we will always transform into this error type.
+export class TerminalAIError extends Error {
+  errorCode: ErrorCode;
+  innerError: Error | undefined;
+  constructor(
+    errorCode: ErrorCode,
+    message: string,
+    innerError: Error | undefined = undefined,
+  ) {
     super(message);
-    this.name = this.constructor.name;
+    this.name = errorCodeName(errorCode);
     this.errorCode = errorCode;
-    Object.setPrototypeOf(this, TerminatingError.prototype);
+    this.innerError = innerError;
+    Object.setPrototypeOf(this, TerminalAIError.prototype);
     Error.captureStackTrace(this, this.constructor);
   }
 }

@@ -9,25 +9,20 @@ import { chat } from "./actions/chat";
 import { debug as debugCommand } from "./commands/debug";
 
 import theme from "./theme";
-import {
-  ERROR_CODE_CONNECTION,
-  TerminatingError,
-  TerminatingWarning,
-} from "./lib/errors";
+import { ErrorCode } from "./lib/errors";
 import packageJson from "../package.json";
 import { ExecutionContext } from "./lib/execution-context";
-import {
-  configFilePath,
-  Configuration,
-  getConfiguration,
-} from "./configuration/configuration";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
 import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
-import { check } from "./commands/check";
+import { check } from "./commands/check/check";
 import { init } from "./actions/init";
 import { Actions } from "./actions/actions";
 import { usage } from "./commands/usage";
 import { readStdin } from "./lib/read-stdin";
+import { Configuration } from "./configuration/configuration";
+import { configFilePath, getConfiguration } from "./configuration/utils";
+import { integrateLangfuse } from "./integrations/langfuse";
+import { translateError } from "./lib/translate-error";
 const cli = async (
   program: Command,
   executionContext: ExecutionContext,
@@ -184,49 +179,48 @@ async function main() {
     hydrateDefaultConfig();
     const config = await getConfiguration();
 
+    //  Enable any integrations.
+    executionContext.integrations = {
+      langfuse: integrateLangfuse(config),
+    };
+
     //  Now create and execute the program.
     const program = new Command();
     await cli(program, executionContext, config);
     await program.parseAsync();
-    // TODO(refactor): better error typing.
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  } catch (err: any) {
+  } catch (err) {
+    const error = translateError(err);
     //  Note that when we write errors, we format them with colours only if
     //  stdout appears to be a TTY.
 
     //  Handle inquirer Ctrl+C.
-    if (err instanceof Error && err.name === "ExitPromptError") {
+    if (error.errorCode === ErrorCode.ExitPrompt) {
       if (executionContext.isTTYstdout) {
         console.log("Goodbye!");
       }
-    } else if (err instanceof TerminatingWarning) {
+    } else if (error.errorCode === ErrorCode.Warning) {
+      //  Handle warnings - they don't fail the app but do close it.
       console.log(
-        theme.printWarning(err.message, executionContext.isTTYstdout),
+        theme.printWarning(error.message, executionContext.isTTYstdout),
       );
       //  Note: warnings do *not* fail the app, but this is likely a bad pattern.
-      process.exit(0);
-    } else if (err instanceof TerminatingError) {
-      console.log(theme.printError(err.message, executionContext.isTTYstdout));
-      process.exit(err.errorCode);
-    } else if (err.code === "ENOTFOUND") {
-      console.log(
-        theme.printError(
-          "Address not found - check internet connection",
-          executionContext.isTTYstdout,
-        ),
-      );
-      process.exit(ERROR_CODE_CONNECTION);
-    } else if (err.code === "ERR_TLS_CERT_ALTNAME_INVALID") {
-      console.log(
-        theme.printError(
-          "Invalid certificate - check internet connection",
-          executionContext.isTTYstdout,
-        ),
-      );
-      process.exit(ERROR_CODE_CONNECTION);
+      return process.exit(0);
     } else {
-      throw err;
+      //  Handle any other error.
+      console.log(
+        theme.printError(
+          `${error.name}: ${error.message}`,
+          executionContext.isTTYstdout,
+        ),
+      );
+      return process.exit(error.errorCode);
     }
+  }
+
+  //  We're shutting down, if we have the langfuse itegration wait for it to
+  //  flush.
+  if (executionContext.integrations?.langfuse?.langfuse) {
+    await executionContext.integrations.langfuse.langfuse.shutdownAsync();
   }
 }
 main().catch(console.error);

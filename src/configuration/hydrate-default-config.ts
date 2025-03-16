@@ -1,8 +1,7 @@
 import fs from "fs";
 import path from "path";
 import dbg from "debug";
-
-import { promptFolders } from "../configuration/configuration";
+import { promptFolders } from "./utils";
 
 const debug = dbg("ai:configuration");
 
