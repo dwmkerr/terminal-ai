@@ -13,7 +13,7 @@ import {
 
 const debug = dbg("ai:configuration");
 
-type DeepPartial<T> = T extends object
+export type DeepPartial<T> = T extends object
   ? {
       [P in keyof T]?: DeepPartial<T[P]>;
     }

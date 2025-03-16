@@ -58,7 +58,7 @@ export function getDefaultConfiguration(): Configuration {
 export function getDefaultConfigurationLangfuseIntegration(): LangfuseIntegrationConfiguration {
   return {
     secretKey: "",
-    publicKey: "baseUrl",
+    publicKey: "",
     baseUrl: "https://cloud.langfuse.com",
     traceName: "terminal-ai",
   };
