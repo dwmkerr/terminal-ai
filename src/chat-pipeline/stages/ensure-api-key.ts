@@ -2,7 +2,7 @@ import dbg from "debug";
 
 import { ExecutionContext } from "../../lib/execution-context";
 import { Configuration } from "../../configuration/configuration";
-import { init } from "../../actions/init";
+import { init } from "../../commands/init/init";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
 const debug = dbg("ai:ensure-api-key");
 

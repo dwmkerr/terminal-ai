@@ -4,7 +4,7 @@ import fs from "fs";
 import dbg from "debug";
 import { Command } from "commander";
 
-import { chat } from "./actions/chat";
+import { chat } from "./commands/chat/chat";
 
 import { debug as debugCommand } from "./commands/debug";
 
@@ -15,8 +15,8 @@ import { ExecutionContext } from "./lib/execution-context";
 import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
 import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
 import { check } from "./commands/check/check";
-import { init } from "./actions/init";
-import { Actions } from "./actions/actions";
+import { init } from "./commands/init/init";
+import { Commands } from "./commands/commands";
 import { usage } from "./commands/usage";
 import { readStdin } from "./lib/read-stdin";
 import { Configuration } from "./configuration/configuration";
@@ -74,13 +74,13 @@ const cli = async (
     .command("init")
     .description("Set or update configuration")
     .action(async () => {
-      const { nextAction, updatedConfig } = await init(
+      const { nextCommand, updatedConfig } = await init(
         executionContext,
         config,
         true,
       );
       //  The only possible next action is chat or quit.
-      if (nextAction === Actions.Chat) {
+      if (nextCommand === Commands.Chat) {
         return chat(
           executionContext,
           updatedConfig,

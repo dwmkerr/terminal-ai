@@ -1,15 +1,15 @@
 import { confirm, password, select } from "@inquirer/prompts";
-import * as theme from "../theme";
-import { ExecutionContext } from "../lib/execution-context";
-import { Configuration } from "../configuration/configuration";
-import { Actions } from "./actions";
-import { check } from "../commands/check/check";
-import { selectModel } from "../commands/init/select-model";
-import { saveApiKey, saveModel } from "../configuration/utils";
-import { ErrorCode, TerminalAIError } from "../lib/errors";
+import * as theme from "../../theme";
+import { ExecutionContext } from "../../lib/execution-context";
+import { Configuration } from "../../configuration/configuration";
+import { Commands } from "../commands";
+import { check } from "../check/check";
+import { selectModel } from "../init/select-model";
+import { saveApiKey, saveModel } from "../../configuration/utils";
+import { ErrorCode, TerminalAIError } from "../../lib/errors";
 
 export type InitResult = {
-  nextAction: Actions;
+  nextCommand: Commands;
   updatedConfig: Configuration;
 };
 
@@ -80,7 +80,7 @@ export async function init(
 
   //  Ask for the next action if we have chosen this option.
   if (!askNextAction) {
-    return { nextAction: Actions.Unknown, updatedConfig };
+    return { nextCommand: Commands.Unknown, updatedConfig };
   }
   const answer = await select({
     message: theme.inputPrompt("What next?"),
@@ -97,8 +97,8 @@ export async function init(
     ],
   });
   if (answer === "chat") {
-    return { nextAction: Actions.Chat, updatedConfig };
+    return { nextCommand: Commands.Chat, updatedConfig };
   }
 
-  return { nextAction: Actions.Quit, updatedConfig };
+  return { nextCommand: Commands.Quit, updatedConfig };
 }
