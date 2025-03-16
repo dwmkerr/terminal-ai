@@ -1,3 +1,12 @@
+export interface LangfuseIntegrationConfiguration {
+  secretKey: string;
+  publicKey: string;
+  baseUrl: string;
+  //  Note: many other options for langfuse beyond this:
+  //  https://langfuse.com/docs/sdk/typescript/guide#trace
+  traceName: string;
+}
+
 export interface Configuration {
   openAiApiKey: string;
   openai: {
@@ -15,14 +24,7 @@ export interface Configuration {
     };
   };
   integrations: {
-    langfuse?: {
-      secretKey: string;
-      publicKey: string;
-      baseUrl: string;
-      //  Note: many other options for langfuse beyond this:
-      //  https://langfuse.com/docs/sdk/typescript/guide#trace
-      traceName: string;
-    };
+    langfuse?: LangfuseIntegrationConfiguration;
   };
   debug: {
     enable: boolean;
@@ -53,7 +55,7 @@ export function getDefaultConfiguration(): Configuration {
   };
 }
 
-export function getDefaultConfigurationLangfuseIntegration() {
+export function getDefaultConfigurationLangfuseIntegration(): LangfuseIntegrationConfiguration {
   return {
     secretKey: "",
     publicKey: "baseUrl",

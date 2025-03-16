@@ -68,7 +68,7 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
   );
   console.log(
     printMessage(
-      `⚠️  Langfuse testing is inconsistent, always check your traces are logged`,
+      `⚠️  Langfuse testing has bugs (#70) , always check your traces are logged`,
       interactive,
     ),
   );
