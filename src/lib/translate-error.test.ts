@@ -3,11 +3,11 @@ import { translateError } from "./translate-error";
 import { ErrorCode } from "./errors";
 
 describe("translateError", () => {
-  it("should rethrow ExitPromptError without wrapping it", () => {
+  it("should translate inquirer.js ExitPromptError", () => {
     const err = new Error("User exited");
     err.name = "ExitPromptError";
     const translated = translateError(err);
-    expect(translated).toBe(err);
+    expect(translated.name).toBe("Exit Prompt");
   });
 
   //  Note that we seem to create these errors incorrectly, meaning the type
@@ -20,7 +20,7 @@ describe("translateError", () => {
       undefined,
     );
     const translated = translateError(err);
-    expect(translated.message).toMatch(/OpenAI Permission Error/);
+    expect(translated.name).toMatch(/OpenAI Permission Error/);
     expect(translated.message).toMatch(/ai check/);
     expect(translated.errorCode).toBe(ErrorCode.OpenAIPermissionDeniedError);
   });
@@ -33,7 +33,7 @@ describe("translateError", () => {
       undefined,
     );
     const translated = translateError(err);
-    expect(translated.message).toMatch(/OpenAI Authentication Error/);
+    expect(translated.name).toMatch(/OpenAI Authentication Error/);
     expect(translated.message).toMatch(/ai check/);
     expect(translated.errorCode).toBe(ErrorCode.OpenAIAuthenticationError);
   });
@@ -51,26 +51,26 @@ describe("translateError", () => {
     expect(translated.errorCode).toBe(ErrorCode.OpenAIRateLimitError);
   });
 
-  it("should handle errors with a code property", () => {
-    const err = { code: "custom-code" };
-    const translated = translateError(err);
-    expect(translated.message).toMatch(/OpenAI Error 'custom-code'/);
-    expect(translated.message).toMatch(/ai check/);
-    expect(translated.errorCode).toBe(ErrorCode.OpenAIError);
-  });
-
   it("should handle connection errors", () => {
     const err = "Connection error: network is down";
     const translated = translateError(err);
-    expect(translated.message).toMatch(/Connection Error/);
+    expect(translated.name).toMatch(/Connection Error/);
     expect(translated.message).toMatch(/internet connection/);
     expect(translated.errorCode).toBe(ErrorCode.Connection);
   });
 
-  it("should handle unknown errors", () => {
+  it("should handle unknown errors with a code property", () => {
+    const err = { code: "custom-code" };
+    const translated = translateError(err);
+    expect(translated.name).toMatch("Unknown Error");
+    expect(translated.message).toMatch(/error code 'custom-code'/);
+    expect(translated.errorCode).toBe(ErrorCode.Unknown);
+  });
+
+  it("should handle unknown errors with0ut a code property", () => {
     const err = "An unexpected error occurred that is not handled";
     const translated = translateError(err);
-    expect(translated.message).toMatch(/Unknown Error/);
+    expect(translated.name).toMatch(/Unknown Error/);
     expect(translated.message).toMatch(/ai check|AI_DEBUG_ENABLE=1/);
     expect(translated.errorCode).toBe(ErrorCode.Unknown);
   });

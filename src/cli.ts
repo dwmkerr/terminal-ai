@@ -220,10 +220,7 @@ async function main() {
   //  We're shutting down, if we have the langfuse itegration wait for it to
   //  flush.
   if (executionContext.integrations?.langfuse?.langfuse) {
-    const start = Date.now();
-    await executionContext.integrations.langfuse.langfuse.flushAsync();
-    const end = Date.now();
-    debugger;
+    await executionContext.integrations.langfuse.langfuse.shutdownAsync();
   }
 }
 main().catch(console.error);

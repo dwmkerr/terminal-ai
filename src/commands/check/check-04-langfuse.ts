@@ -65,6 +65,8 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
       `✅ Langfuse tested - no errors in ${monitorSeconds}s`,
       interactive,
     ),
+  );
+  console.log(
     printMessage(
       `⚠️  Langfuse testing is inconsistent, always check your traces are logged`,
       interactive,

@@ -76,7 +76,7 @@ export function translateError(err: any): TerminalAIError {
   if (code) {
     return new TerminalAIError(
       ErrorCode.Unknown,
-      `error code ${code} - try 'ai check' to validate your config`,
+      `error code '${code}' - try 'ai check' to validate your config`,
     );
   }
 

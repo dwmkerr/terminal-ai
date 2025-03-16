@@ -123,7 +123,7 @@ export function getConfigurationFromPromptsFolder(
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-function enrichProperty<T extends Record<string, any>>(
+export function enrichProperty<T extends Record<string, any>>(
   obj: T,
   path: string,
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
