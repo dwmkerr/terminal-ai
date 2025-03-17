@@ -23,5 +23,7 @@ export async function buildOutputIntentContext(
 
   //  Expand each context prompt.
   debug("'code' output intent detected, creating prompts...");
-  return params.config.prompts.code.output.map((c) => expandContext(c, env));
+  return params.executionContext.config.prompts.code.output.map((c) =>
+    expandContext(c, env),
+  );
 }

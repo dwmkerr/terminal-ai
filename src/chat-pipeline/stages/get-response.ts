@@ -27,13 +27,13 @@ export async function getCompletionsResponse(
     if (lf) {
       generation = lf.trace.generation({
         name: "chat-completion",
-        model: params.config.openai.model,
+        model: params.executionContext.config.openai.model,
         input: messages,
       });
     }
     const completion = await openai.chat.completions.create({
       messages,
-      model: params.config.openai.model,
+      model: params.executionContext.config.openai.model,
     });
     generation?.end({ output: completion });
     spinner.stop();

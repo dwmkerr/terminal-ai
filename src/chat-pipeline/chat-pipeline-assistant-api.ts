@@ -15,10 +15,7 @@ import { translateError } from "../lib/translate-error";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
-  const config = await ensureApiKey(
-    parameters.executionContext,
-    parameters.config,
-  );
+  const config = await ensureApiKey(parameters.executionContext);
   const params = { ...parameters, config };
   const openai = new OpenAI({
     baseURL: config.openai.baseURL,
