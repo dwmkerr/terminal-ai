@@ -1,26 +1,18 @@
 import { confirm, password, select } from "@inquirer/prompts";
 import * as theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
-import { Configuration } from "../configuration/configuration";
 import { Actions } from "./actions";
 import { check } from "../commands/check/check";
 import { selectModel } from "../commands/init/select-model";
 import { saveApiKey, saveModel } from "../configuration/utils";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
 
-export type InitResult = {
-  nextAction: Actions;
-  updatedConfig: Configuration;
-};
-
 export async function init(
   executionContext: ExecutionContext,
   askNextAction: boolean,
-): Promise<InitResult> {
+): Promise<Actions> {
   const interactive = executionContext.isTTYstdin;
-  const updatedConfig = {
-    ...executionContext.config,
-  };
+  const config = executionContext.config;
 
   //  We can only init when interactive.
   if (!interactive) {
@@ -31,7 +23,7 @@ export async function init(
   }
 
   //  If we have an API key, offer to change it.
-  if (updatedConfig.openAiApiKey !== "") {
+  if (config.openAiApiKey !== "") {
     theme.printHint(
       "Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...",
     );
@@ -40,18 +32,20 @@ export async function init(
       message: "OpenAI API Key [leave blank to keep existing]:",
     });
     if (apiKey !== "") {
-      updatedConfig.openAiApiKey = apiKey;
+      //  Note this is not ideal as we are mutating execution state, but needed
+      //  as we might shortly run a _new_ command such as init.
+      config.openAiApiKey = apiKey;
       saveApiKey(apiKey);
     }
   }
 
   //  If we don't have an API key, ask for one.
-  if (updatedConfig.openAiApiKey === "") {
+  if (config.openAiApiKey === "") {
     theme.printHint(
       "Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...",
     );
     const apiKey = await password({ mask: true, message: "OpenAI API Key:" });
-    updatedConfig.openAiApiKey = apiKey;
+    config.openAiApiKey = apiKey;
     saveApiKey(apiKey);
   }
 
@@ -61,9 +55,9 @@ export async function init(
     default: false,
   });
   if (advanced) {
-    const model = await selectModel(updatedConfig.openai.model);
+    const model = await selectModel(config.openai.model);
     if (model !== undefined) {
-      updatedConfig.openai.model = model;
+      config.openai.model = model;
       saveModel(model);
     }
   }
@@ -79,7 +73,7 @@ export async function init(
 
   //  Ask for the next action if we have chosen this option.
   if (!askNextAction) {
-    return { nextAction: Actions.Unknown, updatedConfig };
+    return Actions.Unknown;
   }
   const answer = await select({
     message: theme.inputPrompt("What next?"),
@@ -96,8 +90,8 @@ export async function init(
     ],
   });
   if (answer === "chat") {
-    return { nextAction: Actions.Chat, updatedConfig };
+    return Actions.Chat;
   }
 
-  return { nextAction: Actions.Quit, updatedConfig };
+  return Actions.Quit;
 }
