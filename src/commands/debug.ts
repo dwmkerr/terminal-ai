@@ -1,4 +1,3 @@
-import { Configuration } from "../configuration/configuration";
 import { ExecutionContext } from "../lib/execution-context";
 import { printResponse } from "../theme";
 import { debugInput } from "./debug/input";
@@ -6,7 +5,6 @@ import { debugModels } from "./debug/models";
 
 export async function debug(
   executionContext: ExecutionContext,
-  config: Configuration,
   command: string,
   parameters: string[],
 ) {
@@ -39,6 +37,6 @@ echo "Hello, World!"
   } else if (command === "models") {
     await debugModels();
   } else if (command === "input") {
-    await debugInput(executionContext, config);
+    await debugInput(executionContext);
   }
 }

@@ -1,19 +1,15 @@
 import dbg from "debug";
 
 import { ExecutionContext } from "../../lib/execution-context";
-import { Configuration } from "../../configuration/configuration";
-import { init } from "../../actions/init";
+import { init } from "../../commands/init/init";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
 const debug = dbg("ai:ensure-api-key");
 
-export async function ensureApiKey(
-  executionContext: ExecutionContext,
-  config: Configuration,
-): Promise<Configuration> {
+export async function ensureApiKey(executionContext: ExecutionContext) {
   //  If we already have a key, we're done.
-  if (config.openAiApiKey !== "") {
+  if (executionContext.config.openAiApiKey !== "") {
     debug("key already configured");
-    return config;
+    return executionContext.config;
   }
 
   //  We don't have a key, if we're not interactive on stdin we cannot continue.
@@ -34,6 +30,7 @@ Enter your key below, or for instructions check:
   https://github.com/dwmkerr/terminal-ai#api-key
 `,
   );
-  const { updatedConfig } = await init(executionContext, config, false);
-  return updatedConfig;
+  //  'init' will mutate our execution config with new keys etc.
+  await init(executionContext, false);
+  return;
 }
