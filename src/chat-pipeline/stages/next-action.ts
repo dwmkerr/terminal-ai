@@ -18,8 +18,9 @@ export async function nextAction(
   //  search input with some defaults shown.
   //  Only show debug actions if we're in debug mode.
   //  Only show initial actions if we're in the initial prompt.
+  const config = params.executionContext.config;
   const choices = ChatActions.filter((ca) =>
-    ca.isDebugAction ? params.config.debug.enable : true,
+    ca.isDebugAction ? config.debug.enable : true,
   )
     .filter((ca) =>
       initialInputActions ? ca.isInitialInteractionAction : true,

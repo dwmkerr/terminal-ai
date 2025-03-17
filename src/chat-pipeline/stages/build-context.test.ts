@@ -13,15 +13,16 @@ describe("buildContext", () => {
         enableContextPrompts: true,
         enableOutputPrompts: true,
       },
-      config: getDefaultConfiguration(),
       executionContext: {
+        config: getDefaultConfiguration(),
         stdinContent: undefined,
         isTTYstdin: true,
         isTTYstdout: true,
-        firstTime: false,
       },
     };
-    params.config.prompts.chat.context = ["'${ENV_VAR}' is available"];
+    params.executionContext.config.prompts.chat.context = [
+      "'${ENV_VAR}' is available",
+    ];
     const env = { ENV_VAR: "value" };
     const context = await buildContext(params, env);
     expect(context).toHaveLength(1);
@@ -38,12 +39,11 @@ describe("buildContext", () => {
         enableContextPrompts: true,
         enableOutputPrompts: true,
       },
-      config: getDefaultConfiguration(),
       executionContext: {
+        config: getDefaultConfiguration(),
         stdinContent: undefined,
         isTTYstdin: true,
         isTTYstdout: true,
-        firstTime: false,
       },
     };
     params.options.enableContextPrompts = false;
@@ -61,12 +61,11 @@ describe("buildContext", () => {
         enableContextPrompts: true,
         enableOutputPrompts: true,
       },
-      config: getDefaultConfiguration(),
       executionContext: {
+        config: getDefaultConfiguration(),
         stdinContent: undefined,
         isTTYstdin: true,
         isTTYstdout: true,
-        firstTime: false,
       },
     };
     params.executionContext.stdinContent = "This is stdin content";

@@ -10,7 +10,9 @@ export async function buildContext(
 ): Promise<ExpandedContext[]> {
   //  Expand each context prompt, as long as expansion is enabled.
   const contextPrompts = params.options.enableContextPrompts
-    ? params.config.prompts.chat.context.map((c) => expandContext(c, env))
+    ? params.executionContext.config.prompts.chat.context.map((c) =>
+        expandContext(c, env),
+      )
     : [];
 
   //  Create our stdin template. Once stdin is stable we'll extract this

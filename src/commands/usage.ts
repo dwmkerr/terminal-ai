@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as theme from "../theme";
 import { ExecutionContext } from "../lib/execution-context";
-import { Configuration } from "../configuration/configuration";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 //  Note there is a good overview of new features here:
@@ -9,9 +8,9 @@ import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 export async function usage(
   executionContext: ExecutionContext,
-  config: Configuration,
 ): Promise<string | null> {
   const interactive = executionContext.isTTYstdin;
+  const config = executionContext.config;
   console.log(
     theme.printWarning(
       `This capability is work-in-progress and experimental only`,
