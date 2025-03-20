@@ -1,15 +1,17 @@
 import fs from "fs";
 import os from "os";
 import path from "path";
-import yaml from "js-yaml";
 import dbg from "debug";
+import yaml from "js-yaml";
 
 import { ErrorCode, TerminalAIError } from "../lib/errors";
 import {
   Configuration,
   getDefaultConfiguration,
   getDefaultConfigurationLangfuseIntegration,
+  ConfigurationPaths,
 } from "./configuration";
+import { loadConfigurationFromFileContents } from "./configuration-file";
 
 const debug = dbg("ai:configuration");
 
@@ -19,11 +21,6 @@ export type DeepPartial<T> = T extends object
     }
   : T;
 
-export const configDir = ".ai";
-export const configFilePath = `${configDir}/config.yaml`;
-export const chatPromptsPath = `${configDir}/prompts/chat/context`;
-export const codeOutputPromptsPath = `${configDir}/prompts/code/output`;
-
 export function promptFolders() {
   //  Build the path to the 'src' folder.
   const __project_dir = path.resolve(__dirname, "../..");
@@ -31,17 +28,23 @@ export function promptFolders() {
   return {
     chatPrompts: {
       src: path.join(__project_dir, `./prompts/chat/context`),
-      dest: path.join(os.homedir(), `${configDir}/prompts/chat/context`),
+      dest: path.join(
+        os.homedir(),
+        `${ConfigurationPaths.configDir}/prompts/chat/context`,
+      ),
     },
     codePrompts: {
       src: path.join(__project_dir, `./prompts/code/output`),
-      dest: path.join(os.homedir(), `${configDir}/prompts/code/output`),
+      dest: path.join(
+        os.homedir(),
+        `${ConfigurationPaths.configDir}/prompts/code/output`,
+      ),
     },
   };
 }
 
 export function getConfigPath(): string {
-  return path.join(os.homedir(), configFilePath);
+  return path.join(os.homedir(), ConfigurationPaths.configFilePath);
 }
 
 export function getConfigurationFromFile(
@@ -55,8 +58,7 @@ export function getConfigurationFromFile(
   //  Load the configuration structure.
   try {
     const fileContents = fs.readFileSync(path, "utf8");
-    const contents = yaml.load(fileContents) as DeepPartial<Configuration>;
-    return contents;
+    return loadConfigurationFromFileContents(fileContents);
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new TerminalAIError(
@@ -216,8 +218,8 @@ export function saveApiKey(apiKey: string) {
   try {
     //  Ensure the config directory exists.
     // Check if the directory exists
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir);
+    if (!fs.existsSync(ConfigurationPaths.configDir)) {
+      fs.mkdirSync(ConfigurationPaths.configDir);
     }
 
     //  We might be updating an existing file, if so get its contents.
@@ -244,8 +246,8 @@ export function saveModel(model: string) {
   try {
     //  Ensure the config directory exists.
     // Check if the directory exists
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir);
+    if (!fs.existsSync(ConfigurationPaths.configDir)) {
+      fs.mkdirSync(ConfigurationPaths.configDir);
     }
 
     //  We might be updating an existing file, if so get its contents.

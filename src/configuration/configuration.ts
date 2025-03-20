@@ -1,3 +1,10 @@
+export const ConfigurationPaths = {
+  configDir: ".ai",
+  configFilePath: `.ai/config.yaml`,
+  chatPromptsPath: `.ai/prompts/chat/context`,
+  codeOutputPromptsPath: `.ai/prompts/code/output`,
+};
+
 export interface LangfuseIntegrationConfiguration {
   secretKey: string;
   publicKey: string;
