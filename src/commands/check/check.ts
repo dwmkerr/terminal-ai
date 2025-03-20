@@ -11,6 +11,8 @@ export async function check(executionContext: ExecutionContext) {
   const config = executionContext.config;
 
   //  Create the OpenAI instance we'll use for a lot of the rest of the checks.
+  console.log("bu", config.openai.baseURL);
+  console.log("ai", config.openAiApiKey);
   const openai = new OpenAI({
     baseURL: config.openai.baseURL,
     apiKey: config.openAiApiKey,
