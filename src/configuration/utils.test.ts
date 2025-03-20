@@ -33,11 +33,9 @@ describe("configuration", () => {
         };
         const enriched = enrichConfiguration(config, partial);
         const expected: Configuration = {
-          openAiApiKey: "",
-          openai: {
-            baseURL: "https://api.openai.com/v1/",
-            model: "gpt-3.5-turbo",
-          },
+          apiKey: "",
+          baseURL: "https://api.openai.com/v1/",
+          model: "gpt-3.5-turbo",
           prompts: {
             chat: {
               context: [],

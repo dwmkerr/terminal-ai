@@ -7,7 +7,7 @@ const debug = dbg("ai:ensure-api-key");
 
 export async function ensureApiKey(executionContext: ExecutionContext) {
   //  If we already have a key, we're done.
-  if (executionContext.config.openAiApiKey !== "") {
+  if (executionContext.config.apiKey !== "") {
     debug("key already configured");
     return executionContext.config;
   }

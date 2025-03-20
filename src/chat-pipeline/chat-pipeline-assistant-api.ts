@@ -19,8 +19,8 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   const config = parameters.executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({
-    baseURL: config.openai.baseURL,
-    apiKey: config.openAiApiKey,
+    apiKey: config.apiKey,
+    baseURL: config.baseURL,
   });
 
   //  Create the assistant.

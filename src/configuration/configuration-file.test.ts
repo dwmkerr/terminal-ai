@@ -15,10 +15,10 @@ describe("configuration", () => {
       });
     });
 
-    xtest("will ignore unused contents", () => {
+    test("will fail for malformed YAML", () => {
       //  If our config file is malformed, we should fail.
-      const load = () => loadConfigurationFromFileContents(":invalid-yaml");
-      expect(load).toThrow(/some error/);
+      const load = () => loadConfigurationFromFileContents("{{}");
+      expect(load).toThrow(/YAML Error in config file/);
     });
 
     test("can load basic provider configuration", () => {
@@ -28,8 +28,27 @@ apiKey: secret
 baseURL: url
 model: gpt4.5
 `);
-      expect(config).toMatchObject({
+      expect(config).toStrictEqual({
         apiKey: "secret",
+        baseURL: "url",
+        model: "gpt4.5",
+      });
+    });
+
+    test("can map fields from 0.11 -> 0.12", () => {
+      //  Config from <= 0.11, old names:
+      //  - openAiApiKey   -> apiKey
+      //  - openai.baseURL -> baseURL
+      //  - openai.model   -> model
+      const config = loadConfigurationFromFileContents(`
+openAiApiKey: key
+openai:
+  baseURL: url
+  model: gpt4.5
+`);
+      //  Mapped values set and old values unset...
+      expect(config).toStrictEqual({
+        apiKey: "key",
         baseURL: "url",
         model: "gpt4.5",
       });

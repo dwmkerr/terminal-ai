@@ -23,7 +23,7 @@ export async function init(
   }
 
   //  If we have an API key, offer to change it.
-  if (config.openAiApiKey !== "") {
+  if (config.apiKey !== "") {
     theme.printHint(
       "Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...",
     );
@@ -34,18 +34,18 @@ export async function init(
     if (apiKey !== "") {
       //  Note this is not ideal as we are mutating execution state, but needed
       //  as we might shortly run a _new_ command such as init.
-      config.openAiApiKey = apiKey;
+      config.apiKey = apiKey;
       saveApiKey(apiKey);
     }
   }
 
   //  If we don't have an API key, ask for one.
-  if (config.openAiApiKey === "") {
+  if (config.apiKey === "") {
     theme.printHint(
       "Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...",
     );
     const apiKey = await password({ mask: true, message: "OpenAI API Key:" });
-    config.openAiApiKey = apiKey;
+    config.apiKey = apiKey;
     saveApiKey(apiKey);
   }
 
@@ -55,9 +55,9 @@ export async function init(
     default: false,
   });
   if (advanced) {
-    const model = await selectModel(config.openai.model);
+    const model = await selectModel(config.model);
     if (model !== undefined) {
-      config.openai.model = model;
+      config.model = model;
       saveModel(model);
     }
   }
