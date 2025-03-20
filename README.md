@@ -101,12 +101,6 @@ You can also copy to the clipboard by piping to a program like `pbcopy`. This ex
 ai -- "code: bash script to zip all files in current directory" | pbcopy
 ```
 
-### Multliline Input
-
-To provide multiline input (or paste multiple lines input input) you can use the Actions Menu to select the 'Chat (Multiline)' action. Just press <code>Enter</code> at the prompt. Your `$EDITOR` will open:
-
-![Demo Recording of Multiline Input](./docs/casts/ai-chat-multiline.svg)
-
 ### Writing Code
 
 If you want a response to only contain code, prefix your message with `code:`. This makes it much easier to create a response which is ready to be pasted into a file or saved and executed:
