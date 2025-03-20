@@ -40,6 +40,12 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
       name: "ai-check-langfuse",
     });
     await lf.langfuse.flushAsync();
+    const flushInterval = lf.langfuse["flushInterval"];
+    console.log(`flush delay is: ${flushInterval}s`);
+    const delay = async (seconds: number) => {
+      await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+    };
+    await delay(flushInterval + 1);
   } catch (err) {
     spinner.stop();
     console.log(
@@ -68,7 +74,7 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
   );
   console.log(
     printMessage(
-      `⚠️  Langfuse testing has bugs (#70) , always check your traces are logged`,
+      `⚠️ Langfuse testing has bugs (#70), always check your traces are logged`,
       interactive,
     ),
   );

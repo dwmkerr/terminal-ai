@@ -37,6 +37,7 @@ export async function checkOpenAIKey(
       process.exit(error.errorCode);
     }
     if (error.errorCode === ErrorCode.OpenAIPermissionDeniedError) {
+      console.log(err);
       console.log(
         printError(
           "❌ Permission Denied Error: your API key may be expired, try 'ai init'",
