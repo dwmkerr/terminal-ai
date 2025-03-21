@@ -165,6 +165,7 @@ jobs:
 
       # Publish the module to GitHub packages.
       - name: Publish to GitHub Packages
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           npm set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
           npm publish --registry https://npm.pkg.github.com
