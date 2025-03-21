@@ -172,13 +172,6 @@ async function main() {
       if (executionContext.isTTYstdout) {
         console.log("Goodbye!");
       }
-    } else if (error.errorCode === ErrorCode.Warning) {
-      //  Handle warnings - they don't fail the app but do close it.
-      console.log(
-        theme.printWarning(error.message, executionContext.isTTYstdout),
-      );
-      //  Note: warnings do *not* fail the app, but this is likely a bad pattern.
-      return process.exit(0);
     } else {
       //  Handle any other error.
       console.log(
