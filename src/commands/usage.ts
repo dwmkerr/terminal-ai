@@ -19,7 +19,7 @@ export async function usage(
   );
 
   //  Check we have an API key.
-  if (config.openAiApiKey === "") {
+  if (config.apiKey === "") {
     throw new TerminalAIError(
       ErrorCode.InvalidConfiguration,
       "your OpenAI API key is not set, try 'ai init'",
@@ -45,7 +45,7 @@ export async function usage(
       `https://api.openai.com/v1/usage?date=${formattedDate}`,
       {
         headers: {
-          Authorization: `Bearer ${config.openAiApiKey}`,
+          Authorization: `Bearer ${config.apiKey}`,
           "Content-Type": "application/json",
         },
       },
@@ -64,7 +64,7 @@ export async function usage(
       `https://api.openai.com/v1/organization/usage/completions?date=${unixSeconds}`,
       {
         headers: {
-          Authorization: `Bearer ${config.openAiApiKey}`,
+          Authorization: `Bearer ${config.apiKey}`,
           "Content-Type": "application/json",
         },
       },

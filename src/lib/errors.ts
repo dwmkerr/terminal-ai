@@ -2,7 +2,6 @@ export const enum ErrorCode {
   //  Fallback when we cannot determine what the error is (e.g. we cannot
   //  translate an upstream error).
   Unknown = 1,
-  Warning = 10,
   ExitPrompt = 11,
   InvalidConfiguration = 12,
   Connection = 13,

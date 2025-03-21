@@ -1,15 +1,19 @@
 import fs from "fs";
 import os from "os";
 import path from "path";
-import yaml from "js-yaml";
 import dbg from "debug";
+import yaml from "js-yaml";
 
 import { ErrorCode, TerminalAIError } from "../lib/errors";
 import {
   Configuration,
   getDefaultConfiguration,
   getDefaultConfigurationLangfuseIntegration,
+  ConfigurationPaths,
 } from "./configuration";
+import { loadConfigurationFromFileContents } from "./configuration-file";
+import { translateError } from "../lib/translate-error";
+import { loadConfigurationFromEnv } from "./configuration-env";
 
 const debug = dbg("ai:configuration");
 
@@ -19,11 +23,6 @@ export type DeepPartial<T> = T extends object
     }
   : T;
 
-export const configDir = ".ai";
-export const configFilePath = `${configDir}/config.yaml`;
-export const chatPromptsPath = `${configDir}/prompts/chat/context`;
-export const codeOutputPromptsPath = `${configDir}/prompts/code/output`;
-
 export function promptFolders() {
   //  Build the path to the 'src' folder.
   const __project_dir = path.resolve(__dirname, "../..");
@@ -31,17 +30,23 @@ export function promptFolders() {
   return {
     chatPrompts: {
       src: path.join(__project_dir, `./prompts/chat/context`),
-      dest: path.join(os.homedir(), `${configDir}/prompts/chat/context`),
+      dest: path.join(
+        os.homedir(),
+        `${ConfigurationPaths.configDir}/prompts/chat/context`,
+      ),
     },
     codePrompts: {
       src: path.join(__project_dir, `./prompts/code/output`),
-      dest: path.join(os.homedir(), `${configDir}/prompts/code/output`),
+      dest: path.join(
+        os.homedir(),
+        `${ConfigurationPaths.configDir}/prompts/code/output`,
+      ),
     },
   };
 }
 
 export function getConfigPath(): string {
-  return path.join(os.homedir(), configFilePath);
+  return path.join(os.homedir(), ConfigurationPaths.configFilePath);
 }
 
 export function getConfigurationFromFile(
@@ -55,43 +60,10 @@ export function getConfigurationFromFile(
   //  Load the configuration structure.
   try {
     const fileContents = fs.readFileSync(path, "utf8");
-    const contents = yaml.load(fileContents) as DeepPartial<Configuration>;
-    return contents;
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    throw new TerminalAIError(
-      ErrorCode.InvalidConfiguration,
-      `check config file: ${path}`,
-    );
+    return loadConfigurationFromFileContents(fileContents);
+  } catch (err) {
+    throw translateError(err);
   }
-}
-
-export function getConfigurationFromEnv(
-  env: NodeJS.ProcessEnv,
-): DeepPartial<Configuration> {
-  const newConfig: DeepPartial<Configuration> = {};
-  if (env.AI_OPENAI_API_KEY !== undefined) {
-    newConfig.openAiApiKey = env.AI_OPENAI_API_KEY;
-  }
-  if (env.AI_OPENAI_MODEL !== undefined) {
-    if (newConfig.openai === undefined) {
-      newConfig.openai = {};
-    }
-    newConfig.openai.model = env.AI_OPENAI_MODEL;
-  }
-  if (env.AI_DEBUG_ENABLE !== undefined) {
-    if (newConfig.debug === undefined) {
-      newConfig.debug = {};
-    }
-    newConfig.debug.enable = env.AI_DEBUG_ENABLE === "1";
-  }
-  if (env.AI_DEBUG_NAMESPACE !== undefined) {
-    if (newConfig.debug === undefined) {
-      newConfig.debug = {};
-    }
-    newConfig.debug.namespace = env.AI_DEBUG_NAMESPACE;
-  }
-  return newConfig;
 }
 
 export function getConfigurationFromPromptsFolder(
@@ -152,9 +124,9 @@ export function enrichConfiguration(
   const newConfig = { ...config };
 
   //  OpenAI configuration.
-  enrichProperty(newConfig, "openAiApiKey", data.openAiApiKey);
-  enrichProperty(newConfig, "openai.model", data.openai?.model);
-  enrichProperty(newConfig, "openai.baseURL", data.openai?.baseURL);
+  enrichProperty(newConfig, "apiKey", data.apiKey);
+  enrichProperty(newConfig, "model", data.model);
+  enrichProperty(newConfig, "baseURL", data.baseURL);
 
   //  Prompt configuration.
   if (data?.prompts?.chat?.context !== undefined) {
@@ -193,7 +165,7 @@ export async function getConfiguration(): Promise<Configuration> {
     folders.codePrompts.src,
   );
   const fileConfig = getConfigurationFromFile(getConfigPath());
-  const envConfig = getConfigurationFromEnv(process.env);
+  const envConfig = loadConfigurationFromEnv(process.env);
 
   debug("composing configuration:");
   debug("  default config:", defaultConfig);
@@ -216,16 +188,16 @@ export function saveApiKey(apiKey: string) {
   try {
     //  Ensure the config directory exists.
     // Check if the directory exists
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir);
+    if (!fs.existsSync(ConfigurationPaths.configDir)) {
+      fs.mkdirSync(ConfigurationPaths.configDir);
     }
 
     //  We might be updating an existing file, if so get its contents.
     const fileContents = fs.existsSync(configPath)
       ? fs.readFileSync(configPath, "utf8")
       : "";
-    const yamlData = (yaml.load(fileContents) as Record<string, unknown>) || {};
-    yamlData["openAiApiKey"] = apiKey;
+    const yamlData = loadConfigurationFromFileContents(fileContents);
+    yamlData.apiKey = apiKey;
     const updatedYaml = yaml.dump(yamlData, { indent: 2 });
     fs.writeFileSync(configPath, updatedYaml, "utf8");
   } catch (err) {
@@ -244,22 +216,16 @@ export function saveModel(model: string) {
   try {
     //  Ensure the config directory exists.
     // Check if the directory exists
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir);
+    if (!fs.existsSync(ConfigurationPaths.configDir)) {
+      fs.mkdirSync(ConfigurationPaths.configDir);
     }
 
     //  We might be updating an existing file, if so get its contents.
     const fileContents = fs.existsSync(configPath)
       ? fs.readFileSync(configPath, "utf8")
       : "";
-    const yamlData = (yaml.load(fileContents) as Record<string, unknown>) || {};
-    if (yamlData.openai === undefined) {
-      yamlData.openai = {
-        model,
-      };
-    } else {
-      (yamlData.openai as Record<string, string>)["model"] = model;
-    }
+    const yamlData = loadConfigurationFromFileContents(fileContents);
+    yamlData["model"] = model;
     const updatedYaml = yaml.dump(yamlData, { indent: 2 });
     fs.writeFileSync(configPath, updatedYaml, "utf8");
   } catch (err) {

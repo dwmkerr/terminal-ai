@@ -15,11 +15,11 @@ export const ChangeModelAction: ChatAction = {
   ): Promise<string | undefined> => {
     //  Choose the model.
     const config = params.executionContext.config;
-    const model = await selectModel(config.openai.model);
+    const model = await selectModel(config.model);
     if (model !== undefined) {
       //  This is really naughty as we're changing the state of an input
       //  unexpectedly but it works for now...
-      config.openai.model = model;
+      config.model = model;
       saveModel(model);
     }
 

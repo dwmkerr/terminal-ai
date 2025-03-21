@@ -1,3 +1,10 @@
+export const ConfigurationPaths = {
+  configDir: ".ai",
+  configFilePath: `.ai/config.yaml`,
+  chatPromptsPath: `.ai/prompts/chat/context`,
+  codeOutputPromptsPath: `.ai/prompts/code/output`,
+};
+
 export interface LangfuseIntegrationConfiguration {
   secretKey: string;
   publicKey: string;
@@ -8,13 +15,9 @@ export interface LangfuseIntegrationConfiguration {
 }
 
 export interface Configuration {
-  openAiApiKey: string;
-  openai: {
-    baseURL: string;
-    //  If a new model comes out, we want users to be able to enter it in their
-    //  config. We'll try and validate with 'ai check'.
-    model: string;
-  };
+  apiKey: string;
+  baseURL: string;
+  model: string;
   prompts: {
     chat: {
       context: string[];
@@ -34,11 +37,9 @@ export interface Configuration {
 
 export function getDefaultConfiguration(): Configuration {
   return {
-    openAiApiKey: "",
-    openai: {
-      baseURL: "https://api.openai.com/v1/",
-      model: "gpt-3.5-turbo",
-    },
+    apiKey: "",
+    baseURL: "https://api.openai.com/v1/",
+    model: "gpt-3.5-turbo",
     prompts: {
       chat: {
         context: [],

@@ -15,9 +15,7 @@ export function integrateLangfuse(
     return undefined;
   }
 
-  //  Create the langfuse object and start a trace. We'll consider a single
-  //  execution of the tool a single session (i.e. generations and events and
-  //  so on will be grouped into this one session).
+  //  Create the langfuse object and start a trace.
   const langfuse = new Langfuse({
     secretKey: lfConfig.secretKey,
     publicKey: lfConfig.publicKey,
@@ -32,9 +30,8 @@ export function integrateLangfuse(
     //  tags: ["production"],
   });
 
-  //  Otherwise we can create the langfuse integration. Easy, n'est pas?
   return {
-    langfuse: new Langfuse(lfConfig),
+    langfuse,
     trace: trace,
   };
 }

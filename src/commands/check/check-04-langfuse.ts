@@ -20,17 +20,16 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
 
   //  Let the user know how long we'll wait. Note we're cheekily trying to check
   //  what the internal langfuse flush interval is.
-  const monitorSeconds = lf.langfuse["flushInterval"] as number;
+  const monitorSeconds = (lf.langfuse["flushInterval"] as number) || 30;
   const spinner = await startSpinner(
     interactive,
-    `Monitoring for Langfuse background errors, this will take ${monitorSeconds}s...`,
+    `Monitoring for Langfuse background errors, this can take up to ${monitorSeconds}s...`,
   );
 
   //  Capture errors.
-  let err = null;
+  let caughtError = null;
   lf.langfuse.on("error", (error) => {
-    console.log(error);
-    err = error;
+    caughtError = error;
   });
 
   //  Create an event. This should be pushed to the LF server async in the
@@ -54,21 +53,15 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
 
   //  Disconnect the error handler. Check for errors.
   lf.langfuse.on("error", () => undefined);
-  if (err) {
+  if (caughtError) {
     console.log(
-      printError(`❌ Langfuse error captured: ${err}...`, interactive),
+      printError(`❌ Langfuse error captured: ${caughtError}...`, interactive),
     );
     process.exit(ErrorCode.Connection);
   }
   console.log(
     printMessage(
-      `✅ Langfuse tested - no errors in ${monitorSeconds}s`,
-      interactive,
-    ),
-  );
-  console.log(
-    printMessage(
-      `⚠️  Langfuse testing has bugs (#70) , always check your traces are logged`,
+      `✅ Langfuse tested - no errors in ${monitorSeconds}s, but as per issue #69 some errors may not be caught...`,
       interactive,
     ),
   );

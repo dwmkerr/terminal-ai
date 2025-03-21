@@ -12,15 +12,15 @@ export async function check(executionContext: ExecutionContext) {
 
   //  Create the OpenAI instance we'll use for a lot of the rest of the checks.
   const openai = new OpenAI({
-    baseURL: config.openai.baseURL,
-    apiKey: config.openAiApiKey,
+    apiKey: config.apiKey,
+    baseURL: config.baseURL,
   });
 
   await checkConnection(interactive);
   //  TODO base url?
-  await checkOpenAIKey(interactive, openai, config.openAiApiKey);
-  await checkOpenAIModel(interactive, openai, config.openai.model);
-  await checkOpenAIRateLimit(interactive, openai, config.openai.model);
+  await checkOpenAIKey(interactive, openai, config.apiKey);
+  await checkOpenAIModel(interactive, openai, config.model);
+  await checkOpenAIRateLimit(interactive, openai, config.model);
 
   await checkLangfuse(executionContext);
 }

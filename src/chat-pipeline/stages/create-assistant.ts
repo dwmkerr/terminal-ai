@@ -14,7 +14,7 @@ export async function createAssistant(
   const assistant = await openai.beta.assistants.create({
     name: "Termianl AI",
     instructions: instructions.join("\n"),
-    model: config.openai.model,
+    model: config.model,
     //  TODO: decide what tools we want.
     tools: [{ type: "code_interpreter" }],
     // file_ids: [file.id],

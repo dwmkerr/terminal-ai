@@ -122,33 +122,34 @@ jobs:
 
     steps:
       - name: Release Please
-        uses: googleapis/release-please-action@v4
         id: release
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
       
       - name: Checkout
-        uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
 
       # Setup the right version of Node.js.
       - name: Setup Node ${{ matrix.node-version }}
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_LTS_VERSION }}
           registry-url: 'https://registry.npmjs.org'
-        if: ${{ steps.release.outputs.release_created }}
 
       # Build the distributable code.
       - name: Build Distributable
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           npm install
           npm run build
-        if: ${{ steps.release.outputs.release_created }}
 
       # Publish the module to NPM.
       - name: Publish to NPM
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           # The 'npm publish' command will only run if an NPM_TOKEN secret is
           # set. If it is not set, warn the user.
@@ -161,4 +162,10 @@ jobs:
           fi
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      # Publish the module to GitHub packages.
+      - name: Publish to GitHub Packages
         if: ${{ steps.release.outputs.release_created }}
+        run: |
+          npm set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
+          npm publish --registry https://npm.pkg.github.com
