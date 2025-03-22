@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.11.3](https://github.com/dwmkerr/terminal-ai/compare/v0.11.2...v0.11.3) (2025-03-21)
+
+
+### Features
+
+* **config:** simplified api/base/model config ([3c69d33](https://github.com/dwmkerr/terminal-ai/commit/3c69d335d92a0cb777b4d0ee6d94614872b3ec3b))
+* **experimental:** optional langfuse integration ([2ceb719](https://github.com/dwmkerr/terminal-ai/commit/2ceb71905d78779b69c5793993dccd855a2c4163))
+
+
+### Miscellaneous Chores
+
+* release 0.11.3 ([485d795](https://github.com/dwmkerr/terminal-ai/commit/485d795b4c432f1ceb9b8ab102a15a1149124930))
+
 ## [0.11.2](https://github.com/dwmkerr/terminal-ai/compare/v0.11.1...v0.11.2) (2025-03-14)
 
 
