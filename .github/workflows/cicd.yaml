@@ -7,9 +7,11 @@ on:
   pull_request:
 
 # Release Please needs permisisons to write commits and open PRs.
+# Required to publish NPM package to GH NPM.
 permissions:
   contents: write
   pull-requests: write
+  packages: write
 
 # We will build and test across a number of Node.js versions. Some steps only
 # occur for a single Node version (such as uploading coverage) - this variable
