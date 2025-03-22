@@ -19,6 +19,11 @@ export interface ProviderConfiguration {
   apiKey: string;
   baseURL: string;
   model: string;
+  //  This can be used to cross reference against providers in:
+  //  https://github.com/dwmkerr/ai-providers-and-models
+  //  It is not required, but if set allows us to do slightly better model
+  //  validation for the user.
+  providerId?: string;
 }
 
 export interface Configuration {
