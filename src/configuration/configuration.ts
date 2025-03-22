@@ -14,6 +14,13 @@ export interface LangfuseIntegrationConfiguration {
   traceName: string;
 }
 
+export interface ProviderConfiguration {
+  name: string;
+  apiKey: string;
+  baseURL: string;
+  model: string;
+}
+
 export interface Configuration {
   apiKey: string;
   baseURL: string;

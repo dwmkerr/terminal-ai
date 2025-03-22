@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { ensureApiKey } from "./stages/ensure-api-key";
 import { parseInput } from "./stages/parse-input";
 import { createAssistant } from "./stages/create-assistant";
 import { ChatPipelineParameters } from "./ChatPipelineParameters";
@@ -15,7 +14,6 @@ import { translateError } from "../lib/translate-error";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
-  await ensureApiKey(parameters.executionContext);
   const config = parameters.executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({

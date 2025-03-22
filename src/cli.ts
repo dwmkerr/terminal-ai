@@ -23,6 +23,7 @@ import { getDefaultConfiguration } from "./configuration/configuration";
 import { getConfiguration } from "./configuration/utils";
 import { integrateLangfuse } from "./integrations/langfuse";
 import { translateError } from "./lib/translate-error";
+import { ensureApiKey } from "./chat-pipeline/stages/ensure-api-key";
 const cli = async (program: Command, executionContext: ExecutionContext) => {
   //  Collect sting parameters.
   const collect = (value: string, previous: string[]): string[] =>
@@ -52,6 +53,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
         input,
         { contextPrompts, outputPrompts, copy, raw, assistant, file },
       ) => {
+        await ensureApiKey(executionContext);
         return chat(
           executionContext,
           input,

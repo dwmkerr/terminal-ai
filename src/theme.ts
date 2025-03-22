@@ -1,11 +1,15 @@
 import colors from "colors/safe";
-import { formatMarkdown } from "./lib/markdown";
+import { formatMarkdown, stripFormatting } from "./lib/markdown";
 
 export function deleteLinesAboveCursor(count: number) {
   for (let i = 0; i < count; i++) {
     // Delete previous line and move cursor up
     process.stdout.write("\u001b[1A\u001b[K");
   }
+}
+
+export function print(message: string, interactive: boolean) {
+  return interactive ? message : stripFormatting(message);
 }
 
 export function printMessage(message: string, interactive: boolean) {

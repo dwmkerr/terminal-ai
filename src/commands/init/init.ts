@@ -1,5 +1,6 @@
 import { confirm, password, select } from "@inquirer/prompts";
-import * as theme from "../../theme";
+import colors from "colors/safe";
+import { inputPrompt, print } from "../../theme";
 import { ExecutionContext } from "../../lib/execution-context";
 import { Commands } from "../commands";
 import { check } from "../../commands/check/check";
@@ -22,14 +23,50 @@ export async function init(
     );
   }
 
-  //  If we have an API key, offer to change it.
-  if (config.apiKey !== "") {
-    theme.printHint(
-      "Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...",
+  console.log(print(`Welcome to ${colors.bold("Terminal AI")}\n`, interactive));
+
+  //  We are in our 'first run' if no API key has been set.
+  const isFirstRun = config.apiKey === "";
+
+  //  First run, we can show the welcome message and ask for an API key.
+  if (isFirstRun) {
+    console.log(
+      print(
+        `Enter your OpenAI / Gemini API key to get started.
+If you need a free API key follow the guide at:`,
+        interactive,
+      ),
+    );
+    console.log(
+      print(
+        `  ${colors.underline(colors.blue("https://github.com/dwmkerr/terminal-ai#api-key\n"))}`,
+        interactive,
+      ),
     );
     const apiKey = await password({
       mask: true,
-      message: "OpenAI API Key [leave blank to keep existing]:",
+      message: "API Key:",
+      validate: (key) => (key === "" ? "API key is required" : true),
+    });
+    config.apiKey = apiKey;
+    saveApiKey(apiKey);
+  }
+
+  //  If we're not in the first run, we can offer to change the API key as the
+  //  first part of init.
+  if (!isFirstRun) {
+    console.log(
+      print(`If you need a free API key follow the guide at:`, interactive),
+    );
+    console.log(
+      print(
+        `  ${colors.underline(colors.blue("https://github.com/dwmkerr/terminal-ai#api-key\n"))}`,
+        interactive,
+      ),
+    );
+    const apiKey = await password({
+      mask: true,
+      message: "API Key (Press <Enter> to keep existing):",
     });
     if (apiKey !== "") {
       //  Note this is not ideal as we are mutating execution state, but needed
@@ -37,16 +74,6 @@ export async function init(
       config.apiKey = apiKey;
       saveApiKey(apiKey);
     }
-  }
-
-  //  If we don't have an API key, ask for one.
-  if (config.apiKey === "") {
-    theme.printHint(
-      "Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...",
-    );
-    const apiKey = await password({ mask: true, message: "OpenAI API Key:" });
-    config.apiKey = apiKey;
-    saveApiKey(apiKey);
   }
 
   //  Offer advanced options.
@@ -65,7 +92,7 @@ export async function init(
   //  Offer to validate.
   const validate = await confirm({
     message: "Test API Key & Configuration?",
-    default: true,
+    default: false,
   });
   if (validate) {
     await check(executionContext);
@@ -76,7 +103,7 @@ export async function init(
     return Commands.Unknown;
   }
   const answer = await select({
-    message: theme.inputPrompt("What next?"),
+    message: inputPrompt("What next?"),
     default: "chat",
     choices: [
       {

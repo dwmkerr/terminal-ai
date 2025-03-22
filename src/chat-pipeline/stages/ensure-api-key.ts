@@ -1,15 +1,11 @@
-import dbg from "debug";
-
 import { ExecutionContext } from "../../lib/execution-context";
 import { init } from "../../commands/init/init";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
-const debug = dbg("ai:ensure-api-key");
 
 export async function ensureApiKey(executionContext: ExecutionContext) {
   //  If we already have a key, we're done.
   if (executionContext.config.apiKey !== "") {
-    debug("key already configured");
-    return executionContext.config;
+    return;
   }
 
   //  We don't have a key, if we're not interactive on stdin we cannot continue.
@@ -21,16 +17,7 @@ export async function ensureApiKey(executionContext: ExecutionContext) {
     );
   }
 
-  //  If we don't have an API key, we can init for one.
-  console.log(
-    `Welcome to Terminal AI!
-
-An API key must be configured so that Terminal AI can talk to ChatGPT.
-Enter your key below, or for instructions check:
-  https://github.com/dwmkerr/terminal-ai#api-key
-`,
-  );
-  //  'init' will mutate our execution config with new keys etc.
-  await init(executionContext, false);
-  return;
+  //  Initialis, this will mutate execution context to set the key, or die
+  //  trying.
+  return await init(executionContext, false);
 }
