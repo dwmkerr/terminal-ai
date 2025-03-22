@@ -6,6 +6,7 @@ import { Command } from "commander";
 import { chat } from "./commands/chat/chat";
 
 import { debug as debugCommand } from "./commands/debug";
+import { config as configCommand } from "./commands/config/config";
 
 import theme from "./theme";
 import { ErrorCode } from "./lib/errors";
@@ -87,9 +88,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
   program
     .command("config")
     .description("Show current configuration")
-    .action(async () => {
-      console.log(JSON.stringify(executionContext.config, null, 2));
-    });
+    .action(async () => await configCommand(executionContext));
 
   program
     .command("check")

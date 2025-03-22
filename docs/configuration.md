@@ -24,6 +24,7 @@ There are three useful commands when working with configuration:
         - [Basic Configuration Using OpenAI](#basic-configuration-using-openai)
         - [Basic Configuration Using OpenAI Compatible Providers such as Google Gemini](#basic-configuration-using-openai-compatible-providers-such-as-google-gemini)
         - [Advanced Provider Configuration](#advanced-provider-configuration)
+        - [Model Validation](#model-validation)
         - [Using Non-OpenAI Compliant Providers](#using-non-openai-compliant-providers)
         - [Advanced: The Provider Selection Flow](#advanced-the-provider-selection-flow)
 - [The Configuration Specification](#the-configuration-specification)
@@ -120,6 +121,12 @@ TODO
 
 You can also use the [`ai-providers-and-models`](TODO) module to access a regularly updated list of providers and models - this module also shows OpenAI compatible endpoints which are offered.
 
+#### Model Validation
+
+Any text value can be used to specify a model. The `ai check` command will make a best-effort attempt to validate that the model is correct by seeing whether a chat API call completes successfully. It also checks the model ID against the database at [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). The `ai init` command also tries to be helpful by showing a list of pre-defined models that have been loaded from the OpenAI APIs, and cross-referenced against [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models).
+
+This cross-referencing allows `ai` to indicate whether a model that is being selected has been independently verified to work with the app. However, models are changing rapidly and new ones may take time to be tested. This doesn't stop you using any model or provider you like.
+
 #### Using Non-OpenAI Compliant Providers
 
 >!TIP
@@ -167,7 +174,12 @@ Each of the configuration values, the environment variables that can be used to 
 | `providers.[name].apiKey`    |                | (None).                      | The API key for the provider.                                                                           |
 | `providers.[name].baseURL`   |                | (None).                      | The OpenAI compatible base URL for the provider APIs.                                                   |
 | `providers.[name].model`     |                | (None).                      | The model for the provider.                                                                             |
+
 TODO: debug
+
+| Configuration | Environment | Config         | Description                                         |
+|---------------|-------------|----------------|-----------------------------------------------------|
+| OpenAI Model  | n/a         | `openai.model` | OpenAI API model to use, default is `gpt-3.5-turbo` |
 
 ## Reference Configuration
 

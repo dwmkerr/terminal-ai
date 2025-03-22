@@ -10,6 +10,7 @@
     <a href="#actions">Actions</a> |
     <a href="#commands">Commands</a> |
     <a href="#configuration">Configuration</a> |
+    <a href="#api-key">API Key</a> |
     <a href="#experimental">Experimental</a> |
     <a href="#developer-guide">Developer Guide</a>
   </p>
@@ -35,6 +36,9 @@ ai
 ```
 
 That's it. The quickest way to learn how to use the tool is to look at the [Examples](#examples).
+
+> [!TIP]
+> Terminal AI requires an API key to be configured. Get a free API by following the guide [here](#api-key) 💪.
 
 ## Examples
 
@@ -231,38 +235,41 @@ Configuration validated
 
 Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder.
 
-## Error Codes
+### Error Codes
 
-The following error codes can be returned by `ai`:
-
-| Code | Name                                | Description                      |
-|------|-------------------------------------|----------------------------------|
-| 1    | `ERROR_CODE_WARNING`                | A warning was shown to the user. |
-| 2    | `ERROR_CODE_INVALID_CONFIFGURATION` | Network connectivity error.      |
-| 3    | `ERROR_CODE_CONNECTION`             | Configuration error.             |
+All error codes are documented at [`src/lib/errors.ts`](./src/lib/errors.ts).
 
 ## API Key
 
-An OpenAI API key is needed to be able to make calls to ChatGPT. At the time of writing a subscription fee is needed to create an API key. Create an API key by following the instructions at:
+To make calls to an AI provider such as OpenAI, you will need an API key. If you have an API key, simply run `ai init` and follow the instructions.
 
-https://platform.openai.com/api-keys
+If you do not have an API key you can use a provider such as Google Gemini, which allows you to create a key for free and without a credit card.
 
-Once you have your API key you can configure it in the `ai` tool by running `ai` or `ai init`.
+To get a free API key, go to: https://ai.google.dev/gemini-api/docs/api-key and choose "Get a Gemini API Key" and then "Create API Key":
+
+<image alt="Screenshot of Create API Key" src="./docs/images/gemini-api-key.png" width="120px" />
+
+Save this key to a safe location. Then run `ai init` and follow the instructions - be sure to choose `Google Gemini` as the provider in the second step:
+
+```
+TODO show selection prompt
+```
+
+TODO You can configure many other providers, and switch between multiple configurations, check the [Providers Documentation](./docs/providers.md) for more information.
 
 ## Configuration
 
-Most 'stable' configuration can be specified in the `~/.ai/config.yaml` file. Experimental features might only be available in the form of environment variables.
+Configuration is loaded from the `~/.ai/config.yaml` file. Specific parameters can also be set or overridden using Environment Variables.
 
-The configuration schema is changing rapidly, the file [`./src/configuration/configuration.ts`](./src/configuration/configuration.ts) is the most authoritative source of configuration options. However, some important values are:
+Detailed in instructions for how to configure `ai` are in the [Configuration Documentation](./docs/configuration.md). However, in most cases a configuration file can be as simple as this:
 
-| Configuration | Environment     | Config         | Description                                             |
-|---------------|-----------------|----------------|---------------------------------------------------------|
-| Force colors. | `FORCE_COLOR=1` | n/a            | Force ASCII color codes in output even if it not a TTY. |
-| OpenAI Model  | n/a             | `openai.model` | OpenAI API model to use, default is `gpt-3.5-turbo`     |
+```yaml
+apiKey: <Your Key>
+baseURL: "https://api.openai.com/v1/" # e.g OpenAI
+model: "gpt-3.5-turbo"                # your preferred model
+```
 
-**OpenAI Model**
-
-Any text value can be used for the model. The `ai check` command will make a best-effort attempt to validate that the model is correct by calling a chat API. The `ai init` command also tries to be helpful by showing a list of pre-defined models that have been loaded from the OpenAI APIs, and validated against [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). However models are changing rapidly and new ones may take time to be incorporated. However there is nothing stopping you from simply entering any new model ID in the config file.
+You can create this file interactively by running `ai init`, and you can test all of the configuration parameters you have set with `ai check`.
 
 ## Experimental
 
