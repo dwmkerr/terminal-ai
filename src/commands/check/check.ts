@@ -8,19 +8,19 @@ import { checkConnection } from "./check-00-connection";
 
 export async function check(executionContext: ExecutionContext) {
   const interactive = executionContext.isTTYstdin;
-  const config = executionContext.config;
+  const provider = executionContext.provider;
 
   //  Create the OpenAI instance we'll use for a lot of the rest of the checks.
   const openai = new OpenAI({
-    apiKey: config.apiKey,
-    baseURL: config.baseURL,
+    apiKey: executionContext.provider.apiKey,
+    baseURL: executionContext.provider.baseURL,
   });
 
   await checkConnection(interactive);
   //  TODO base url?
-  await checkOpenAIKey(interactive, openai, config.apiKey);
-  await checkOpenAIModel(interactive, openai, config.model);
-  await checkOpenAIRateLimit(interactive, openai, config.model);
+  await checkOpenAIKey(interactive, openai, provider.apiKey);
+  await checkOpenAIModel(interactive, openai, provider.model);
+  await checkOpenAIRateLimit(interactive, openai, provider.model);
 
   await checkLangfuse(executionContext);
 }

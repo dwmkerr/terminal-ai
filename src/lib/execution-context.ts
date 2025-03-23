@@ -1,4 +1,7 @@
-import { Configuration } from "../configuration/configuration";
+import {
+  Configuration,
+  ProviderConfiguration,
+} from "../configuration/configuration";
 import { LangfuseIntegrationContext } from "../integrations/langfuse";
 
 export type Integrations = {
@@ -14,6 +17,9 @@ export type Integrations = {
 export type ExecutionContext = {
   //  The configuration.
   config: Configuration;
+
+  //  Our current provider.
+  provider: ProviderConfiguration;
 
   //  More explicity, do we believe we have a TTY?
   isTTYstdin: boolean;

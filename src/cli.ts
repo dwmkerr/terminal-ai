@@ -132,6 +132,8 @@ async function main() {
   const executionContext: ExecutionContext = {
     //  We will very shortly enrich the config.
     config: getDefaultConfiguration(),
+    //  TOOD
+    provider: { name: "", baseURL: "", apiKey: "", model: "" },
     isTTYstdin: process.stdin.isTTY || false,
     isTTYstdout: forceColor || process.stdout.isTTY || false,
     stdinContent,

@@ -2,9 +2,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import dbg from "debug";
-import yaml from "js-yaml";
 
-import { ErrorCode, TerminalAIError } from "../lib/errors";
 import {
   Configuration,
   getDefaultConfiguration,
@@ -180,59 +178,4 @@ export async function getConfiguration(): Promise<Configuration> {
   debug("  final config  :", config3);
 
   return config3;
-}
-
-//  Update the config file.
-export function saveApiKey(apiKey: string) {
-  const configPath = getConfigPath();
-  try {
-    //  Ensure the config directory exists.
-    // Check if the directory exists
-    if (!fs.existsSync(ConfigurationPaths.configDir)) {
-      fs.mkdirSync(ConfigurationPaths.configDir);
-    }
-
-    //  We might be updating an existing file, if so get its contents.
-    const fileContents = fs.existsSync(configPath)
-      ? fs.readFileSync(configPath, "utf8")
-      : "";
-    const yamlData = loadConfigurationFromFileContents(fileContents);
-    yamlData.apiKey = apiKey;
-    const updatedYaml = yaml.dump(yamlData, { indent: 2 });
-    fs.writeFileSync(configPath, updatedYaml, "utf8");
-  } catch (err) {
-    throw new TerminalAIError(
-      ErrorCode.InvalidOperation,
-      `error updating config file ${configPath}: ${err}`,
-      err as Error,
-    );
-  }
-}
-
-//  Update the config file. Needs to be extracted later on into a function
-//  that takes a partial.
-export function saveModel(model: string) {
-  const configPath = getConfigPath();
-  try {
-    //  Ensure the config directory exists.
-    // Check if the directory exists
-    if (!fs.existsSync(ConfigurationPaths.configDir)) {
-      fs.mkdirSync(ConfigurationPaths.configDir);
-    }
-
-    //  We might be updating an existing file, if so get its contents.
-    const fileContents = fs.existsSync(configPath)
-      ? fs.readFileSync(configPath, "utf8")
-      : "";
-    const yamlData = loadConfigurationFromFileContents(fileContents);
-    yamlData["model"] = model;
-    const updatedYaml = yaml.dump(yamlData, { indent: 2 });
-    fs.writeFileSync(configPath, updatedYaml, "utf8");
-  } catch (err) {
-    throw new TerminalAIError(
-      ErrorCode.InvalidOperation,
-      `error updating config file ${configPath}: ${err}`,
-      err as Error,
-    );
-  }
 }
