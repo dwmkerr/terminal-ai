@@ -9,6 +9,7 @@ export function createTestExecutionContext(
   return {
     configFilePath: "./config.test.yaml",
     config,
+    isFirstRun: false,
     provider: {
       name: "",
       baseURL: "",

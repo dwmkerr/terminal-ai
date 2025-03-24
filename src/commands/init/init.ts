@@ -3,7 +3,6 @@ import { print } from "../../theme";
 import { ExecutionContext } from "../../execution-context/execution-context";
 import { Commands } from "../commands";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
-import { checkFirstRun } from "./check-first-run";
 import { initFirstRun } from "./init-first-run";
 import { initRegularRun } from "./init-regular-run";
 
@@ -23,12 +22,10 @@ export async function init(
 
   console.log(print(`Welcome to ${colors.bold("Terminal AI")}\n`, interactive));
 
-  //  Check whether we're in a first run (e.g. fresh install, or config blatted
-  //  to the point we're fresh-install-like).
-  const isFirstRun = checkFirstRun(executionContext);
-
-  //  Fire the appropriate init handler.
-  return isFirstRun
+  //  Fire the appropriate init handler depending on whether we're in a first
+  //  run (e.g. fresh install, or config blatted to the point we're
+  //  fresh-install-like).
+  return executionContext.isFirstRun
     ? await initFirstRun(executionContext, askNextAction)
     : await initRegularRun(executionContext, true, askNextAction);
 }

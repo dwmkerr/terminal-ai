@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import dbg from "debug";
 import { ErrorCode, TerminalAIError } from "./errors";
+import { crop } from "../print/crop";
 
 const debug = dbg("ai:error");
 
@@ -81,10 +82,10 @@ export function translateError(err: any): TerminalAIError {
   }
 
   //  ...we don't have a clue what the error is and it doesn't have a code.
-  const preview = `${err}`.substring(0, 20) + "...";
+  const preview = crop(`${err}`, 80);
   debug(JSON.stringify(err, null, 2));
   return new TerminalAIError(
     ErrorCode.Unknown,
-    `'${preview}' - try 'ai check' or AI_DEBUG_ENABLE=1`,
+    `try 'ai check' or AI_DEBUG_ENABLE=1\n -> ${preview}`,
   );
 }

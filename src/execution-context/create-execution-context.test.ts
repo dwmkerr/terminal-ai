@@ -6,20 +6,8 @@ import {
   ConfigurationPaths,
   getDefaultConfiguration,
 } from "../configuration/configuration";
+import { ProcessLike } from "./execution-context";
 
-export interface StdStreamLike {
-  isTTY: boolean;
-  on: (
-    event: string,
-    listener: (data: Buffer) => void,
-  ) => StdStreamLike | undefined;
-}
-
-export interface ProcessLike {
-  stdin: StdStreamLike;
-  stdout: StdStreamLike;
-  env: NodeJS.ProcessEnv;
-}
 describe("execution-context", () => {
   let tempConfigFolder: string;
   let tempConfigFilePath: string;
@@ -51,7 +39,7 @@ describe("execution-context", () => {
   });
 
   describe("createExecutionContext", () => {
-    test("creates correctly with no config file or prompts folder present", async () => {
+    it("creates correctly with no config file or prompts folder present", async () => {
       const process: ProcessLike = {
         stdin: {
           on: () => undefined,
@@ -65,18 +53,33 @@ describe("execution-context", () => {
       };
       const executionContext = await createExecutionContext(
         process,
-        tempConfigFilePath,
         tempConfigPromptsFolder,
+        tempConfigFilePath,
       );
 
       //  Check for the expected execution context.
-      expect(executionContext).toMatchObject({
+      expect(executionContext).toStrictEqual({
         config: getDefaultConfiguration(),
+        configFilePath: tempConfigFilePath,
+        //  this is the 'root' provider, created from the root config fields
+        //  (rather than a provider block).
+        provider: {
+          apiKey: "",
+          baseURL: "https://api.openai.com/v1/",
+          model: "gpt-3.5-turbo",
+          name: "",
+          providerId: undefined,
+        },
+        stdinContent: undefined,
+        isFirstRun: true,
         isTTYstdin: true,
         isTTYstdout: false,
+        integrations: {
+          langfuse: undefined,
+        },
       });
       //  Also check that the environment has been hydrated.
-      expect(process.env).toMatchObject(expectedEnrichedEnv);
+      expect(process.env).toStrictEqual(expectedEnrichedEnv);
     });
   });
 });

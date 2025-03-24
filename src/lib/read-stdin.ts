@@ -1,4 +1,4 @@
-import { StdStreamLike } from "../execution-context/create-execution-context.test";
+import { StdStreamLike } from "../execution-context/execution-context";
 
 export function readStdin(stdin: StdStreamLike): Promise<string | undefined> {
   //  If std is interactive tnen there's no input to stream.

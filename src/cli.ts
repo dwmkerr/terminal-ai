@@ -118,39 +118,51 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
 };
 
 async function main() {
-  //  Hydrate our prompts; this creates the ~/.ai/prompts folder and copies
-  //  bundled prompts into it if they don't exist.
-  hydratePromptsFolder(
-    path.join(__dirname, "..", ConfigurationPaths.PromptsFolder),
-    path.join(
+  //  This is still quite ugly. We are interactive output if force color is set,
+  //  or if stdout is a TTY. We actually perform this check again in
+  //  createExecutionContext so it could be refactored to be a bit cleaner.
+  const forceColor = process.env["FORCE_COLOR"] === "1";
+  const isTTYstdout = forceColor || process.stdout.isTTY;
+
+  try {
+    //  Hydrate our prompts; this creates the ~/.ai/prompts folder and copies
+    //  bundled prompts into it if they don't exist.
+    hydratePromptsFolder(
+      path.join(__dirname, "..", ConfigurationPaths.PromptsFolder),
+      path.join(
+        os.homedir(),
+        ConfigurationPaths.ConfigFolder,
+        ConfigurationPaths.PromptsFolder,
+      ),
+    );
+
+    //  Build the default config file path and create the execution context.
+    const configFilePath = path.join(
+      os.homedir(),
+      ConfigurationPaths.ConfigFolder,
+      ConfigurationPaths.ConfigFile,
+    );
+    const promptsFolder = path.join(
       os.homedir(),
       ConfigurationPaths.ConfigFolder,
       ConfigurationPaths.PromptsFolder,
-    ),
-  );
+    );
+    const executionContext = await createExecutionContext(
+      process,
+      promptsFolder,
+      configFilePath,
+    );
 
-  //  Build the default config file path and create the execution context.
-  const configFilePath = path.join(
-    os.homedir(),
-    ConfigurationPaths.ConfigFolder,
-    ConfigurationPaths.ConfigFile,
-  );
-  const promptsFolder = path.join(
-    os.homedir(),
-    ConfigurationPaths.ConfigFolder,
-    ConfigurationPaths.PromptsFolder,
-  );
-  const executionContext = await createExecutionContext(
-    process,
-    promptsFolder,
-    configFilePath,
-  );
-
-  try {
     //  Now create and execute the program.
     const program = new Command();
     await cli(program, executionContext);
     await program.parseAsync();
+
+    //  We're shutting down, if we have the langfuse itegration wait for it to
+    //  flush.
+    if (executionContext.integrations?.langfuse?.langfuse) {
+      await executionContext.integrations.langfuse.langfuse.shutdownAsync();
+    }
   } catch (err) {
     const error = translateError(err);
     //  Note that when we write errors, we format them with colours only if
@@ -158,25 +170,16 @@ async function main() {
 
     //  Handle inquirer Ctrl+C.
     if (error.errorCode === ErrorCode.ExitPrompt) {
-      if (executionContext.isTTYstdout) {
+      if (isTTYstdout) {
         console.log("Goodbye!");
       }
     } else {
       //  Handle any other error.
       console.log(
-        theme.printError(
-          `${error.name}: ${error.message}`,
-          executionContext.isTTYstdout,
-        ),
+        theme.printError(`${error.name}: ${error.message}`, isTTYstdout),
       );
       return process.exit(error.errorCode);
     }
-  }
-
-  //  We're shutting down, if we have the langfuse itegration wait for it to
-  //  flush.
-  if (executionContext.integrations?.langfuse?.langfuse) {
-    await executionContext.integrations.langfuse.langfuse.shutdownAsync();
   }
 }
 main().catch(console.error);

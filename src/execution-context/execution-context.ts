@@ -4,6 +4,9 @@ import {
 } from "../configuration/configuration";
 import { LangfuseIntegrationContext } from "../integrations/langfuse";
 
+/**
+ * Integrations.
+ */
 export type Integrations = {
   langfuse?: LangfuseIntegrationContext;
 };
@@ -22,6 +25,9 @@ export type ExecutionContext = {
   //  Our current provider.
   provider: ProviderConfiguration;
 
+  //  Are we on a first run, e.g. init-ing key etc?
+  isFirstRun: boolean;
+
   //  More explicity, do we believe we have a TTY?
   isTTYstdin: boolean;
   isTTYstdout: boolean;
@@ -32,3 +38,26 @@ export type ExecutionContext = {
   //  Integrations which we might have enabled.
   integrations?: Integrations;
 };
+
+/**
+ * StdStreamLike - essentially 'process.stdin/stdout' object fields we need to
+ * create an execution context. Extracted into an interface to make unit
+ * testing easier.
+ */
+export interface StdStreamLike {
+  isTTY: boolean;
+  on: (
+    event: string,
+    listener: (data: Buffer) => void,
+  ) => StdStreamLike | undefined;
+}
+
+/**
+ * ProcessLike - essentially the 'process' object fields we need to create an
+ * execution context. Extracted into an interface to make unit testing easier.
+ */
+export interface ProcessLike {
+  stdin: StdStreamLike;
+  stdout: StdStreamLike;
+  env: NodeJS.ProcessEnv;
+}

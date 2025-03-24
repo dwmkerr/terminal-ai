@@ -3,7 +3,7 @@ import { translateError } from "./translate-error";
 import { ErrorCode } from "./errors";
 
 describe("translateError", () => {
-  it("should translate inquirer.js ExitPromptError", () => {
+  test("should translate inquirer.js ExitPromptError", () => {
     const err = new Error("User exited");
     err.name = "ExitPromptError";
     const translated = translateError(err);
