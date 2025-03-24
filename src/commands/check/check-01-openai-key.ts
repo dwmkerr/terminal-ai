@@ -26,7 +26,6 @@ export async function checkOpenAIKey(
     await openai.models.list();
   } catch (err) {
     spinner.stop();
-    console.log(err);
     const error = translateError(err);
     if (error.errorCode === ErrorCode.OpenAIAuthenticationError) {
       console.log(

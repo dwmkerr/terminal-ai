@@ -34,7 +34,7 @@ export async function createExecutionContext(
   );
   if (config.debug.enable) {
     debug.enable(config.debug.namespace || "");
-    dbg.log(`initialisiing and hydrating config...`);
+    dbg(`initialisiing and hydrating config...`);
   }
 
   const executionContext: ExecutionContext = {

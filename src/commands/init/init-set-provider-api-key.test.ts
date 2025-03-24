@@ -13,7 +13,7 @@ describe("init", () => {
       });
     });
 
-    test("creates correct gemini config", () => {
+    it("creates correct gemini config", () => {
       const provider = createProviderConfig("gemini", "gkey");
       expect(provider).toStrictEqual({
         apiKey: "gkey",
@@ -24,7 +24,7 @@ describe("init", () => {
       });
     });
 
-    test("throws on unknown provider id", () => {
+    it("throws on unknown provider id", () => {
       expect(() => createProviderConfig("whatever", "key")).toThrow(
         /unknown provider 'whatever'/,
       );

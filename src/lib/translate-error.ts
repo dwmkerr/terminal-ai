@@ -26,7 +26,11 @@ export function translateError(err: any): TerminalAIError {
     );
   }
 
-  if (err instanceof OpenAI.AuthenticationError) {
+  //  Check for invalid key.
+  if (
+    err instanceof OpenAI.AuthenticationError || // openai error message
+    /400 API key not valid/.test(err) // gemini error message
+  ) {
     return new TerminalAIError(
       ErrorCode.OpenAIAuthenticationError,
       "try 'ai check' to validate your config (API key may be invalid)",
