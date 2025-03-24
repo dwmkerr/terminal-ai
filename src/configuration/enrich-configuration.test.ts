@@ -23,6 +23,15 @@ describe("configuration", () => {
       test("correctly enriches default configuration with partial configuration", () => {
         const config = getDefaultConfiguration();
         const partial: DeepPartial<Configuration> = {
+          providers: {
+            gemini: {
+              name: "gemini",
+              apiKey: "gkey",
+              baseURL: "gurl",
+              model: "gmodel",
+              providerId: "gid",
+            },
+          },
           integrations: {
             langfuse: {
               secretKey: "sk",
@@ -40,6 +49,15 @@ describe("configuration", () => {
           apiKey: "",
           baseURL: "https://api.openai.com/v1/",
           model: "gpt-3.5-turbo",
+          providers: {
+            gemini: {
+              name: "gemini",
+              apiKey: "gkey",
+              baseURL: "gurl",
+              model: "gmodel",
+              providerId: "gid",
+            },
+          },
           prompts: {
             chat: {
               context: [],

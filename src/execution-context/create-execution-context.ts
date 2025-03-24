@@ -1,5 +1,4 @@
 import debug from "debug";
-import { getDefaultConfiguration } from "../configuration/configuration";
 import { ExecutionContext } from "./execution-context";
 import { hydrateContextEnvironmentVariables } from "../lib/hydrate-context-environment-variables";
 import { readStdin } from "../lib/read-stdin";
@@ -12,8 +11,8 @@ const dbg = debug("ai:create-execution-context");
 
 export async function createExecutionContext(
   process: ProcessLike,
-  configFilePath: string,
   promptsFolder: string,
+  configFilePath: string,
 ): Promise<ExecutionContext> {
   //  If we have anything piped to stdin, read it.
   const stdinContent = await readStdin(process.stdin);
@@ -22,29 +21,32 @@ export async function createExecutionContext(
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   //  The 'colors.js' force color we will also use.
   const forceColor = process.env["FORCE_COLOR"] === "1";
-
-  const executionContext: ExecutionContext = {
-    //  We will very shortly enrich the config.
-    configFilePath,
-    config: getDefaultConfiguration(),
-    //  TOOD
-    provider: { name: "", baseURL: "", apiKey: "", model: "" },
-    isTTYstdin: process.stdin.isTTY || false,
-    isTTYstdout: forceColor || process.stdout.isTTY || false,
-    stdinContent,
-  };
-
   try {
     //  Set all of the environment variables that can be used when hydrating
     //  context.
     hydrateContextEnvironmentVariables(process.env);
 
     //  Load our configuration.
-    const config = await loadConfiguration(configFilePath, promptsFolder);
+    const config = await loadConfiguration(
+      promptsFolder,
+      configFilePath,
+      process.env,
+    );
     if (config.debug.enable) {
       debug.enable(config.debug.namespace || "");
       dbg.log(`initialisiing and hydrating config...`);
     }
+
+    const executionContext: ExecutionContext = {
+      //  We will very shortly enrich the config.
+      configFilePath,
+      config,
+      //  TOOD
+      provider: { name: "", baseURL: "", apiKey: "", model: "" },
+      isTTYstdin: process.stdin.isTTY || false,
+      isTTYstdout: forceColor || process.stdout.isTTY || false,
+      stdinContent,
+    };
 
     //  Enable any integrations.
     executionContext.integrations = {

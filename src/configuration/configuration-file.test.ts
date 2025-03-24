@@ -53,5 +53,43 @@ openai:
         model: "gpt4.5",
       });
     });
+
+    test("can set the name of providers based on their key", () => {
+      const config = loadConfigurationFromFileContents(`
+providers:
+  openai:
+    providerId: openai
+    apiKey: okey
+    baseURL: >-
+      https://api.openai.com/v1/
+    model: gpt-3.5-turbo
+  gemini:
+    providerId: gemini
+    apiKey: gkey
+    name: gemini
+    baseURL: https://generativelanguage.googleapis.com/v1beta/
+    model: models/gemini-2.0-flash
+`);
+      //  Note that the values in the config file don't have 'name' set - we
+      //  set it as the key in the config file in the load function.
+      expect(config).toStrictEqual({
+        providers: {
+          openai: {
+            name: "openai",
+            providerId: "openai",
+            apiKey: "okey",
+            baseURL: "https://api.openai.com/v1/",
+            model: "gpt-3.5-turbo",
+          },
+          gemini: {
+            name: "gemini",
+            providerId: "gemini",
+            apiKey: "gkey",
+            baseURL: "https://generativelanguage.googleapis.com/v1beta/",
+            model: "models/gemini-2.0-flash",
+          },
+        },
+      });
+    });
   });
 });

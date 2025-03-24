@@ -8,13 +8,14 @@ import { enrichConfiguration } from "./enrich-configuration";
 const debug = dbg("ai:configuration");
 
 export async function loadConfiguration(
-  configFilePath: string,
   promptsFolder: string,
+  configFilePath: string,
+  env: NodeJS.ProcessEnv,
 ): Promise<Configuration> {
   const defaultConfig = getDefaultConfiguration();
   const promptsConfig = loadConfigationFromPromptsFolder(promptsFolder);
   const fileConfig = loadConfigurationFromFile(configFilePath);
-  const envConfig = loadConfigurationFromEnv(process.env);
+  const envConfig = loadConfigurationFromEnv(env);
 
   debug("composing configuration:");
   debug("  default config:", defaultConfig);

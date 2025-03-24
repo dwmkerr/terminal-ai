@@ -37,6 +37,7 @@ export interface Configuration {
   apiKey: string;
   baseURL: string;
   model: string;
+  providers: Record<string, ProviderConfiguration>;
   prompts: {
     chat: {
       context: string[];
@@ -59,6 +60,7 @@ export function getDefaultConfiguration(): Configuration {
     apiKey: "",
     baseURL: "https://api.openai.com/v1/",
     model: "gpt-3.5-turbo",
+    providers: {},
     prompts: {
       chat: {
         context: [],

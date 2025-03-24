@@ -46,6 +46,10 @@ describe("execution-context", () => {
     };
   });
 
+  afterEach(() => {
+    fs.rmdirSync(tempConfigFolder, { recursive: true });
+  });
+
   describe("createExecutionContext", () => {
     test("creates correctly with no config file or prompts folder present", async () => {
       const process: ProcessLike = {

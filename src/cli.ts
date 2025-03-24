@@ -1,14 +1,13 @@
 #!/usr/bin/env -S node --no-deprecation
 
 import path from "path";
+import os from "os";
 
 import { Command } from "commander";
 
 import { chat } from "./commands/chat/chat";
-
 import { debug as debugCommand } from "./commands/debug";
 import { config as configCommand } from "./commands/config/config";
-
 import theme from "./theme";
 import { ErrorCode } from "./lib/errors";
 import packageJson from "../package.json";
@@ -16,11 +15,11 @@ import { ExecutionContext } from "./execution-context/execution-context";
 import { check } from "./commands/check/check";
 import { init } from "./commands/init/init";
 import { Commands } from "./commands/commands";
-import { usage } from "./commands/usage";
 import { translateError } from "./lib/translate-error";
 import { ensureApiKey } from "./chat-pipeline/stages/ensure-api-key";
 import { createExecutionContext } from "./execution-context/create-execution-context";
 import { ConfigurationPaths } from "./configuration/configuration";
+import { hydratePromptsFolder } from "./configuration/configuration-prompts-folder";
 
 const cli = async (program: Command, executionContext: ExecutionContext) => {
   //  Collect sting parameters.
@@ -98,15 +97,14 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     });
 
   //  The usage command is still very much work in progress.
-  if (executionContext.config.debug.enable) {
-    program
-      .command("usage")
-      .description("View API usage statistics")
-      .action(async () => {
-        //  TODO: better just to open: https://platform.openai.com/usage
-        await usage(executionContext);
-      });
-  }
+  // if (executionContext.config.debug.enable) {
+  //   program
+  //     .command("usage")
+  //     .description("View API usage statistics")
+  //     .action(async () => {
+  //       await usage(executionContext);
+  //     });
+  // }
 
   program
     .command("debug")
@@ -120,20 +118,32 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
 };
 
 async function main() {
-  //  TODO hydrate prompts
+  //  Hydrate our prompts; this creates the ~/.ai/prompts folder and copies
+  //  bundled prompts into it if they don't exist.
+  hydratePromptsFolder(
+    path.join(__dirname, "..", ConfigurationPaths.PromptsFolder),
+    path.join(
+      os.homedir(),
+      ConfigurationPaths.ConfigFolder,
+      ConfigurationPaths.PromptsFolder,
+    ),
+  );
+
   //  Build the default config file path and create the execution context.
   const configFilePath = path.join(
+    os.homedir(),
     ConfigurationPaths.ConfigFolder,
     ConfigurationPaths.ConfigFile,
   );
   const promptsFolder = path.join(
+    os.homedir(),
     ConfigurationPaths.ConfigFolder,
     ConfigurationPaths.PromptsFolder,
   );
   const executionContext = await createExecutionContext(
     process,
-    configFilePath,
     promptsFolder,
+    configFilePath,
   );
 
   try {

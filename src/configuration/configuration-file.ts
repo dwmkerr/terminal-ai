@@ -41,6 +41,21 @@ export function loadConfigurationFromFileContents(
       delete config.openai;
     }
 
+    //  Any providers we have loaded will need to have their 'name' field set
+    //  as the key of the provider in the array, e.g:
+    //  providers:
+    //    gemini:
+    //      name: "<--- this is set from the key 'gemini' above"
+    const providers = config.providers;
+    if (providers !== undefined) {
+      const providerKeys = Object.keys(providers);
+      for (const key of providerKeys) {
+        if (providers[key] !== undefined) {
+          providers[key].name = key;
+        }
+      }
+    }
+
     return config;
   } catch (err) {
     //  If we have a YAML error we can be specific on the issues.

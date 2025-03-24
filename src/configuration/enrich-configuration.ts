@@ -38,6 +38,9 @@ export function enrichConfiguration(
   enrichProperty(newConfig, "model", data.model);
   enrichProperty(newConfig, "baseURL", data.baseURL);
 
+  //  Model configuration.
+  enrichProperty(newConfig, "providers", data.providers);
+
   //  Prompt configuration.
   if (data?.prompts?.chat?.context !== undefined) {
     const prompts = data.prompts.chat.context.filter((p) => p !== undefined);

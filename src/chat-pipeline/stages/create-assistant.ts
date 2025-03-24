@@ -15,9 +15,6 @@ export async function createAssistant(
     name: "Termianl AI",
     instructions: instructions.join("\n"),
     model: executionContext.provider.model,
-    //  TODO: decide what tools we want.
-    tools: [{ type: "code_interpreter" }],
-    // file_ids: [file.id],
   });
 
   return assistant;
