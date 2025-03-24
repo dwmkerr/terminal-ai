@@ -99,7 +99,7 @@ provider: gemeni
 providers:
   gemini:
     apiKey: "gemini key"
-    baseURL: "https://generativelanguage.googleapis.com/v1beta/"
+    baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
     model: "TODO"
   deepseek:
     apiKey: "gemini key"

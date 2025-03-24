@@ -64,7 +64,7 @@ export function createProviderConfig(
         apiKey,
         providerId: "gemini",
         name: "gemini",
-        baseURL: "https://generativelanguage.googleapis.com/v1beta/",
+        baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
         model: "models/gemini-2.0-flash",
       };
     default:
