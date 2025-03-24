@@ -65,6 +65,7 @@ describe("configuration", () => {
         tempConfigFilePath,
         `apiKey: testKey
 baseURL: http://newurl.com/v1
+provider: gemini
 providers:
   gemini:
     providerId: "gemini"
@@ -99,6 +100,7 @@ prompts:
         apiKey: "testKey",
         baseURL: "http://newurl.com/v1/OVERRIDDEN",
         model: "gpt-3.5-turbo",
+        provider: "gemini",
         providers: {
           gemini: {
             name: "gemini", // note this wasn't in config, it's set on file load

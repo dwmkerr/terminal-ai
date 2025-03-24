@@ -37,7 +37,11 @@ export interface Configuration {
   apiKey: string;
   baseURL: string;
   model: string;
+
+  //  The provider name (optional, but when set must be valid) and the providers.
+  provider?: string;
   providers: Record<string, ProviderConfiguration>;
+
   prompts: {
     chat: {
       context: string[];

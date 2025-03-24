@@ -4,9 +4,35 @@ import { ErrorCode, TerminalAIError } from "../../lib/errors";
 import { updateConfigurationFile } from "../../configuration/update-configuration-file";
 import { ProviderConfiguration } from "../../configuration/configuration";
 
-export async function initSetProviderApiKey(
-  executionContext: ExecutionContext,
-) {
+export async function initUpdateProvider(executionContext: ExecutionContext) {
+  // console.log(
+  //   print(`If you need a free API key follow the guide at:`, interactive),
+  // );
+  // console.log(
+  //   print(
+  //     `  ${colors.underline(colors.blue("https://github.com/dwmkerr/terminal-ai#api-key\n"))}`,
+  //     interactive,
+  //   ),
+  // );
+  // const apiKey = await password({
+  //   mask: true,
+  //   message: "API Key (Press <Enter> to keep existing):",
+  // });
+  // if (apiKey !== "") {
+  //   //  Note this is not ideal as we are mutating execution state, but needed
+  //   //  as we might shortly run a _new_ command such as init.
+  //   config.apiKey = apiKey;
+  //   saveApiKey(apiKey);
+  // }
+
+  // //  Offer advanced options.
+  // const model = await selectModel(config.model);
+  // if (model !== undefined) {
+  //   config.model = model;
+  //   console.log(`TODO`);
+  //   // saveModel(model);
+  // }
+
   //  Ask for a provider.
   const providerId = await select({
     message: "Your API key provider",

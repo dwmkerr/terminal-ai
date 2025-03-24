@@ -38,7 +38,8 @@ export function enrichConfiguration(
   enrichProperty(newConfig, "model", data.model);
   enrichProperty(newConfig, "baseURL", data.baseURL);
 
-  //  Model configuration.
+  //  Provider configuration.
+  enrichProperty(newConfig, "provider", data.provider);
   enrichProperty(newConfig, "providers", data.providers);
 
   //  Prompt configuration.

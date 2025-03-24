@@ -4,7 +4,7 @@ import { ErrorCode, TerminalAIError } from "../../lib/errors";
 
 export async function ensureApiKey(executionContext: ExecutionContext) {
   //  If we already have a key, we're done.
-  if (executionContext.config.apiKey !== "") {
+  if (executionContext.provider.apiKey !== "") {
     return;
   }
 
@@ -17,7 +17,7 @@ export async function ensureApiKey(executionContext: ExecutionContext) {
     );
   }
 
-  //  Initialis, this will mutate execution context to set the key, or die
+  //  Initialise, this will mutate execution context to set the key, or die
   //  trying.
   return await init(executionContext, true);
 }

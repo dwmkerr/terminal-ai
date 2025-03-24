@@ -37,14 +37,16 @@ export async function createExecutionContext(
     dbg(`initialisiing and hydrating config...`);
   }
 
+  //  Create the execution context.
+  const provider = buildProviderFromConfig(config);
   const executionContext: ExecutionContext = {
     //  We've got the config file and it's path...
     configFilePath,
     config,
     //  ...the provider, which is a function of the config...
-    provider: buildProviderFromConfig(config),
-    //  ...the first run, which is also a function of the config...
-    isFirstRun: isFirstRun(config),
+    provider: provider,
+    //  ...the first run, which is a function of the provider...
+    isFirstRun: isFirstRun(provider),
     //  ...and state from the stdin/stdout streams.
     isTTYstdin: process.stdin.isTTY || false,
     isTTYstdout: forceColor || process.stdout.isTTY || false,

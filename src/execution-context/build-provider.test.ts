@@ -29,5 +29,24 @@ describe("execution-context", () => {
       };
       expect(provider).toStrictEqual(expected);
     });
+
+    it("throws if an invalid provider name is specified", async () => {
+      const config: Configuration = {
+        ...getDefaultConfiguration(),
+        //  Set a provider name that doesn't match a provider...
+        provider: "openai",
+        //  Make sure we have no providers...
+        providers: {
+          gemini: {
+            name: "gemini",
+            model: "",
+            baseURL: "",
+            apiKey: "",
+          },
+        },
+      };
+      const call = () => buildProviderFromConfig(config);
+      expect(call).toThrow(/'openai' not found in configured 'providers'/);
+    });
   });
 });

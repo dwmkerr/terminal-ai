@@ -1,56 +1,26 @@
 import { confirm, select } from "@inquirer/prompts";
-import colors from "colors/safe";
-import { inputPrompt, print } from "../../theme";
+import { inputPrompt } from "../../theme";
 import { ExecutionContext } from "../../execution-context/execution-context";
 import { Commands } from "../commands";
 import { check } from "../../commands/check/check";
-import { selectModel } from "../init/select-model";
+import { initUpdateProvider } from "./init-update-provider";
 
 export async function initRegularRun(
   executionContext: ExecutionContext,
-  enableChangeApiKey: boolean,
+  enableUpdateProvider: boolean,
   askNextAction: boolean,
 ): Promise<Commands> {
-  const interactive = executionContext.isTTYstdin;
-  const config = executionContext.config;
-
-  //  If we are going to let the user change their key, do so now.
+  //  If we are going to let the user update their provider, do so now.
   //  The only reason we don't do this is if this function is coming
   //  directly after the first-run init.
-  if (enableChangeApiKey) {
-    console.log(
-      print(`If you need a free API key follow the guide at:`, interactive),
-    );
-    console.log(
-      print(
-        `  ${colors.underline(colors.blue("https://github.com/dwmkerr/terminal-ai#api-key\n"))}`,
-        interactive,
-      ),
-    );
-    console.log(print(`TODO`, interactive));
-    // const apiKey = await password({
-    //   mask: true,
-    //   message: "API Key (Press <Enter> to keep existing):",
-    // });
-    // if (apiKey !== "") {
-    //   //  Note this is not ideal as we are mutating execution state, but needed
-    //   //  as we might shortly run a _new_ command such as init.
-    //   config.apiKey = apiKey;
-    //   saveApiKey(apiKey);
-    // }
-  }
-
-  //  Offer advanced options.
-  const advanced = await confirm({
-    message: "Advanced Configuration (e.g. model)?",
-    default: false,
-  });
-  if (advanced) {
-    const model = await selectModel(config.model);
-    if (model !== undefined) {
-      config.model = model;
-      console.log(`TODO`);
-      // saveModel(model);
+  if (enableUpdateProvider) {
+    //  Offer advanced options.
+    const updateProvider = await confirm({
+      message: "Update Provider (API key, model, etc)?",
+      default: false,
+    });
+    if (updateProvider) {
+      await initUpdateProvider(executionContext);
     }
   }
 
