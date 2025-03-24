@@ -1,18 +1,19 @@
 import debug from "debug";
 import { getDefaultConfiguration } from "../configuration/configuration";
-import { getConfiguration } from "../configuration/utils";
 import { ExecutionContext } from "./execution-context";
 import { hydrateContextEnvironmentVariables } from "../lib/hydrate-context-environment-variables";
 import { readStdin } from "../lib/read-stdin";
-import { hydrateDefaultConfig } from "../configuration/hydrate-default-config";
 import { integrateLangfuse } from "../integrations/langfuse";
 import { translateError } from "../lib/translate-error";
 import { ProcessLike } from "./create-execution-context.test";
+import { loadConfiguration } from "../configuration/load-configuration";
 
 const dbg = debug("ai:create-execution-context");
 
 export async function createExecutionContext(
   process: ProcessLike,
+  configFilePath: string,
+  promptsFolder: string,
 ): Promise<ExecutionContext> {
   //  If we have anything piped to stdin, read it.
   const stdinContent = await readStdin(process.stdin);
@@ -21,8 +22,10 @@ export async function createExecutionContext(
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   //  The 'colors.js' force color we will also use.
   const forceColor = process.env["FORCE_COLOR"] === "1";
+
   const executionContext: ExecutionContext = {
     //  We will very shortly enrich the config.
+    configFilePath,
     config: getDefaultConfiguration(),
     //  TOOD
     provider: { name: "", baseURL: "", apiKey: "", model: "" },
@@ -34,19 +37,14 @@ export async function createExecutionContext(
   try {
     //  Set all of the environment variables that can be used when hydrating
     //  context.
-    hydrateContextEnvironmentVariables();
+    hydrateContextEnvironmentVariables(process.env);
 
-    //  Load our initial configuration, best effort. Allows us to enable debug
-    //  tracing if configured.
-    const initialConfig = await getConfiguration();
-    if (initialConfig.debug.enable) {
-      debug.enable(initialConfig.debug.namespace || "");
+    //  Load our configuration.
+    const config = await loadConfiguration(configFilePath, promptsFolder);
+    if (config.debug.enable) {
+      debug.enable(config.debug.namespace || "");
       dbg.log(`initialisiing and hydrating config...`);
     }
-
-    //  Now hydrate and reload our config.
-    hydrateDefaultConfig();
-    executionContext.config = await getConfiguration();
 
     //  Enable any integrations.
     executionContext.integrations = {

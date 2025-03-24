@@ -1,5 +1,9 @@
-import { Configuration, getDefaultConfiguration } from "./configuration";
-import { DeepPartial, enrichConfiguration, enrichProperty } from "./utils";
+import {
+  Configuration,
+  DeepPartial,
+  getDefaultConfiguration,
+} from "./configuration";
+import { enrichConfiguration, enrichProperty } from "./enrich-configuration";
 
 describe("configuration", () => {
   describe("utils", () => {

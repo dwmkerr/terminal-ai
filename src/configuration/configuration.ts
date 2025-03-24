@@ -1,9 +1,16 @@
 export const ConfigurationPaths = {
-  configDir: ".ai",
-  configFilePath: `.ai/config.yaml`,
-  chatPromptsPath: `.ai/prompts/chat/context`,
-  codeOutputPromptsPath: `.ai/prompts/code/output`,
+  ConfigFolder: ".ai",
+  ConfigFile: `config.yaml`,
+  PromptsFolder: "prompts",
+  ChatPromptsContextFolder: "chat/context",
+  CodePromptsOutputFolder: "code/output",
 };
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 
 export interface LangfuseIntegrationConfiguration {
   secretKey: string;

@@ -1,8 +1,25 @@
+import fs from "fs";
 import yaml, { YAMLException } from "js-yaml";
 import { translateError } from "../lib/translate-error";
-import { Configuration } from "./configuration";
-import { DeepPartial } from "./utils";
+import { Configuration, DeepPartial } from "./configuration";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
+
+export function loadConfigurationFromFile(
+  path: string,
+): DeepPartial<Configuration> {
+  //  If the file is missing, we're done.
+  if (!fs.existsSync(path)) {
+    return {};
+  }
+
+  //  Load the configuration structure.
+  try {
+    const fileContents = fs.readFileSync(path, "utf8");
+    return loadConfigurationFromFileContents(fileContents);
+  } catch (err) {
+    throw translateError(err);
+  }
+}
 
 export function loadConfigurationFromFileContents(
   contents: string,

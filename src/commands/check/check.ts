@@ -11,6 +11,7 @@ export async function check(executionContext: ExecutionContext) {
   const provider = executionContext.provider;
 
   //  Create the OpenAI instance we'll use for a lot of the rest of the checks.
+  console.log(executionContext.provider.baseURL);
   const openai = new OpenAI({
     apiKey: executionContext.provider.apiKey,
     baseURL: executionContext.provider.baseURL,

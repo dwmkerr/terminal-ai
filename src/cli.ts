@@ -1,5 +1,7 @@
 #!/usr/bin/env -S node --no-deprecation
 
+import path from "path";
+
 import { Command } from "commander";
 
 import { chat } from "./commands/chat/chat";
@@ -18,6 +20,7 @@ import { usage } from "./commands/usage";
 import { translateError } from "./lib/translate-error";
 import { ensureApiKey } from "./chat-pipeline/stages/ensure-api-key";
 import { createExecutionContext } from "./execution-context/create-execution-context";
+import { ConfigurationPaths } from "./configuration/configuration";
 
 const cli = async (program: Command, executionContext: ExecutionContext) => {
   //  Collect sting parameters.
@@ -117,7 +120,21 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
 };
 
 async function main() {
-  const executionContext = await createExecutionContext(process);
+  //  TODO hydrate prompts
+  //  Build the default config file path and create the execution context.
+  const configFilePath = path.join(
+    ConfigurationPaths.ConfigFolder,
+    ConfigurationPaths.ConfigFile,
+  );
+  const promptsFolder = path.join(
+    ConfigurationPaths.ConfigFolder,
+    ConfigurationPaths.PromptsFolder,
+  );
+  const executionContext = await createExecutionContext(
+    process,
+    configFilePath,
+    promptsFolder,
+  );
 
   try {
     //  Now create and execute the program.

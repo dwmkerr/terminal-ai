@@ -41,7 +41,7 @@ export async function initSetProviderApiKey(
 
   //  Update our execution config with the provider, and update the config file.
   executionContext.provider = provider;
-  updateConfigurationFile({
+  updateConfigurationFile(executionContext.configFilePath, {
     [`providers.${provider.name}`]: provider,
   });
 }

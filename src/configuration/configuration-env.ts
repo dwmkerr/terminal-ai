@@ -1,5 +1,5 @@
-import { Configuration } from "./configuration";
-import { DeepPartial, enrichProperty } from "./utils";
+import { Configuration, DeepPartial } from "./configuration";
+import { enrichProperty } from "./enrich-configuration";
 
 export function loadConfigurationFromEnv(
   env: NodeJS.ProcessEnv,

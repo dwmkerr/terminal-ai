@@ -1,4 +1,12 @@
+import os from "os";
+import fs from "fs";
+import path from "path";
 import { createExecutionContext } from "./create-execution-context";
+import {
+  ConfigurationPaths,
+  getDefaultConfiguration,
+} from "../configuration/configuration";
+
 export interface StdStreamLike {
   isTTY: boolean;
   on: (
@@ -12,9 +20,34 @@ export interface ProcessLike {
   stdout: StdStreamLike;
   env: NodeJS.ProcessEnv;
 }
-describe("exuection-context", () => {
+describe("execution-context", () => {
+  let tempConfigFolder: string;
+  let tempConfigFilePath: string;
+  let tempConfigPromptsFolder: string;
+  let expectedEnrichedEnv: NodeJS.ProcessEnv;
+
+  beforeEach(() => {
+    tempConfigFolder = fs.mkdtempSync(`ai-tests`);
+    tempConfigFilePath = path.join(
+      tempConfigFolder,
+      ConfigurationPaths.ConfigFolder,
+      ConfigurationPaths.ConfigFile,
+    );
+    tempConfigPromptsFolder = path.join(
+      tempConfigFolder,
+      ConfigurationPaths.ConfigFolder,
+      ConfigurationPaths.PromptsFolder,
+      ConfigurationPaths.ConfigFile,
+    );
+    expectedEnrichedEnv = {
+      OS_PLATFORM: os.platform(),
+      TTY_WIDTH: `${process.stdout.columns || 80}`,
+      TTY_HEIGHT: `${process.stdout.rows || 24}`,
+    };
+  });
+
   describe("createExecutionContext", () => {
-    xtest("it can be created", () => {
+    test("creates correctly with no config file or prompts folder present", async () => {
       const process: ProcessLike = {
         stdin: {
           on: () => undefined,
@@ -26,12 +59,20 @@ describe("exuection-context", () => {
         },
         env: {},
       };
-      const executionContext = createExecutionContext(process);
+      const executionContext = await createExecutionContext(
+        process,
+        tempConfigFilePath,
+        tempConfigPromptsFolder,
+      );
 
+      //  Check for the expected execution context.
       expect(executionContext).toMatchObject({
+        config: getDefaultConfiguration(),
         isTTYstdin: true,
-        isTTYstdout: true,
+        isTTYstdout: false,
       });
+      //  Also check that the environment has been hydrated.
+      expect(process.env).toMatchObject(expectedEnrichedEnv);
     });
   });
 });

@@ -16,6 +16,7 @@ export type Integrations = {
  */
 export type ExecutionContext = {
   //  The configuration.
+  configFilePath: string;
   config: Configuration;
 
   //  Our current provider.

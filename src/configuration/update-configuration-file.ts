@@ -1,22 +1,29 @@
 import fs from "fs";
+import path from "path";
+import debug from "debug";
 import yaml from "js-yaml";
-import { ConfigurationPaths } from "./configuration";
-import { enrichProperty, getConfigPath } from "./utils";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
+import { enrichProperty } from "./enrich-configuration";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function updateConfigurationFile(updates: Record<string, any>) {
-  const configPath = getConfigPath();
+const dbg = debug("ai:configuration");
+
+export function updateConfigurationFile(
+  configFilePath: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updates: Record<string, any>,
+) {
   try {
     //  Ensure the config directory exists.
     // Check if the directory exists
-    if (!fs.existsSync(ConfigurationPaths.configDir)) {
-      fs.mkdirSync(ConfigurationPaths.configDir);
+    const configFileFolder = path.dirname(configFilePath);
+    if (!fs.existsSync(configFileFolder)) {
+      dbg(`creating config file folder '${configFileFolder}'...`);
+      fs.mkdirSync(configFileFolder, { recursive: true });
     }
 
     //  We might be updating an existing file, if so get its contents.
-    const fileContents = fs.existsSync(configPath)
-      ? fs.readFileSync(configPath, "utf8")
+    const fileContents = fs.existsSync(configFilePath)
+      ? fs.readFileSync(configFilePath, "utf8")
       : "";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const yamlData = (yaml.load(fileContents) as Record<string, any>) || {};
@@ -25,11 +32,11 @@ export function updateConfigurationFile(updates: Record<string, any>) {
       enrichProperty(yamlData, fieldPath, updates[fieldPath]);
     }
     const updatedYaml = yaml.dump(yamlData, { indent: 2 });
-    fs.writeFileSync(configPath, updatedYaml, "utf8");
+    fs.writeFileSync(configFilePath, updatedYaml, "utf8");
   } catch (err) {
     throw new TerminalAIError(
       ErrorCode.InvalidOperation,
-      `error updating config file ${configPath}: ${err}`,
+      `error updating config file ${configFilePath}: ${err}`,
       err as Error,
     );
   }

@@ -7,6 +7,7 @@ export function createTestExecutionContext(
   //  Create default configuration, common context, update, return.
   const config = getDefaultConfiguration();
   return {
+    configFilePath: "./config.test.yaml",
     config,
     provider: {
       name: "",
