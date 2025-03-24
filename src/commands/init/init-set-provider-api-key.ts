@@ -1,5 +1,5 @@
 import { password, select } from "@inquirer/prompts";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
 import { updateConfigurationFile } from "../../configuration/update-configuration-file";
 import { ProviderConfiguration } from "../../configuration/configuration";

@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { Assistant } from "openai/resources/beta/assistants.mjs";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 
 export async function createAssistant(
   openai: OpenAI,

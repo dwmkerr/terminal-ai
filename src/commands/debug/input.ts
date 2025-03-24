@@ -3,7 +3,7 @@ import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
 import theme from "../../theme";
 import { nextAction } from "../../chat-pipeline/stages/next-action";
 import { ChatPipelineParameters } from "../../chat-pipeline/ChatPipelineParameters";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 
 export async function debugInput(executionContext: ExecutionContext) {
   const params: ChatPipelineParameters = {

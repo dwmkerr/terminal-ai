@@ -1,4 +1,4 @@
-import { createTestExecutionContext } from "../../jest/create-test-execution-context";
+import { createTestExecutionContext } from "../../execution-context/create-test-execution-context";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { buildContext } from "./build-context";
 

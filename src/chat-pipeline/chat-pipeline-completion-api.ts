@@ -16,8 +16,8 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   const config = parameters.executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({
-    apiKey: config.apiKey,
-    baseURL: config.baseURL,
+    apiKey: parameters.executionContext.provider.apiKey,
+    baseURL: parameters.executionContext.provider.baseURL,
   });
 
   //  Get all context prompts and add them to a new conversation.

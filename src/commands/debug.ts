@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../lib/execution-context";
+import { ExecutionContext } from "../execution-context/execution-context";
 import { printResponse } from "../theme";
 import { debugInput } from "./debug/input";
 import { debugModels } from "./debug/models";

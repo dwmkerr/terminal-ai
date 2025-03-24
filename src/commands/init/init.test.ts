@@ -1,5 +1,5 @@
 import { getDefaultConfiguration } from "../../configuration/configuration";
-import { createTestExecutionContext } from "../../jest/create-test-execution-context";
+import { createTestExecutionContext } from "../../execution-context/create-test-execution-context";
 import { init } from "./init";
 
 describe("commands", () => {

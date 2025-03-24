@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { init } from "../../commands/init/init";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
 

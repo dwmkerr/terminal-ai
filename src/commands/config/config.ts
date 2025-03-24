@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { printConfig } from "../../print/print-config";
 
 export async function config(executionContext: ExecutionContext) {

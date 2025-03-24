@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { checkLangfuse } from "./check-04-langfuse";
 import { checkOpenAIKey } from "./check-01-openai-key";
 import { checkOpenAIModel } from "./check-02-openai-model";

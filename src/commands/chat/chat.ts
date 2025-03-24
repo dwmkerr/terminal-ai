@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { executeChatPipeline } from "../../chat-pipeline/chat-pipeline-completion-api";
 import { executeChatPipeline as executeAssistantPipeline } from "../../chat-pipeline/chat-pipeline-assistant-api";
 

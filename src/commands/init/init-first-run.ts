@@ -1,6 +1,6 @@
 import colors from "colors/safe";
 import { print } from "../../theme";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { Commands } from "../commands";
 import { initRegularRun } from "./init-regular-run";
 import { initSetProviderApiKey } from "./init-set-provider-api-key";

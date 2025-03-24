@@ -1,6 +1,5 @@
 #!/usr/bin/env -S node --no-deprecation
 
-import dbg from "debug";
 import { Command } from "commander";
 
 import { chat } from "./commands/chat/chat";
@@ -11,19 +10,15 @@ import { config as configCommand } from "./commands/config/config";
 import theme from "./theme";
 import { ErrorCode } from "./lib/errors";
 import packageJson from "../package.json";
-import { ExecutionContext } from "./lib/execution-context";
-import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
-import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
+import { ExecutionContext } from "./execution-context/execution-context";
 import { check } from "./commands/check/check";
 import { init } from "./commands/init/init";
 import { Commands } from "./commands/commands";
 import { usage } from "./commands/usage";
-import { readStdin } from "./lib/read-stdin";
-import { getDefaultConfiguration } from "./configuration/configuration";
-import { getConfiguration } from "./configuration/utils";
-import { integrateLangfuse } from "./integrations/langfuse";
 import { translateError } from "./lib/translate-error";
 import { ensureApiKey } from "./chat-pipeline/stages/ensure-api-key";
+import { createExecutionContext } from "./execution-context/create-execution-context";
+
 const cli = async (program: Command, executionContext: ExecutionContext) => {
   //  Collect sting parameters.
   const collect = (value: string, previous: string[]): string[] =>
@@ -122,45 +117,9 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
 };
 
 async function main() {
-  //  If we have anything piped to stdin, read it.
-  const stdinContent = await readStdin(process.stdin);
-
-  //  Create an initial execution context. This may evolve as we run various commands etc.
-  //  Make a guess at the interactive mode based on whether the output is a TTY.
-  //  The 'colors.js' force color we will also use.
-  const forceColor = process.env["FORCE_COLOR"] === "1";
-  const executionContext: ExecutionContext = {
-    //  We will very shortly enrich the config.
-    config: getDefaultConfiguration(),
-    //  TOOD
-    provider: { name: "", baseURL: "", apiKey: "", model: "" },
-    isTTYstdin: process.stdin.isTTY || false,
-    isTTYstdout: forceColor || process.stdout.isTTY || false,
-    stdinContent,
-  };
+  const executionContext = await createExecutionContext(process);
 
   try {
-    //  Set all of the environment variables that can be used when hydrating
-    //  context.
-    hydrateContextEnvironmentVariables();
-
-    //  Load our initial configuration, best effort. Allows us to enable debug
-    //  tracing if configured.
-    const initialConfig = await getConfiguration();
-    if (initialConfig.debug.enable) {
-      dbg.enable(initialConfig.debug.namespace || "");
-      dbg.log(`initialisiing and hydrating config...`);
-    }
-
-    //  Now hydrate and reload our config.
-    hydrateDefaultConfig();
-    executionContext.config = await getConfiguration();
-
-    //  Enable any integrations.
-    executionContext.integrations = {
-      langfuse: integrateLangfuse(executionContext.config),
-    };
-
     //  Now create and execute the program.
     const program = new Command();
     await cli(program, executionContext);

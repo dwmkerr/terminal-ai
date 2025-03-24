@@ -1,7 +1,7 @@
 import { confirm, select } from "@inquirer/prompts";
 import colors from "colors/safe";
 import { inputPrompt, print } from "../../theme";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { Commands } from "../commands";
 import { check } from "../../commands/check/check";
 import { selectModel } from "../init/select-model";

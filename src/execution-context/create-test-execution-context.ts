@@ -1,5 +1,5 @@
 import { getDefaultConfiguration } from "../configuration/configuration";
-import { ExecutionContext } from "../lib/execution-context";
+import { ExecutionContext } from "../execution-context/execution-context";
 
 export function createTestExecutionContext(
   overrides: Partial<ExecutionContext> = {},

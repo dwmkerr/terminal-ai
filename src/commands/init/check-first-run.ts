@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 
 export function checkFirstRun(executionContext: ExecutionContext): boolean {
   //  The most common indicator we're a first run - no api key.

@@ -1,6 +1,6 @@
 import colors from "colors/safe";
 import { print } from "../../theme";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { Commands } from "../commands";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
 import { checkFirstRun } from "./check-first-run";

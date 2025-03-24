@@ -1,5 +1,5 @@
 import { ErrorCode } from "../../lib/errors";
-import { ExecutionContext } from "../../lib/execution-context";
+import { ExecutionContext } from "../../execution-context/execution-context";
 import { translateError } from "../../lib/translate-error";
 import { printError, printMessage, startSpinner } from "../../theme";
 
