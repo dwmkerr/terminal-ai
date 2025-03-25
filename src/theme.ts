@@ -72,7 +72,7 @@ export function printHint(hint: string) {
 
 export async function startSpinner(interactive: boolean, text: string = "") {
   if (!interactive) {
-    return { stop: () => undefined };
+    return { stop: () => undefined, succeed: () => undefined };
   }
   const ora = (await import("ora")).default;
   return ora(text).start();

@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { translateError } from "../../lib/translate-error";
-import { printMessage, printWarning, startSpinner } from "../../theme";
+import { printWarning, startSpinner } from "../../theme";
 
 export async function checkOpenAIModel(
   interactive: boolean,
@@ -8,10 +8,7 @@ export async function checkOpenAIModel(
   model: string,
 ) {
   //  See if we can list models, this'll check the key...
-  const spinner = await startSpinner(
-    interactive,
-    `Checking OpenAI Model ${model}...`,
-  );
+  const spinner = await startSpinner(interactive, `Checking Model ${model}...`);
   let apiModels: string[] = [];
   try {
     //  Get all of the OpenAI API models.
@@ -28,14 +25,12 @@ export async function checkOpenAIModel(
     spinner.stop();
     throw translateError(err);
   }
-  spinner.stop();
+  spinner.succeed();
 
-  if (apiModels.includes(model)) {
-    console.log(printMessage("✅ OpenAI Model validated", interactive));
-  } else {
+  if (apiModels.includes(model) === false) {
     console.log(
       printWarning(
-        `⚠️ Warning: Your OpenAI Model '${model}' in not in any of the ${apiModels.length} models available from the OpenAI APIs - this may indicate misconfiguration`,
+        `⚠️ Warning: Your Model '${model}' in not in any of the ${apiModels.length} models currently listed by the provider - this *may* indicate misconfiguration`,
         interactive,
       ),
     );

@@ -5,6 +5,7 @@ import { checkOpenAIKey } from "./check-01-openai-key";
 import { checkOpenAIModel } from "./check-02-openai-model";
 import { checkOpenAIRateLimit } from "./check-03-openai-rate-limit";
 import { checkConnection } from "./check-00-connection";
+import { checkBaseURL } from "./check-01-base-url";
 
 export async function check(executionContext: ExecutionContext) {
   const interactive = executionContext.isTTYstdin;
@@ -17,7 +18,7 @@ export async function check(executionContext: ExecutionContext) {
   });
 
   await checkConnection(interactive);
-  //  TODO base url?
+  await checkBaseURL(interactive, provider.baseURL);
   await checkOpenAIKey(interactive, openai, provider.apiKey);
   await checkOpenAIModel(interactive, openai, provider.model);
   await checkOpenAIRateLimit(interactive, openai, provider.model);

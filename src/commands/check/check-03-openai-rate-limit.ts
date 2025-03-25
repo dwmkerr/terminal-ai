@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { ErrorCode } from "../../lib/errors";
 import { translateError } from "../../lib/translate-error";
-import { printError, printMessage, startSpinner } from "../../theme";
+import { printError, startSpinner } from "../../theme";
 
 export async function checkOpenAIRateLimit(
   interactive: boolean,
@@ -11,7 +11,7 @@ export async function checkOpenAIRateLimit(
   //  See if we can list models, this'll check the key...
   const spinner = await startSpinner(
     interactive,
-    "Checking OpenAI rate limit...",
+    "Checking API key rate limit...",
   );
   //  Check for rate limit - this check will also check the model.
   try {
@@ -27,7 +27,7 @@ export async function checkOpenAIRateLimit(
     if (error.errorCode === ErrorCode.OpenAIRateLimitError) {
       console.log(
         printError(
-          "❌ OpenAI rate limit exceeded for token, check your plan and billing details",
+          "❌ Rate limit exceeded for API key, check your plan and billing details",
           interactive,
         ),
       );
@@ -35,6 +35,5 @@ export async function checkOpenAIRateLimit(
     }
     throw error;
   }
-  spinner.stop();
-  console.log(printMessage("✅ OpenAI rate limit verified", interactive));
+  spinner.succeed();
 }
