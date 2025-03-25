@@ -1,3 +1,5 @@
+import { ProviderType } from "../providers/provider-type";
+
 export const ConfigurationPaths = {
   ConfigFolder: ".ai",
   ConfigFile: `config.yaml`,
@@ -30,7 +32,9 @@ export interface ProviderConfiguration {
   //  https://github.com/dwmkerr/ai-providers-and-models
   //  It is not required, but if set allows us to do slightly better model
   //  validation for the user.
-  providerId?: string;
+  type?: ProviderType;
+  //  Optional prompt override.
+  prompt?: string;
 }
 
 export interface Configuration {

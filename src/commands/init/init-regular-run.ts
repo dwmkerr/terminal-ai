@@ -3,7 +3,7 @@ import { inputPrompt } from "../../theme";
 import { ExecutionContext } from "../../execution-context/execution-context";
 import { Commands } from "../commands";
 import { check } from "../../commands/check/check";
-import { initUpdateProvider } from "./init-update-provider";
+import { initUpdateProviders } from "./init-update-providers";
 
 export async function initRegularRun(
   executionContext: ExecutionContext,
@@ -16,11 +16,11 @@ export async function initRegularRun(
   if (enableUpdateProvider) {
     //  Offer advanced options.
     const updateProvider = await confirm({
-      message: "Update Provider (API key, model, etc)?",
+      message: "Configure Provider (key, model, etc)?",
       default: false,
     });
     if (updateProvider) {
-      await initUpdateProvider(executionContext);
+      await initUpdateProviders(executionContext);
     }
   }
 

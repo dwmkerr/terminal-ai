@@ -1,6 +1,7 @@
-import { createProviderConfig } from "./init-set-provider-api-key";
+import { createProviderConfig } from "./create-provider-config";
+import { ProviderType } from "./provider-type";
 
-describe("init", () => {
+describe("providers", () => {
   describe("createProviderConfig", () => {
     it("creates correct openai config", () => {
       const provider = createProviderConfig("openai", "key");
@@ -14,7 +15,7 @@ describe("init", () => {
     });
 
     it("creates correct gemini config", () => {
-      const provider = createProviderConfig("gemini", "gkey");
+      const provider = createProviderConfig("gemini_openai", "gkey");
       expect(provider).toStrictEqual({
         apiKey: "gkey",
         providerId: "gemini",
@@ -24,10 +25,10 @@ describe("init", () => {
       });
     });
 
-    it("throws on unknown provider id", () => {
-      expect(() => createProviderConfig("whatever", "key")).toThrow(
-        /unknown provider 'whatever'/,
-      );
+    it("throws on unknown provider type", () => {
+      expect(() =>
+        createProviderConfig("whatever" as ProviderType, "key"),
+      ).toThrow(/unknown provider 'whatever'/);
     });
   });
 });
