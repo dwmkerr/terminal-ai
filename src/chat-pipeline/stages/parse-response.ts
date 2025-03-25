@@ -1,7 +1,7 @@
 import { marked } from "marked";
-import theme from "../../theme";
 
 import { formatMarkdown, plainTextCode } from "../../lib/markdown";
+import { printResponse } from "../../print/print-response";
 
 export type CodeBlock = {
   language: string;
@@ -25,7 +25,7 @@ export function parseResponse(
   //  of it suitable for printing to a TTY, as well as a plain text version
   //  of it, suitable for writng to a file.
   //  Note that we're creating a coloured repsonse here no matter what...
-  const colourFormattedResponseWithPrompt = theme.printResponse(
+  const colourFormattedResponseWithPrompt = printResponse(
     prompt,
     rawMarkdownResponse,
     true,

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import colors from "colors/safe";
-import { printResponse } from "./theme";
+import { printResponse } from "./print-response";
 
 describe("theme", () => {
   beforeAll(() => {

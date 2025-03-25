@@ -1,5 +1,5 @@
 import { ExecutionContext } from "../execution-context/execution-context";
-import { printResponse } from "../theme";
+import { printResponse } from "../print/print-response";
 import { debugInput } from "./debug/input";
 import { debugModels } from "./debug/models";
 

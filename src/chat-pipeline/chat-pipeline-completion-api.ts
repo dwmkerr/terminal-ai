@@ -10,6 +10,7 @@ import { copyResponse } from "./stages/copy-response";
 import { printResponse } from "./stages/print-response";
 import { nextInputOrAction } from "./stages/next-input-or-action";
 import { parseResponse } from "./stages/parse-response";
+import { getProviderPrompt } from "../providers/get-provider-prompt";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
@@ -47,14 +48,16 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       ...outputPrompts.map((p) => ({ role: p.role, content: p.context })),
     );
 
-    //  Add the user's message and get the response.
+    //  Add the user's message and get the response. The prompt will be
+    //  something like 'chatgpt' or 'gemini'.
+    const prompt = getProviderPrompt(params.executionContext.provider);
     conversationHistory.push({ role: "user", content: inputAndIntent.message });
     const rawMarkdownResponse = await getCompletionsResponse(
       params,
       openai,
       conversationHistory,
     );
-    const response = parseResponse("chatgpt", rawMarkdownResponse);
+    const response = parseResponse(prompt, rawMarkdownResponse);
 
     //  If the intent is to copy the response, copy it and we're done.
     if (await copyResponse(params, response)) {
