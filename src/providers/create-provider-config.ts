@@ -28,8 +28,8 @@ export function createProviderConfig(
         apiKey,
         type: "openai_compatible",
         name: "openai_compatible",
-        baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-        model: "models/gemini-2.0-flash",
+        baseURL: "",
+        model: "",
       };
     default:
       throw new TerminalAIError(

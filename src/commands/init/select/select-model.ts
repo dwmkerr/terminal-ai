@@ -109,8 +109,6 @@ export async function selectModel(
     validate: () => true,
   })) as string;
 
-  console.log(`answer`, answer);
-
   //  If we selected the 'keep existing' model we return the default.
   return answer === keepExisting.value ? `${defaultModel || ""}` : answer;
 }

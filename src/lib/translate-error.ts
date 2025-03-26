@@ -76,6 +76,13 @@ export function translateError(err: any): TerminalAIError {
       "tls altname invalid - check your internet connection",
     );
   }
+  //  - invalid url error...
+  if (err.code === "ERR_INVALID_URL") {
+    return new TerminalAIError(
+      ErrorCode.InvalidConfiguration,
+      "Invalid URL - check your configuration",
+    );
+  }
 
   //  We don't know what the error is but it DOES have a code...
   if (code) {

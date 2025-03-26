@@ -20,18 +20,21 @@ export async function checkBaseURL(interactive: boolean, baseURL: string) {
     interactive,
     `Checking Base URL ${baseURL}...`,
   );
-  const hostname = new URL(baseURL).hostname;
+  let hostname = "";
   try {
+    hostname = new URL(baseURL).hostname;
     await dns.promises.lookup(hostname);
   } catch (err) {
     spinner.stop();
     const error = translateError(err);
     if (error.errorCode === ErrorCode.Connection) {
-      console.log(
-        printError(
-          `❌ Check Base URL Failed: your Base URL hostname '${hostname}' appears to be invalid, try 'ai init'`,
-          interactive,
-        ),
+      spinner.fail(
+        `Check Base URL Failed: your Base URL hostname '${hostname}' appears to be invalid, try 'ai init'`,
+      ),
+        process.exit(error.errorCode);
+    } else if (error.errorCode === ErrorCode.InvalidConfiguration) {
+      spinner.fail(
+        `Check Base URL Failed: your Base URL '${baseURL}' appears to be invalid, try 'ai init'`,
       );
       process.exit(error.errorCode);
     }

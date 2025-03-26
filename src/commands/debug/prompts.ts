@@ -2,6 +2,8 @@ import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
 
 import { select } from "@inquirer/prompts";
 import { selectModel } from "../init/select/select-model";
+import { addOrEditProvider } from "../init/select/add-or-edit-provider";
+import { ProviderConfiguration } from "../../configuration/configuration";
 
 export async function debugPrompts() {
   const choice = await select({
@@ -21,6 +23,16 @@ export async function debugPrompts() {
         value: "select_model_default",
         description: "Select Model (with default and provider)",
       },
+      {
+        name: "Add Provider",
+        value: "add_provider",
+        description: "Add Provider",
+      },
+      {
+        name: "Edit Provider",
+        value: "edit_provider",
+        description: "Edit Provider",
+      },
     ],
   });
 
@@ -39,6 +51,20 @@ export async function debugPrompts() {
       console.log(
         await selectModel("models/gemini-2.0-flash", "gemini_openai"),
       );
+      break;
+    case "add_provider":
+      console.log(await addOrEditProvider());
+      break;
+    case "edit_provider":
+      const provider: ProviderConfiguration = {
+        name: "gemini",
+        type: "gemini_openai",
+        apiKey: "123",
+        baseURL: "https://ai.gateway.internal/v1/openai",
+
+        model: "models/gemini-2.0-flash",
+      };
+      console.log(await addOrEditProvider(provider));
       break;
   }
 }
