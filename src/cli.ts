@@ -6,7 +6,7 @@ import os from "os";
 import { Command } from "commander";
 
 import { chat } from "./commands/chat/chat";
-import { debug as debugCommand } from "./commands/debug";
+import { debug as debugCommand } from "./commands/debug/debug";
 import { config as configCommand } from "./commands/config/config";
 import theme from "./theme";
 import { ErrorCode } from "./lib/errors";

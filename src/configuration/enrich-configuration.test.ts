@@ -29,7 +29,7 @@ describe("configuration", () => {
               apiKey: "gkey",
               baseURL: "gurl",
               model: "gmodel",
-              providerId: "gid",
+              type: "gemini_openai",
             },
           },
           integrations: {
@@ -55,7 +55,7 @@ describe("configuration", () => {
               apiKey: "gkey",
               baseURL: "gurl",
               model: "gmodel",
-              providerId: "gid",
+              type: "gemini_openai",
             },
           },
           prompts: {

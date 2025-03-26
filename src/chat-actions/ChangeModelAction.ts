@@ -1,7 +1,7 @@
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
 import { ChatAction } from "./ChatAction";
-import { selectModel } from "../commands/init/select-model";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
+import { selectModel } from "../commands/init/select/select-model";
 
 export const ChangeModelAction: ChatAction = {
   id: "change_model",

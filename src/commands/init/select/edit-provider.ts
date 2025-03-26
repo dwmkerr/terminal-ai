@@ -3,6 +3,7 @@ import { ProviderConfiguration } from "../../../configuration/configuration";
 import { selectProviderType } from "./select-provider-type";
 import { inputApiKey } from "./input-api-key";
 import { createProviderConfig } from "../../../providers/create-provider-config";
+import { selectModel } from "./select-model";
 
 export async function editProvider(provider?: ProviderConfiguration) {
   //  Choose the provider type.
@@ -17,11 +18,11 @@ export async function editProvider(provider?: ProviderConfiguration) {
   });
 
   //  TODO model select
-  const model = await input({
-    message: "Model:",
-    default: provider?.model,
-    validate: (url) => (url === "" ? "Model is required" : true),
-  });
+  const model = await selectModel(provider?.model, provider?.type);
+  // const model = await input({
+  //   message: "Model:",
+  //   validate: (url) => (url === "" ? "Model is required" : true),
+  // });
   const apiKey = await inputApiKey(provider?.apiKey);
 
   //  If we are creating a new provider config, we need a name.

@@ -7,7 +7,7 @@ describe("providers", () => {
       const provider = createProviderConfig("openai", "key");
       expect(provider).toStrictEqual({
         apiKey: "key",
-        providerId: "openai",
+        type: "openai",
         name: "openai",
         baseURL: "https://api.openai.com/v1/",
         model: "gpt-3.5-turbo",
@@ -18,7 +18,7 @@ describe("providers", () => {
       const provider = createProviderConfig("gemini_openai", "gkey");
       expect(provider).toStrictEqual({
         apiKey: "gkey",
-        providerId: "gemini",
+        type: "gemini_openai",
         name: "gemini",
         baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
         model: "models/gemini-2.0-flash",
@@ -28,7 +28,7 @@ describe("providers", () => {
     it("throws on unknown provider type", () => {
       expect(() =>
         createProviderConfig("whatever" as ProviderType, "key"),
-      ).toThrow(/unknown provider 'whatever'/);
+      ).toThrow(/unknown provider type 'whatever'/);
     });
   });
 });

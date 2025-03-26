@@ -68,7 +68,7 @@ baseURL: http://newurl.com/v1
 provider: gemini
 providers:
   gemini:
-    providerId: "gemini"
+    type: "gemini"
     apiKey: ""
     baseURL: "https://generativelanguage.googleapis.com/v1beta/"
     model: "models/gemini-2.0-flash"
@@ -105,7 +105,7 @@ prompts:
           gemini: {
             name: "gemini", // note this wasn't in config, it's set on file load
             apiKey: "",
-            providerId: "gemini",
+            type: "gemini",
             baseURL: "https://generativelanguage.googleapis.com/v1beta/",
             model: "models/gemini-2.0-flash",
           },

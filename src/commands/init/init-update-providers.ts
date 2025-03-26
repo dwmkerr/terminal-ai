@@ -17,14 +17,4 @@ export async function initUpdateProviders(executionContext: ExecutionContext) {
     //  If no provider added, we edit a new one.
     await editProvider();
   }
-
-  // //  Create the provider configuration from the settings we've chosen.
-  // const provider = createProviderConfig(providerId, apiKey);
-
-  // //  Update our execution config with the provider, and update the config file.
-  // executionContext.provider = provider;
-  // updateConfigurationFile(executionContext.configFilePath, {
-  //   [`provider`]: provider.name,
-  //   [`providers.${provider.name}`]: provider,
-  // });
 }

@@ -23,8 +23,8 @@ describe("execution-context", () => {
         //  This is what we provided...
         apiKey: "key",
         //  We're not configured from a provider block, just the root config
-        //  fields, so we have no provider ID or name...
-        providerId: undefined,
+        //  fields, so we have no provider type or name...
+        //  e.g. 'type' = undefined
         name: "",
       };
       expect(provider).toStrictEqual(expected);

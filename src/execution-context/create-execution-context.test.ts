@@ -68,7 +68,6 @@ describe("execution-context", () => {
           baseURL: "https://api.openai.com/v1/",
           model: "gpt-3.5-turbo",
           name: "",
-          providerId: undefined,
         },
         stdinContent: undefined,
         isFirstRun: true,
