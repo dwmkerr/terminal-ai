@@ -6,7 +6,7 @@ export async function selectProviderType(
   message?: string,
 ): Promise<ProviderType> {
   return await select({
-    message: message || "Provider Type",
+    message: message || "Provider Type:",
     default: defaultType,
     choices: [
       {

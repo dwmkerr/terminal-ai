@@ -10,7 +10,7 @@ export async function initSetProviderApiKey(
   //  Ask for a provider.
   const providerType = await selectProviderType(
     "openai",
-    "Your API key provider",
+    "Your API key provider:",
   );
 
   //  Ask for an API key.

@@ -20,8 +20,8 @@ export async function initFirstRun(
 
   console.log(
     print(
-      `An OpenAI or Google Gemini API key is required.
-For a free Gemini key follow the guide at:`,
+      `An OpenAI or compatible key is required.
+To get a free key follow the guide at:`,
       interactive,
     ),
   );

@@ -45,7 +45,7 @@ export async function selectEditOrAddProvider(
   const choices = [currentChoice, ...nextChoices, new Separator(), addChoice];
 
   const answer = await select({
-    message: "Update / Add Provider",
+    message: "Update / Add Provider:",
     choices,
   });
 
