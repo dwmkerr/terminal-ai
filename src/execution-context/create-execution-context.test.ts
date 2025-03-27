@@ -9,24 +9,28 @@ import {
 import { ProcessLike } from "./execution-context";
 
 describe("execution-context", () => {
+  let tempTestFolder: string;
   let tempConfigFolder: string;
   let tempConfigFilePath: string;
   let tempConfigPromptsFolder: string;
   let expectedEnrichedEnv: NodeJS.ProcessEnv;
 
   beforeEach(() => {
-    tempConfigFolder = fs.mkdtempSync(`ai-tests`);
+    tempTestFolder = fs.mkdtempSync(`ai-tests`);
+    tempConfigFolder = path.join(
+      tempTestFolder,
+      ConfigurationPaths.ConfigFolder,
+    );
     tempConfigFilePath = path.join(
       tempConfigFolder,
-      ConfigurationPaths.ConfigFolder,
       ConfigurationPaths.ConfigFile,
     );
     tempConfigPromptsFolder = path.join(
       tempConfigFolder,
-      ConfigurationPaths.ConfigFolder,
       ConfigurationPaths.PromptsFolder,
       ConfigurationPaths.ConfigFile,
     );
+    fs.mkdirSync(tempConfigPromptsFolder, { recursive: true });
     expectedEnrichedEnv = {
       OS_PLATFORM: os.platform(),
       TTY_WIDTH: `${process.stdout.columns || 80}`,
@@ -77,7 +81,8 @@ describe("execution-context", () => {
           langfuse: undefined,
         },
       });
-      //  Also check that the environment has been hydrated.
+
+      //  Also check for the enriched env.
       expect(process.env).toStrictEqual(expectedEnrichedEnv);
     });
   });

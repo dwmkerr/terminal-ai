@@ -98,6 +98,7 @@ prompts:
       expect(loadedConfig).toStrictEqual({
         ...defaultConfig,
         apiKey: "testKey",
+        //  Overriden by AI_BASE_URL.
         baseURL: "http://newurl.com/v1/OVERRIDDEN",
         model: "gpt-3.5-turbo",
         provider: "gemini",
@@ -106,7 +107,8 @@ prompts:
             name: "gemini", // note this wasn't in config, it's set on file load
             apiKey: "",
             type: "gemini",
-            baseURL: "https://generativelanguage.googleapis.com/v1beta/",
+            //  Overriden by AI_BASE_URL.
+            baseURL: "http://newurl.com/v1/OVERRIDDEN",
             model: "models/gemini-2.0-flash",
           },
         },
@@ -122,6 +124,90 @@ prompts:
         debug: {
           enable: true, // overriden via env var
           namespace: "ai*",
+        },
+      });
+    });
+
+    it("correctly overrides the root provider with AI_API_KEY, AI_BASE_URL and AI_MODEL and does not assume first run", async () => {
+      const env = {
+        AI_API_KEY: "overrideKey",
+        AI_BASE_URL: "overrideBaseURL",
+        AI_MODEL: "overrideModel",
+      };
+
+      //  Load the config, which will go prompts > file > env.
+      const loadedConfig = await loadConfiguration(
+        tempConfigPromptsFolder,
+        tempConfigFilePath,
+        env,
+      );
+
+      //  Check for the expected execution context.
+      expect(loadedConfig).toStrictEqual({
+        //  As expected, our config has been overridden.
+        ...getDefaultConfiguration(),
+        apiKey: "overrideKey",
+        baseURL: "overrideBaseURL",
+        model: "overrideModel",
+      });
+    });
+
+    it("correctly overrides the configured named provider with AI_API_KEY, AI_BASE_URL and AI_MODEL and does not assume first run", async () => {
+      const env = {
+        AI_API_KEY: "overrideKey",
+        AI_BASE_URL: "overrideBaseURL",
+        AI_MODEL: "overrideModel",
+      };
+
+      //  Write a config file - note that the configured provider should be
+      //  overriden.
+      fs.writeFileSync(
+        tempConfigFilePath,
+        `provider: gemini
+providers:
+  gemini:
+    type: "gemini_openai"
+    apiKey: ""
+    baseURL: "https://generativelanguage.googleapis.com/v1beta/"
+    model: "models/gemini-2.0-flash"
+  openai:
+    type: "openai"
+    apiKey: "oapi"
+    baseURL: "ourl"
+    model: "omodel"`,
+      );
+
+      //  Load the config, which will go prompts > file > env.
+      const loadedConfig = await loadConfiguration(
+        tempConfigPromptsFolder,
+        tempConfigFilePath,
+        env,
+      );
+
+      //  Check for the expected config context, this time with providers,
+      expect(loadedConfig).toStrictEqual({
+        ...getDefaultConfiguration(),
+        //  Root has been overridden...
+        apiKey: "overrideKey",
+        baseURL: "overrideBaseURL",
+        model: "overrideModel",
+        //  Named provider has been overriden.
+        provider: "gemini",
+        providers: {
+          gemini: {
+            name: "gemini",
+            type: "gemini_openai",
+            apiKey: "overrideKey",
+            baseURL: "overrideBaseURL",
+            model: "overrideModel",
+          },
+          openai: {
+            name: "openai",
+            type: "openai",
+            apiKey: "oapi",
+            baseURL: "ourl",
+            model: "omodel",
+          },
         },
       });
     });

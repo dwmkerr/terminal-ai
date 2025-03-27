@@ -50,6 +50,10 @@ export async function selectModel(
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  console.log("default", defaultModel);
+  console.log("validatedModelChoices", validatedModelChoices);
+  console.log("unvalided", unvalidatedModelChoices);
+
   //  Now let's join these together to get a set of choices - each of the
   //  predefined models as well as an indicator of whether it is validated.
   //  If we have a default mode, we include a 'default' answer which is the
@@ -89,9 +93,12 @@ export async function selectModel(
         return choices;
       }
 
-      //  If we have an exact match (i.e. one choice) then we simply return
-      //  that.
-      if (choices.length === 1) {
+      //  If we have the 'keep existing' option (only set if we have a default)
+      //  and the 'free entry' option, we don't need to show anything else.
+      if (
+        (defaultModel && choices.length === 2) ||
+        (!defaultModel && choices.length) === 1
+      ) {
         return choices;
       }
 
