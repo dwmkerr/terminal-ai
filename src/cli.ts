@@ -16,7 +16,6 @@ import { check } from "./commands/check/check";
 import { init } from "./commands/init/init";
 import { Commands } from "./commands/commands";
 import { translateError } from "./lib/translate-error";
-import { ensureApiKey } from "./chat-pipeline/stages/ensure-api-key";
 import { createExecutionContext } from "./execution-context/create-execution-context";
 import { ConfigurationPaths } from "./configuration/configuration";
 import { hydratePromptsFolder } from "./configuration/configuration-prompts-folder";
@@ -50,7 +49,6 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
         input,
         { contextPrompts, outputPrompts, copy, raw, assistant, file },
       ) => {
-        await ensureApiKey(executionContext);
         return chat(
           executionContext,
           input,

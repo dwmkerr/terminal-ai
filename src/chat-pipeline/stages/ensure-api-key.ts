@@ -8,9 +8,10 @@ export async function ensureApiKey(executionContext: ExecutionContext) {
     return;
   }
 
-  //  We don't have a key, if we're not interactive on stdin we cannot continue.
-  //  Note that the error message will be in the output, so keep it short.
-  if (!executionContext.isTTYstdin) {
+  //  We don't have a key, if we're not interactive on stdin and stdout we
+  //  cannot continue. Note that the error message will be in the output,
+  //  so keep it short.
+  if (!executionContext.isTTYstdin || !executionContext.isTTYstdout) {
     throw new TerminalAIError(
       ErrorCode.InvalidConfiguration,
       "api key not configured",
