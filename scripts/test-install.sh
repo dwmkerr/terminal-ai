@@ -56,17 +56,20 @@ echo "✅ done..."
 # Trying to chat without having run 'init' first should fail immediately when
 # non-interactive.
 echo "verifying ai errors as expected for non-interactive run before 'ai init'..."
-eval "${ai_path} chat -- 'what is the time' > output.md"
-if [ $?  -ne 12 ]; then
+eval "${ai_path} chat -- 'what is the time' > output.md" || error_code=$?
+if [ "${error_code}" -ne 12 ]; then
   echo "❌ error: expected error code 12 (invalid configuration)..."
 fi
 echo "✅ done..."
 
 # Set API key / base url / model with env vars and verify we can chat.
+export AI_API_KEY="${TESTING_AI_API_KEY}"
+export AI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+export AI_MODEL="models/gemini-2.0-flash"
 echo "verifying ai chat..."
-eval "${ai_path} chat -- 'what is the time'"
-if [ $?  -ne 0 ]; then
-  echo "❌ error: expected success on chat..."
+eval "${ai_path} chat -- 'what is the time'" || error_code=$?
+if [ "${error_code}" -ne 0 ]; then
+  echo "❌ error: expected success on chat, got error code ${error_code}..."
 fi
 echo "✅ done..."
 

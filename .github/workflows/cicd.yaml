@@ -64,6 +64,8 @@ jobs:
       # Validate that we can install wiht 'npm install' and then run 'ai'.
       - name: validate install
         run: ./scripts/test-install.sh
+        env:
+          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
 
       # Upload the artifacts folder.
       - name: Upload Artifacts
