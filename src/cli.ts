@@ -1,27 +1,25 @@
 #!/usr/bin/env -S node --no-deprecation
 
-import dbg from "debug";
+import path from "path";
+import os from "os";
+
 import { Command } from "commander";
 
 import { chat } from "./commands/chat/chat";
-
-import { debug as debugCommand } from "./commands/debug";
-
+import { debug as debugCommand } from "./commands/debug/debug";
+import { config as configCommand } from "./commands/config/config";
 import theme from "./theme";
 import { ErrorCode } from "./lib/errors";
 import packageJson from "../package.json";
-import { ExecutionContext } from "./lib/execution-context";
-import { hydrateDefaultConfig } from "./configuration/hydrate-default-config";
-import { hydrateContextEnvironmentVariables } from "./lib/hydrate-context-environment-variables";
+import { ExecutionContext } from "./execution-context/execution-context";
 import { check } from "./commands/check/check";
 import { init } from "./commands/init/init";
 import { Commands } from "./commands/commands";
-import { usage } from "./commands/usage";
-import { readStdin } from "./lib/read-stdin";
-import { getDefaultConfiguration } from "./configuration/configuration";
-import { getConfiguration } from "./configuration/utils";
-import { integrateLangfuse } from "./integrations/langfuse";
 import { translateError } from "./lib/translate-error";
+import { createExecutionContext } from "./execution-context/create-execution-context";
+import { ConfigurationPaths } from "./configuration/configuration";
+import { hydratePromptsFolder } from "./configuration/configuration-prompts-folder";
+
 const cli = async (program: Command, executionContext: ExecutionContext) => {
   //  Collect sting parameters.
   const collect = (value: string, previous: string[]): string[] =>
@@ -87,9 +85,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
   program
     .command("config")
     .description("Show current configuration")
-    .action(async () => {
-      console.log(JSON.stringify(executionContext.config, null, 2));
-    });
+    .action(async () => await configCommand(executionContext));
 
   program
     .command("check")
@@ -99,15 +95,14 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     });
 
   //  The usage command is still very much work in progress.
-  if (executionContext.config.debug.enable) {
-    program
-      .command("usage")
-      .description("View API usage statistics")
-      .action(async () => {
-        //  TODO: better just to open: https://platform.openai.com/usage
-        await usage(executionContext);
-      });
-  }
+  // if (executionContext.config.debug.enable) {
+  //   program
+  //     .command("usage")
+  //     .description("View API usage statistics")
+  //     .action(async () => {
+  //       await usage(executionContext);
+  //     });
+  // }
 
   program
     .command("debug")
@@ -121,47 +116,51 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
 };
 
 async function main() {
-  //  If we have anything piped to stdin, read it.
-  const stdinContent = await readStdin(process.stdin);
-
-  //  Create an initial execution context. This may evolve as we run various commands etc.
-  //  Make a guess at the interactive mode based on whether the output is a TTY.
-  //  The 'colors.js' force color we will also use.
+  //  This is still quite ugly. We are interactive output if force color is set,
+  //  or if stdout is a TTY. We actually perform this check again in
+  //  createExecutionContext so it could be refactored to be a bit cleaner.
   const forceColor = process.env["FORCE_COLOR"] === "1";
-  const executionContext: ExecutionContext = {
-    //  We will very shortly enrich the config.
-    config: getDefaultConfiguration(),
-    isTTYstdin: process.stdin.isTTY || false,
-    isTTYstdout: forceColor || process.stdout.isTTY || false,
-    stdinContent,
-  };
+  const isTTYstdout = forceColor || process.stdout.isTTY;
 
   try {
-    //  Set all of the environment variables that can be used when hydrating
-    //  context.
-    hydrateContextEnvironmentVariables();
+    //  Hydrate our prompts; this creates the ~/.ai/prompts folder and copies
+    //  bundled prompts into it if they don't exist.
+    hydratePromptsFolder(
+      path.join(__dirname, "..", ConfigurationPaths.PromptsFolder),
+      path.join(
+        os.homedir(),
+        ConfigurationPaths.ConfigFolder,
+        ConfigurationPaths.PromptsFolder,
+      ),
+    );
 
-    //  Load our initial configuration, best effort. Allows us to enable debug
-    //  tracing if configured.
-    const initialConfig = await getConfiguration();
-    if (initialConfig.debug.enable) {
-      dbg.enable(initialConfig.debug.namespace || "");
-      dbg.log(`initialisiing and hydrating config...`);
-    }
-
-    //  Now hydrate and reload our config.
-    hydrateDefaultConfig();
-    executionContext.config = await getConfiguration();
-
-    //  Enable any integrations.
-    executionContext.integrations = {
-      langfuse: integrateLangfuse(executionContext.config),
-    };
+    //  Build the default config file path and create the execution context.
+    const configFilePath = path.join(
+      os.homedir(),
+      ConfigurationPaths.ConfigFolder,
+      ConfigurationPaths.ConfigFile,
+    );
+    const promptsFolder = path.join(
+      os.homedir(),
+      ConfigurationPaths.ConfigFolder,
+      ConfigurationPaths.PromptsFolder,
+    );
+    const executionContext = await createExecutionContext(
+      process,
+      promptsFolder,
+      configFilePath,
+    );
 
     //  Now create and execute the program.
     const program = new Command();
     await cli(program, executionContext);
     await program.parseAsync();
+
+    //  We're shutting down, if we have the langfuse itegration wait for it to
+    //  flush.
+    if (executionContext.integrations?.langfuse?.langfuse) {
+      await executionContext.integrations.langfuse.langfuse.shutdownAsync();
+    }
   } catch (err) {
     const error = translateError(err);
     //  Note that when we write errors, we format them with colours only if
@@ -169,25 +168,16 @@ async function main() {
 
     //  Handle inquirer Ctrl+C.
     if (error.errorCode === ErrorCode.ExitPrompt) {
-      if (executionContext.isTTYstdout) {
+      if (isTTYstdout) {
         console.log("Goodbye!");
       }
     } else {
       //  Handle any other error.
       console.log(
-        theme.printError(
-          `${error.name}: ${error.message}`,
-          executionContext.isTTYstdout,
-        ),
+        theme.printError(`${error.name}: ${error.message}`, isTTYstdout),
       );
       return process.exit(error.errorCode);
     }
-  }
-
-  //  We're shutting down, if we have the langfuse itegration wait for it to
-  //  flush.
-  if (executionContext.integrations?.langfuse?.langfuse) {
-    await executionContext.integrations.langfuse.langfuse.shutdownAsync();
   }
 }
 main().catch(console.error);

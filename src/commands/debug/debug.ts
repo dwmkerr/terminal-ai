@@ -1,7 +1,8 @@
-import { ExecutionContext } from "../lib/execution-context";
-import { printResponse } from "../theme";
-import { debugInput } from "./debug/input";
-import { debugModels } from "./debug/models";
+import { ExecutionContext } from "../../execution-context/execution-context";
+import { printResponse } from "../../print/print-response";
+import { debugInput } from "./input";
+import { debugPrompts } from "./prompts";
+import { debugModels } from "./models";
 
 export async function debug(
   executionContext: ExecutionContext,
@@ -38,5 +39,7 @@ echo "Hello, World!"
     await debugModels();
   } else if (command === "input") {
     await debugInput(executionContext);
+  } else if (command === "prompts") {
+    await debugPrompts();
   }
 }

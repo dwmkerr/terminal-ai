@@ -1,9 +1,18 @@
+import { ProviderType } from "../providers/provider-type";
+
 export const ConfigurationPaths = {
-  configDir: ".ai",
-  configFilePath: `.ai/config.yaml`,
-  chatPromptsPath: `.ai/prompts/chat/context`,
-  codeOutputPromptsPath: `.ai/prompts/code/output`,
+  ConfigFolder: ".ai",
+  ConfigFile: `config.yaml`,
+  PromptsFolder: "prompts",
+  ChatPromptsContextFolder: "chat/context",
+  CodePromptsOutputFolder: "code/output",
 };
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 
 export interface LangfuseIntegrationConfiguration {
   secretKey: string;
@@ -14,10 +23,29 @@ export interface LangfuseIntegrationConfiguration {
   traceName: string;
 }
 
+export interface ProviderConfiguration {
+  name: string;
+  apiKey: string;
+  baseURL: string;
+  model: string;
+  //  This can be used to cross reference against providers in:
+  //  https://github.com/dwmkerr/ai-providers-and-models
+  //  It is not required, but if set allows us to do slightly better model
+  //  validation for the user.
+  type?: ProviderType;
+  //  Optional prompt override.
+  prompt?: string;
+}
+
 export interface Configuration {
   apiKey: string;
   baseURL: string;
   model: string;
+
+  //  The provider name (optional, but when set must be valid) and the providers.
+  provider?: string;
+  providers: Record<string, ProviderConfiguration>;
+
   prompts: {
     chat: {
       context: string[];
@@ -40,6 +68,7 @@ export function getDefaultConfiguration(): Configuration {
     apiKey: "",
     baseURL: "https://api.openai.com/v1/",
     model: "gpt-3.5-turbo",
+    providers: {},
     prompts: {
       chat: {
         context: [],

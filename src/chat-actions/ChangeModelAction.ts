@@ -1,7 +1,7 @@
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
 import { ChatAction } from "./ChatAction";
-import { selectModel } from "../commands/init/select-model";
-import { saveModel } from "../configuration/utils";
+import { ErrorCode, TerminalAIError } from "../lib/errors";
+import { selectModel } from "../commands/init/select/select-model";
 
 export const ChangeModelAction: ChatAction = {
   id: "change_model",
@@ -20,7 +20,11 @@ export const ChangeModelAction: ChatAction = {
       //  This is really naughty as we're changing the state of an input
       //  unexpectedly but it works for now...
       config.model = model;
-      saveModel(model);
+      throw new TerminalAIError(
+        ErrorCode.InvalidOperation,
+        "No longer supported",
+      );
+      // saveModel(model);
     }
 
     return undefined;

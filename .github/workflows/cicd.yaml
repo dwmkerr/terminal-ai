@@ -7,9 +7,11 @@ on:
   pull_request:
 
 # Release Please needs permisisons to write commits and open PRs.
+# Required to publish NPM package to GH NPM.
 permissions:
   contents: write
   pull-requests: write
+  packages: write
 
 # We will build and test across a number of Node.js versions. Some steps only
 # occur for a single Node version (such as uploading coverage) - this variable
@@ -61,14 +63,9 @@ jobs:
 
       # Validate that we can install wiht 'npm install' and then run 'ai'.
       - name: validate install
-        run: |
-          npm install -g .
-          mkdir some-random-folder
-          cd some-random-folder
-          echo "Checking installed version..."
-          ai --version || (echo "ai command failed" && exit 1)
-          echo "Running 'ai config'..."
-          ai config || (echo "ai config command failed" && exit 1)
+        run: ./scripts/test-install.sh
+        env:
+          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
 
       # Upload the artifacts folder.
       - name: Upload Artifacts

@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as theme from "../theme";
-import { ExecutionContext } from "../lib/execution-context";
+import { ExecutionContext } from "../execution-context/execution-context";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
 
 //  Note there is a good overview of new features here:

@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import dbg from "debug";
 import { ErrorCode, TerminalAIError } from "./errors";
+import { crop } from "../print/crop";
 
 const debug = dbg("ai:error");
 
@@ -25,7 +26,11 @@ export function translateError(err: any): TerminalAIError {
     );
   }
 
-  if (err instanceof OpenAI.AuthenticationError) {
+  //  Check for invalid key.
+  if (
+    err instanceof OpenAI.AuthenticationError || // openai error message
+    /400 API key not valid/.test(err) // gemini error message
+  ) {
     return new TerminalAIError(
       ErrorCode.OpenAIAuthenticationError,
       "try 'ai check' to validate your config (API key may be invalid)",
@@ -71,6 +76,13 @@ export function translateError(err: any): TerminalAIError {
       "tls altname invalid - check your internet connection",
     );
   }
+  //  - invalid url error...
+  if (err.code === "ERR_INVALID_URL") {
+    return new TerminalAIError(
+      ErrorCode.InvalidConfiguration,
+      "Invalid URL - check your configuration",
+    );
+  }
 
   //  We don't know what the error is but it DOES have a code...
   if (code) {
@@ -81,10 +93,10 @@ export function translateError(err: any): TerminalAIError {
   }
 
   //  ...we don't have a clue what the error is and it doesn't have a code.
-  const preview = `${err}`.substring(0, 20) + "...";
+  const preview = crop(`${err}`, 80);
   debug(JSON.stringify(err, null, 2));
   return new TerminalAIError(
     ErrorCode.Unknown,
-    `'${preview}' - try 'ai check' or AI_DEBUG_ENABLE=1`,
+    `try 'ai check' or AI_DEBUG_ENABLE=1\n -> ${preview}`,
   );
 }

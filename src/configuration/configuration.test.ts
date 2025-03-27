@@ -4,12 +4,25 @@ describe("configuration", () => {
   describe("getDefaultConfiguration", () => {
     test("can get correct default configuration", () => {
       const defaultConfiguration = getDefaultConfiguration();
-      expect(defaultConfiguration.apiKey).toBe("");
-      expect(defaultConfiguration.baseURL).toBe("https://api.openai.com/v1/");
-      expect(defaultConfiguration.model).toBe("gpt-3.5-turbo");
-
-      expect(defaultConfiguration.debug.enable).toBe(false);
-      expect(defaultConfiguration.debug.namespace).toBe("ai*");
+      expect(defaultConfiguration).toStrictEqual({
+        apiKey: "",
+        baseURL: "https://api.openai.com/v1/",
+        model: "gpt-3.5-turbo",
+        providers: {},
+        prompts: {
+          chat: {
+            context: [],
+          },
+          code: {
+            output: [],
+          },
+        },
+        integrations: {},
+        debug: {
+          enable: false,
+          namespace: "ai*",
+        },
+      });
     });
   });
 });

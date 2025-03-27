@@ -1,4 +1,4 @@
-import { getDefaultConfiguration } from "../../configuration/configuration";
+import { createTestExecutionContext } from "../../execution-context/create-test-execution-context";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import { buildContext } from "./build-context";
 
@@ -13,12 +13,7 @@ describe("buildContext", () => {
         enableContextPrompts: true,
         enableOutputPrompts: true,
       },
-      executionContext: {
-        config: getDefaultConfiguration(),
-        stdinContent: undefined,
-        isTTYstdin: true,
-        isTTYstdout: true,
-      },
+      executionContext: createTestExecutionContext(),
     };
     params.executionContext.config.prompts.chat.context = [
       "'${ENV_VAR}' is available",
@@ -39,12 +34,7 @@ describe("buildContext", () => {
         enableContextPrompts: true,
         enableOutputPrompts: true,
       },
-      executionContext: {
-        config: getDefaultConfiguration(),
-        stdinContent: undefined,
-        isTTYstdin: true,
-        isTTYstdout: true,
-      },
+      executionContext: createTestExecutionContext(),
     };
     params.options.enableContextPrompts = false;
     const context = await buildContext(params, {});
@@ -61,12 +51,7 @@ describe("buildContext", () => {
         enableContextPrompts: true,
         enableOutputPrompts: true,
       },
-      executionContext: {
-        config: getDefaultConfiguration(),
-        stdinContent: undefined,
-        isTTYstdin: true,
-        isTTYstdout: true,
-      },
+      executionContext: createTestExecutionContext(),
     };
     params.executionContext.stdinContent = "This is stdin content";
 

@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { ensureApiKey } from "./stages/ensure-api-key";
 import { parseInput } from "./stages/parse-input";
 import { OpenAIChatRoles } from "../lib/openai/openai-roles";
 import { ChatPipelineParameters } from "./ChatPipelineParameters";
@@ -11,15 +10,15 @@ import { copyResponse } from "./stages/copy-response";
 import { printResponse } from "./stages/print-response";
 import { nextInputOrAction } from "./stages/next-input-or-action";
 import { parseResponse } from "./stages/parse-response";
+import { getProviderPrompt } from "../providers/get-provider-prompt";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
-  await ensureApiKey(parameters.executionContext);
   const config = parameters.executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({
-    apiKey: config.apiKey,
-    baseURL: config.baseURL,
+    apiKey: parameters.executionContext.provider.apiKey,
+    baseURL: parameters.executionContext.provider.baseURL,
   });
 
   //  Get all context prompts and add them to a new conversation.
@@ -49,14 +48,16 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       ...outputPrompts.map((p) => ({ role: p.role, content: p.context })),
     );
 
-    //  Add the user's message and get the response.
+    //  Add the user's message and get the response. The prompt will be
+    //  something like 'chatgpt' or 'gemini'.
+    const prompt = getProviderPrompt(params.executionContext.provider);
     conversationHistory.push({ role: "user", content: inputAndIntent.message });
     const rawMarkdownResponse = await getCompletionsResponse(
       params,
       openai,
       conversationHistory,
     );
-    const response = parseResponse("chatgpt", rawMarkdownResponse);
+    const response = parseResponse(prompt, rawMarkdownResponse);
 
     //  If the intent is to copy the response, copy it and we're done.
     if (await copyResponse(params, response)) {

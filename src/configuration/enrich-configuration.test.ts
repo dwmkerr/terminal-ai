@@ -1,10 +1,14 @@
-import { Configuration, getDefaultConfiguration } from "./configuration";
-import { DeepPartial, enrichConfiguration, enrichProperty } from "./utils";
+import {
+  Configuration,
+  DeepPartial,
+  getDefaultConfiguration,
+} from "./configuration";
+import { enrichConfiguration, enrichProperty } from "./enrich-configuration";
 
 describe("configuration", () => {
   describe("utils", () => {
     describe("enrichProperty", () => {
-      test("can enrich a deeply nested property", () => {
+      it("can enrich a deeply nested property", () => {
         //  Create default config - assert that it has no langfuse integration.
         const config = getDefaultConfiguration();
         expect(config.integrations.langfuse).toBeUndefined();
@@ -16,9 +20,18 @@ describe("configuration", () => {
     });
 
     describe("enrichConfiguration", () => {
-      test("correctly enriches default configuration with partial configuration", () => {
+      it("correctly enriches default configuration with partial configuration", () => {
         const config = getDefaultConfiguration();
         const partial: DeepPartial<Configuration> = {
+          providers: {
+            gemini: {
+              name: "gemini",
+              apiKey: "gkey",
+              baseURL: "gurl",
+              model: "gmodel",
+              type: "gemini_openai",
+            },
+          },
           integrations: {
             langfuse: {
               secretKey: "sk",
@@ -36,6 +49,15 @@ describe("configuration", () => {
           apiKey: "",
           baseURL: "https://api.openai.com/v1/",
           model: "gpt-3.5-turbo",
+          providers: {
+            gemini: {
+              name: "gemini",
+              apiKey: "gkey",
+              baseURL: "gurl",
+              model: "gmodel",
+              type: "gemini_openai",
+            },
+          },
           prompts: {
             chat: {
               context: [],
@@ -63,6 +85,32 @@ describe("configuration", () => {
           },
         };
         expect(enriched).toMatchObject(expected);
+      });
+
+      it("correctly applies the user's langfuse configuration over the default langfuse configuration", () => {
+        const defaultConfig = getDefaultConfiguration();
+        const userConfig: DeepPartial<Configuration> = {
+          integrations: {
+            langfuse: {
+              secretKey: "lf-key",
+              publicKey: "pk-key",
+              //  note: no baseurl set!
+            },
+          },
+        };
+        const config = enrichConfiguration(defaultConfig, userConfig);
+        expect(config).toStrictEqual({
+          ...defaultConfig,
+          integrations: {
+            langfuse: {
+              secretKey: "lf-key",
+              publicKey: "pk-key",
+              //  note: these have been set by the default config
+              baseUrl: "https://cloud.langfuse.com",
+              traceName: "terminal-ai",
+            },
+          },
+        });
       });
     });
   });

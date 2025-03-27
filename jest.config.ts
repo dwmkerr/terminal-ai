@@ -46,7 +46,7 @@ const config: Config = {
   coverageProvider: "v8",
 
   //  The types of coverage reporters to use.
-  coverageReporters: ["text", "cobertura"],
+  coverageReporters: ["text", "cobertura", "html"],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: ["./src/setup-jest.js"],

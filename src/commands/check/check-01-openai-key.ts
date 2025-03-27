@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { ErrorCode } from "../../lib/errors";
 import { translateError } from "../../lib/translate-error";
-import { printError, printMessage, startSpinner } from "../../theme";
+import { printError, startSpinner } from "../../theme";
 
 export async function checkOpenAIKey(
   interactive: boolean,
@@ -12,7 +12,7 @@ export async function checkOpenAIKey(
   if (key === "") {
     console.log(
       printError(
-        "❌ OpenAI API key is not set, try 'ai init' or check ~/.ai.config",
+        "❌ API key is not set, try 'ai init' or check ~/.ai.config",
         interactive,
       ),
     );
@@ -20,7 +20,7 @@ export async function checkOpenAIKey(
   }
 
   //  See if we can list models, this'll check the key...
-  const spinner = await startSpinner(interactive, "Checking OpenAI API key...");
+  const spinner = await startSpinner(interactive, "Checking API key...");
   try {
     //  Call any API to check our key. Models is an easy one.
     await openai.models.list();
@@ -47,6 +47,5 @@ export async function checkOpenAIKey(
     }
     throw error;
   }
-  spinner.stop();
-  console.log(printMessage("✅ OpenAI API key validated", interactive));
+  spinner.succeed();
 }

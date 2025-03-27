@@ -10,6 +10,7 @@
     <a href="#actions">Actions</a> |
     <a href="#commands">Commands</a> |
     <a href="#configuration">Configuration</a> |
+    <a href="#api-key">API Key</a> |
     <a href="#experimental">Experimental</a> |
     <a href="#developer-guide">Developer Guide</a>
   </p>
@@ -36,18 +37,35 @@ ai
 
 That's it. The quickest way to learn how to use the tool is to look at the [Examples](#examples).
 
+> [!TIP]
+> Terminal AI requires an API key to be configured. Get a free API by following the guide [here](#api-key) 💪. If you need to change your configuration, run `ai init` or check the [Configuration Documentation](./docs/configuration.md).
+
 ## Examples
 
 Quick links:
 
+- [Setup](#setup)
 - [Simple Chat](#simple-chat)
-- [Initialising or Updating Config](#initialising-or-updating-config)
 - [Multiline Input](#multiline-input)
 - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
 - [Piping Input](#piping-input)
 - [Advanced](#advanced)
+
+### Setup
+
+Setup your initial configuration with:
+
+```bash
+ai init
+```
+
+This will allow you to enter your API key and configure your provider.
+
+![Demo Recording of a the 'ai init' command](./docs/casts/ai-init.svg)
+
+To update your configuration or add additional providers, run `ai init` again. You can also check the [Configuration Documentation](./docs/configuration.md).
 
 ### Simple Chat
 
@@ -65,18 +83,6 @@ If `ai` detects that you are using a TTY then it will prompt you to continue the
 
 ```
 ai -- "How can I programatically create a calendar invite?" > answer.txt
-```
-
-### Initialising or Updating Config
-
-Set or update your configuration (such as the OpenAI API key) with the `ai init` command:
-
-![Demo Recording of a the 'ai init' command](./docs/casts/ai-init.svg)
-
-Run this command with:
-
-```bash
-ai init
 ```
 
 ### Multiline Input
@@ -165,7 +171,7 @@ The 'Change Model' action allows you to change the model that is in use:
 
 Models which have been extensively tested and verified to work with Terminal AI are shown in the list first, along with a short description of the model and its capabilities. Models which are offered by AI APIs but have not been extensively tested are shown next.
 
-You can also provide the ID of any model that is _not_ in the list by changing the `model` setting in the [Configuration](#Configuration).
+You can also provide the ID of any model that is _not_ in the list by changing the `model` setting in the [Configuration](#configuration).
 
 Verified models are provided by the [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models) project.
 
@@ -200,17 +206,17 @@ The following parameters are available:
 The `ai init` commands allows you to initialise or update your configuration (such as your API key). It also offers the option to validate your configuration:
 
 ```
-ai init
+$ ai init
 
-Check https://github.com/dwmkerr/terminal-ai#api-key for API key help...
-✔ OpenAI API Key: **************************************************
-********************************************************************
-**********************************************
-✔ Test API Key & Configuration? Yes
-Checking configuration...
-OpenAP API Key validated
-Configuration validated
-✔ What next?: Chat
+Welcome to Terminal AI
+
+An OpenAI or compatible key is required.
+To get a free key follow the guide at:
+  https://github.com/dwmkerr/terminal-ai#api-key
+
+✔ Your API key provider: Gemini (OpenAI Compatible)
+✔ API Key: ******
+...
 ```
 
 This command also allows advanced configuration such as the model to be updated.
@@ -219,50 +225,76 @@ This command also allows advanced configuration such as the model to be updated.
 
 The `ai check` command validates your configuration, ensuring your OpenAI API key is configured correctly:
 
-```bash
-ai check
+```
+$ ai check
 
-Checking configuration...
-OpenAP API Key validated
-Configuration validated
+✔ Checking internet connection...
+✔ Checking Base URL https://generativelanguage.googleapis.com/v1beta/openai/...
+✔ Checking API key...
+✔ Checking Model models/gemini-2.0-flash...
+✔ Checking API key rate limit...
+...
 ```
 
 **`ai config`**
 
 Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder.
 
-## Error Codes
+### Error Codes
 
-The following error codes can be returned by `ai`:
-
-| Code | Name                                | Description                      |
-|------|-------------------------------------|----------------------------------|
-| 1    | `ERROR_CODE_WARNING`                | A warning was shown to the user. |
-| 2    | `ERROR_CODE_INVALID_CONFIFGURATION` | Network connectivity error.      |
-| 3    | `ERROR_CODE_CONNECTION`             | Configuration error.             |
+All error codes are documented at [`src/lib/errors.ts`](./src/lib/errors.ts).
 
 ## API Key
 
-An OpenAI API key is needed to be able to make calls to ChatGPT. At the time of writing a subscription fee is needed to create an API key. Create an API key by following the instructions at:
+To make calls to an AI provider such as OpenAI, you will need an API key. If you have an API key, simply run `ai init` and follow the instructions.
 
-https://platform.openai.com/api-keys
+If you do not have an API key you can use a provider such as Google Gemini, which allows you to create a key for free and without a credit card.
 
-Once you have your API key you can configure it in the `ai` tool by running `ai` or `ai init`.
+To get a free API key, go to https://ai.google.dev/gemini-api/docs/api-key and choose "Get a Gemini API Key" and then "Create API Key":
+
+<image alt="Screenshot of Create API Key" src="./docs/images/gemini-api-key.png" width="120px" />
+
+Save this key to a safe location. Then run `ai init` and follow the instructions - be sure to choose `Gemini (OpenAI Compatible)` as the provider in the first step:
+
+```
+Welcome to Terminal AI
+
+An OpenAI or compatible key is required.
+To get a free key follow the guide at:
+  https://github.com/dwmkerr/terminal-ai#api-key
+
+✔ Your API key provider: Gemini (OpenAI Compatible)
+✔ API Key: ******
+? Test API Key & Configuration? (y/N)
+```
+
+You can configure multiple providers and update your configuration by running `ai init` at any time. Check the [Reference Configuration Documentation](./docs/configuration.md#reference-configuration) for more information and examples of how to configure common providers.
 
 ## Configuration
 
-Most 'stable' configuration can be specified in the `~/.ai/config.yaml` file. Experimental features might only be available in the form of environment variables.
+Configuration is loaded from the `~/.ai/config.yaml` file. Specific parameters can also be set or overridden using Environment Variables.
 
-The configuration schema is changing rapidly, the file [`./src/configuration/configuration.ts`](./src/configuration/configuration.ts) is the most authoritative source of configuration options. However, some important values are:
+You can set up your configuration interactively by running `ai init`. You can test all of the configuration parameters you have set with `ai check` - this will verify your API key, rate limits, the configured model and more.
 
-| Configuration | Environment     | Config         | Description                                             |
-|---------------|-----------------|----------------|---------------------------------------------------------|
-| Force colors. | `FORCE_COLOR=1` | n/a            | Force ASCII color codes in output even if it not a TTY. |
-| OpenAI Model  | n/a             | `openai.model` | OpenAI API model to use, default is `gpt-3.5-turbo`     |
+Detailed in instructions for how to configure `ai` are in the [Configuration Documentation](./docs/configuration.md).
 
-**OpenAI Model**
+If you want to run `ai` without interactively initialising first (for example, in a CI/CD environment or when using a GitHub action such as [`terminal-ai-action`](https://github.com/dwmkerr/terminal-ai-action)) you can create this configuration file yourself. If you can only specify an API key in your configuration, `ai` will assume you are using OpenAI. This means if you have an OpenAI key you can simply do this:
 
-Any text value can be used for the model. The `ai check` command will make a best-effort attempt to validate that the model is correct by calling a chat API. The `ai init` command also tries to be helpful by showing a list of pre-defined models that have been loaded from the OpenAI APIs, and validated against [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). However models are changing rapidly and new ones may take time to be incorporated. However there is nothing stopping you from simply entering any new model ID in the config file.
+```yaml
+apiKey: <Your Key>                    # Required.
+baseURL: "https://api.openai.com/v1/" # Optional.
+model: "gpt-3.5-turbo"                # Optional.
+```
+
+Or you can set the `AI_API_KEY` environment variable:
+
+```bash
+export AI_API_KEY="<your key"                   # Required.
+export AI_BASE_URL="https://api.openai.com/v1/" # Optional.
+export AI_MODEL="gpt-3.5-turbo"                 # Optional.
+```
+
+To configure multiple providers or advanced options, check the [Configuration Documentation](./docs/configuration.md).
 
 ## Experimental
 

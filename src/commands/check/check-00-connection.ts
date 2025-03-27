@@ -1,6 +1,6 @@
 import { ErrorCode } from "../../lib/errors";
 import { translateError } from "../../lib/translate-error";
-import { printError, printMessage, startSpinner } from "../../theme";
+import { printError, startSpinner } from "../../theme";
 import dns from "dns";
 
 export async function checkConnection(interactive: boolean) {
@@ -24,6 +24,5 @@ export async function checkConnection(interactive: boolean) {
     }
     throw error;
   }
-  spinner.stop();
-  console.log(printMessage("✅ Internet connection validated", interactive));
+  spinner.succeed();
 }

@@ -9,3 +9,4 @@ package-lock.json
 ai.yaml
 !src/fixtures/ai.yaml
 .env
+keys.yaml
