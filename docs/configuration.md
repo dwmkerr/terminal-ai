@@ -117,17 +117,17 @@ providers:
     baseURL: https://generativelanguage.googleapis.com/v1beta/openai/
     model: models/gemini-2.0-flash
     apiKey: gemini-key
-    providerType: gemini_openai
+    type: gemini_openai
   claude:
     baseURL: https://api.anthropic.com/v1
     model: claude-3-opus-20240229
     apiKey: anthropic-key
-    providerType: openai_compatible
+    type: openai_compatible
 ```
 
 A provider must include an `apiKey`, `baseURL` and `model`. Providers are assumed to be compatible with the OpenAI API specification by default.
 
-If you specify a `providerType` then Terminal AI will use the database at [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models) to offer more helpful information when setting models and validating configuration.
+If you specify a `type` then Terminal AI will use the database at [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models) to offer more helpful information when setting models and validating configuration.
 
 There many other configuration options you can set for providers, check [the Configuration Specification](#the-configuration-specification) for details.
 
@@ -199,19 +199,19 @@ provider: openai
 providers:
   openai:
     name: openai
-    providerType: openai
+    type: openai
     baseURL: https://api.openai.com/v1/
     model: gpt-4-0613
     apiKey: '123'
   gemini:
     name: gemini
-    providerType: gemini_openai
+    type: gemini_openai
     baseURL: https://generativelanguage.googleapis.com/v1beta/openai/
     model: models/gemini-2.0-flash
     apiKey: '123'
   claude:
     name: claude
-    providerType: openai_compatible
+    type: openai_compatible
     baseURL: https://api.anthropic.com/v1
     model: claude-3-opus-20240229
     apiKey: '123'

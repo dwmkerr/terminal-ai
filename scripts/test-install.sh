@@ -75,9 +75,9 @@ echo "✅ done..."
 
 # Verify that we can pipe data in.
 echo "verifying ai chat..."
-eval "echo 'what is the time' | ${ai_path}"
-if [ $?  -ne 0 ]; then
-  echo "❌ error: expected success on chat..."
+eval "echo 'what is the time' | ${ai_path}" || error_code=$?
+if [ "${error_code}" -ne 0 ]; then
+  echo "❌ error: expected success on chat, got error code ${error_code}..."
 fi
 echo "✅ done..."
 

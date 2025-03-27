@@ -41,11 +41,12 @@ export async function addOrEditProvider(provider?: ProviderConfiguration) {
   }
 
   //  Return this new or edited provider.
-  return {
+  const newProvider: ProviderConfiguration = {
     name,
-    providerType,
+    type: providerType,
     baseURL,
     model,
     apiKey,
-  } as ProviderConfiguration;
+  };
+  return newProvider;
 }
