@@ -144,7 +144,7 @@ Tips:
 
 To add a new provider (or edit an existing one) just run `ai init`:
 
-![Demo of Adding a New Provider](./docs/casts/init-gemini/init-gemini.cast)
+![Demo of Adding a New Provider](./docs/casts/init-gemini/init-gemini.svg)
 
 Tips:
 

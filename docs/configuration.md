@@ -161,13 +161,10 @@ Each of the configuration values, the environment variables that can be used to 
 | Config File                   | Env. Var             | Default                      | Description                                                                                                     |
 |-------------------------------|----------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | **Basic Provider Config**     |                      |                              |                                                                                                                 |
-|-------------------------------|----------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | `apiKey`                      | `AI_API_KEY`         | (None).                      | Required if `providers` not set. OpenAI compatible API key.                                                     |
 | `baseURL`                     | `AI_BASE_URL`        | `https://api.openai.com/v1/` | (Optional). The base URL for API calls.                                                                         |
 | `model`                       | `AI_MODEL`           | `gpt-3.5-turbo`              | (Optional). The LLM model ID to use.                                                                            |
-|-------------------------------|----------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | **Advanced Provider Config**  |                      |                              | If `providers` is set, all 'basic' config above is ignored.                                                     |
-|-------------------------------|----------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | `provider`                    | `AI_PROVIDER`        | (None).                      | The name of the provider in `providers` to use. If not set, `ai` will ask (or fail if non-interactive).         |
 | `providers`                   |                      | (None).                      | The set of providers that are configured.                                                                       |
 | `providers.[name]`            |                      | (None).                      | The name of the provider (`provider` should set one of these names).                                            |
@@ -176,9 +173,7 @@ Each of the configuration values, the environment variables that can be used to 
 | `providers.[name].model`      |                      | (None).                      | The model for the provider.                                                                                     |
 | `providers.[name].providerId` |                      | (None).                      | (Optional). A provider id from [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). |
 | `providers.[name].prompt`     |                      | (None).                      | (Optional). The text to show as a prompt before provider chat output. Defaults to the provider name.            |
-|-------------------------------|----------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | **Debug Configuration**       |                      |                              |                                                                                                                 |
-|-------------------------------|----------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | `debug.enabled`               | `AI_DEBUG_ENABLE`    | `0`                          | (Optional). Whether to enable debug mode.                                                                       |
 | `debug.namespace`             | `AI_DEBUG_NAMESPACE` | `ai*`                        | (Optional). Mask for debug messages.                                                                            |
 
