@@ -29,5 +29,6 @@ export function buildProviderFromConfig(
     apiKey: config.apiKey,
     baseURL: config.baseURL,
     model: config.model,
+    type: "openai", // root providers are assumed to be openai
   };
 }

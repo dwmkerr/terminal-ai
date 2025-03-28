@@ -2,6 +2,7 @@
 
 import path from "path";
 import os from "os";
+import { execSync } from "child_process";
 
 import { Command } from "commander";
 
@@ -85,7 +86,24 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
   program
     .command("config")
     .description("Show current configuration")
-    .action(async () => await configCommand(executionContext));
+    .action(async () => await configCommand(executionContext))
+    .addCommand(
+      program
+        .command("edit")
+        .description("edit config file")
+        .action(() => {
+          const editor = process.env.EDITOR || "vim";
+          const path = executionContext.configFilePath;
+          try {
+            execSync(`${editor} ${path}`, {
+              stdio: "inherit",
+            });
+            console.log(`config file ${path} updated.`);
+          } catch (error) {
+            console.error(`Error editing ${path}: ${error}`);
+          }
+        }),
+    );
 
   program
     .command("check")

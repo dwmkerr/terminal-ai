@@ -51,6 +51,7 @@ Quick links:
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
 - [Piping Input](#piping-input)
+- [Adding a New Provider](#adding-a-new-provider)
 - [Advanced](#advanced)
 
 ### Setup
@@ -138,6 +139,16 @@ Tips:
 - You must provide a prompt, e.g: `git diff | ai -- 'do I have enough tests?`
 - You can also pipe the results, e.g: `gif diff | ai -- 'write a git patch that adds tests' > tests.patch`
 - You can refer to the input with the file name `stdin`, e.g: `ai -- 'how many words in stdin?' < dictionary.txt`
+
+### Adding a New Provider
+
+To add a new provider (or edit an existing one) just run `ai init`:
+
+![Demo of Adding a New Provider](./docs/casts/init-gemini/init-gemini.cast)
+
+Tips:
+
+- Suggested models and descriptions are loaded from [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models)
 
 ### Advanced
 

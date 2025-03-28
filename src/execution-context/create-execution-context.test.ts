@@ -39,7 +39,7 @@ describe("execution-context", () => {
   });
 
   afterEach(() => {
-    fs.rmdirSync(tempConfigFolder, { recursive: true });
+    fs.rmdirSync(tempTestFolder, { recursive: true });
   });
 
   describe("createExecutionContext", () => {
@@ -66,12 +66,13 @@ describe("execution-context", () => {
         config: getDefaultConfiguration(),
         configFilePath: tempConfigFilePath,
         //  this is the 'root' provider, created from the root config fields
-        //  (rather than a provider block).
+        //  (rather than a provider block), as per docs assumed to be 'openai'
         provider: {
           apiKey: "",
           baseURL: "https://api.openai.com/v1/",
           model: "gpt-3.5-turbo",
           name: "",
+          type: "openai",
         },
         stdinContent: undefined,
         isFirstRun: true,

@@ -23,9 +23,10 @@ describe("execution-context", () => {
         //  This is what we provided...
         apiKey: "key",
         //  We're not configured from a provider block, just the root config
-        //  fields, so we have no provider type or name...
-        //  e.g. 'type' = undefined
+        //  fields, so we have no provider type.
         name: "",
+        //  But as per the docs, the root provider is assumed to be openai.
+        type: "openai",
       };
       expect(provider).toStrictEqual(expected);
     });
