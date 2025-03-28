@@ -2,7 +2,7 @@
 
 Terminal AI is designed to be as simple as possible to use. When you start, if an API key is not provided it will ask you to configure one. You can configure your providers at any time with the `ai init` command.
 
->!TIP
+> [!TIP]
 > You can use Terminal AI without paying for API calls and without a credit card by signing up with Google Gemini. Instructions are in the [API Key Documentation](https://github.com/dwmkerr/terminal-ai#api-key). Once you have your key just run `ai init`.
 
 This guide explains how the configuration system works, how to configure different providers, and the [full set of configuration options](#the-configuration-specification) which are available.

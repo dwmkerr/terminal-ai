@@ -9,12 +9,6 @@ export async function checkLangfuse(executionContext: ExecutionContext) {
   //  If we don't have langfuse integration, we can bail.
   const lf = executionContext.integrations?.langfuse;
   if (lf === undefined) {
-    console.log(
-      printMessage(
-        "integration: langfuse - not enabled, skipping",
-        interactive,
-      ),
-    );
     return;
   }
 

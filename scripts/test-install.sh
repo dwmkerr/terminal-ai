@@ -3,6 +3,9 @@
 # Boot on errors.
 set -e
 
+#TODO: pass in API key so that we can unset for the script and reset later
+# makes things consistent for local/github
+
 # Get the current working directory, should be the one with package in it.
 name=$0
 src_dir="$(pwd)"
@@ -74,7 +77,7 @@ fi
 echo "✅ done..."
 
 # Verify that we can pipe data in.
-echo "verifying ai chat..."
+echo "verifying ai chat piping to stdin..."
 eval "echo 'what is the time' | ${ai_path}" || error_code=$?
 if [ "${error_code}" -ne 0 ]; then
   echo "❌ error: expected success on chat, got error code ${error_code}..."
