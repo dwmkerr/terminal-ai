@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.12.1](https://github.com/dwmkerr/terminal-ai/compare/v0.11.3...v0.12.1) (2025-03-28)
+
+
+### Features
+
+* **docs:** better 'ai init' documentation ([#79](https://github.com/dwmkerr/terminal-ai/issues/79)) ([eb78da2](https://github.com/dwmkerr/terminal-ai/commit/eb78da26fa30d9ce6f20b67ee3020ddcf9742e6e))
+* Gemini, OpenAI compatible providers ([9fec5ab](https://github.com/dwmkerr/terminal-ai/commit/9fec5ab54c6ae925f956803893cfec709ac2bd36))
+
+
+### Bug Fixes
+
+* **actions:** 'choose model' action fixed ([eb78da2](https://github.com/dwmkerr/terminal-ai/commit/eb78da26fa30d9ce6f20b67ee3020ddcf9742e6e))
+
+
+### Miscellaneous Chores
+
+* release 0.12.1 ([a220e54](https://github.com/dwmkerr/terminal-ai/commit/a220e54e343eee3ada352d2d99cd8115e2f6248b))
+
 ## [0.11.3](https://github.com/dwmkerr/terminal-ai/compare/v0.11.2...v0.11.3) (2025-03-21)
 
 
