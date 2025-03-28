@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.2](https://github.com/dwmkerr/terminal-ai/compare/v0.12.1...v0.12.2) (2025-03-28)
+
+
+### Miscellaneous Chores
+
+* release 0.12.2 ([c3590e7](https://github.com/dwmkerr/terminal-ai/commit/c3590e761adcd127b5998adca11a7c2dba769aed))
+
 ## [0.12.1](https://github.com/dwmkerr/terminal-ai/compare/v0.11.3...v0.12.1) (2025-03-28)
 
 
