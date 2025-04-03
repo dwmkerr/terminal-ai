@@ -63,7 +63,7 @@ jobs:
 
       # Validate that we can install wiht 'npm install' and then run 'ai'.
       - name: validate install
-        run: ./scripts/test-install.sh
+        run: ./tests/test-install.sh
         env:
           TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
 
