@@ -4,12 +4,13 @@ import theme from "../../theme";
 import { nextAction } from "../../chat-pipeline/stages/next-action";
 import { ChatPipelineParameters } from "../../chat-pipeline/ChatPipelineParameters";
 import { ExecutionContext } from "../../execution-context/execution-context";
+import { initialChatContext } from "../../chat-pipeline/ChatContext";
 
 export async function debugInput(executionContext: ExecutionContext) {
   const params: ChatPipelineParameters = {
     executionContext,
+    chatContext: initialChatContext(),
     inputMessage: "",
-    inputFilePaths: [],
     options: {
       enableContextPrompts: false,
       enableOutputPrompts: false,

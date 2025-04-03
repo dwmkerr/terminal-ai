@@ -1,15 +1,7 @@
 import fs from "fs/promises";
 import { isBinaryFile } from "isbinaryfile";
 import mime from "mime-types";
-
-export interface FileInput {
-  path: string;
-  content: string;
-  isBinary: boolean;
-  mimeType: string;
-  encoding: "utf-8" | "base64";
-  mimeTypeWithEncoding: string;
-}
+import { FileInput, FileInputType } from "./file-input";
 
 export async function loadFileInput(path: string): Promise<FileInput> {
   //  First, determine whether we're dealing with a binary file.
@@ -31,14 +23,13 @@ export async function loadFileInput(path: string): Promise<FileInput> {
 
   //  The fthe file contents and return the full input file.
   const content = await fs.readFile(path, { encoding });
-  return { path, content, isBinary, mimeType, encoding, mimeTypeWithEncoding };
-}
-
-export function delimitFileInputForChat(fileInput: FileInput): string {
-  //  Construct the start and end file delimiter.
-  const startFileDelimiter = `--- BEGIN FILE: ${fileInput.path} (${fileInput.mimeTypeWithEncoding}) ---`;
-  const endFileDelimiter = `--- END FILE ---`;
-
-  //  Return the delimited file content.
-  return `${startFileDelimiter}\n${fileInput.content}\n${endFileDelimiter}`;
+  return {
+    type: FileInputType.File,
+    path,
+    content,
+    isBinary,
+    mimeType,
+    encoding,
+    mimeTypeWithEncoding,
+  };
 }

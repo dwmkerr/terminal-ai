@@ -1,21 +1,21 @@
-import {
-  delimitFileInputForChat,
-  FileInput,
-  loadFileInput,
-} from "./file-input";
+import { FileInput, FileInputType } from "./file-input";
+import { loadFileInput } from "./load-file-input";
 
 describe("input", () => {
-  const testWhitePixelPath = "./src/input/test-files/test-white-pixel.jpg";
-  const testMarkdownCodePath = "./src/input/test-files/test-markdown-code.md";
+  const testWhitePixelPath =
+    "./src/input/file-input/test-files/test-white-pixel.jpg";
+  const testMarkdownCodePath =
+    "./src/input/file-input/test-files/test-markdown-code.md";
   const testCodeNoExtensionPath =
-    "./src/input/test-files/test-code-no-extension";
+    "./src/input/file-input/test-files/test-code-no-extension";
 
   describe("fileInput", () => {
     describe("loadFileInput", () => {
       it("can load a test markdown code file", async () => {
         const fileInput = await loadFileInput(testMarkdownCodePath);
-        expect(fileInput).toStrictEqual({
-          path: "./src/input/test-files/test-markdown-code.md",
+        const expected: FileInput = {
+          type: FileInputType.File,
+          path: "./src/input/file-input/test-files/test-markdown-code.md",
           encoding: "utf-8",
           isBinary: false,
           mimeType: "text/markdown",
@@ -27,13 +27,15 @@ export interface FileInput {
 }
 \`\`\`
 `,
-        });
+        };
+        expect(fileInput).toStrictEqual(expected);
       });
 
       it("can load a test test code file with no extension", async () => {
         const fileInput = await loadFileInput(testCodeNoExtensionPath);
-        expect(fileInput).toStrictEqual({
-          path: "./src/input/test-files/test-code-no-extension",
+        const expected: FileInput = {
+          type: FileInputType.File,
+          path: "./src/input/file-input/test-files/test-code-no-extension",
           encoding: "utf-8",
           isBinary: false,
           mimeType: "text/plain", // note we don't know the exact type, so its text
@@ -43,39 +45,23 @@ export interface FileInput {
   contents: string;
 }
 `,
-        });
+        };
+        expect(fileInput).toStrictEqual(expected);
       });
 
       it("can load a test binary image file", async () => {
         const fileInput = await loadFileInput(testWhitePixelPath);
-        expect(fileInput).toStrictEqual({
-          path: "./src/input/test-files/test-white-pixel.jpg",
+        const expected: FileInput = {
+          type: FileInputType.File,
+          path: "./src/input/file-input/test-files/test-white-pixel.jpg",
           encoding: "base64",
           isBinary: true,
           mimeType: "image/jpeg", // it's jpeg...
           mimeTypeWithEncoding: "image/jpeg;base64", // ...but base64 encoded
           content:
             "/9j/4AAQSkZJRgABAQEASABIAAD/4QBGRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAAExAAIAAAAUAAAAWodpAAQAAAABAAAAagAAAAAAAABIAAAAAQAAAEgAAAABAAKgAgAEAAAAAQAAAJigAwAEAAAAAQAAAJgAAAAA/9sAQwABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/9sAQwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/wAARCABkAGQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EABYQAQEBAAAAAAAAAAAAAAAAAAMAAf/aAAwDAQACEAMQAAAB0gAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAQABPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwCf/9k",
-        });
-      });
-    });
-    describe("delimitFileInputForChat", () => {
-      it("can delimit file input for chat", () => {
-        const fileInput: FileInput = {
-          path: "./src/my-code.ts",
-          isBinary: false,
-          encoding: "utf-8",
-          mimeType: "application/javascript",
-          mimeTypeWithEncoding: "application/javascript",
-          content: "console.log('test');",
         };
-        const content = delimitFileInputForChat(fileInput);
-
-        //  Expect the correct token structure.
-        expect(content)
-          .toBe(`--- BEGIN FILE: ./src/my-code.ts (application/javascript) ---
-console.log('test');
---- END FILE ---`);
+        expect(fileInput).toStrictEqual(expected);
       });
     });
   });
