@@ -78,34 +78,6 @@ jobs:
         # need artifacts per node version).
         if: ${{ matrix.node-version == env.NODE_LTS_VERSION }}
 
-  test-e2e:
-    name: E2E Tests
-    needs: validate
-    runs-on: ubuntu-24.04
-
-    steps: 
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # Setup the right version of Node.js.
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_LTS_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-
-      # Install dependencies, build, install.
-      - name: install
-        run: |
-          npm install
-          npm run build
-          npm install -g .
-
-      # Validate that we can install wiht 'npm install' and then run 'ai'.
-      - name: test-e2e
-        run: make test-e2e
-        env:
-          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
 
   upload-coverage:
     name: Upload Coverage

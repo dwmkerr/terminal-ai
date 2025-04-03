@@ -17,8 +17,6 @@ export async function chat(
   assistant: boolean,
   files: string[],
 ) {
-  console.log(`files: ${files}`);
-
   //  Ensure we are configured sufficiently.
   await ensureApiKey(executionContext);
 

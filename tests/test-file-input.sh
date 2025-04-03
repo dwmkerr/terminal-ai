@@ -15,23 +15,30 @@ if [ ! -f "${src_dir}/package.json" ]; then
 fi
 
 # Enable or disable debug.
-export AI_DEBUG_ENABLE=1
-export AI_DEBUG_NAMESPACE="ai*"
+# export AI_DEBUG_ENABLE=1
+# export AI_DEBUG_NAMESPACE="ai*"
 
 # Using a provider that handles text, we should be able to answer a question
 # about a file.
 export AI_API_KEY="${TESTING_AI_API_KEY}"
 export AI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
 export AI_MODEL="models/gemini-2.0-flash"
+
+# We'll perform many tests. If any of them seem to be wrong, we will set 'check'
+# to '1' - meaning the operator should independently verify.
+check=0
+
 prompt="
-I have sent you a file.
-Tell me what its path is, the mime-type of the file, and the name of the javascript function it exports.
-You MUST output ONLY the answers in the YAML format below:
-path='file path'
-mimeType='mimetype'
-functionName='functionName'
+I have sent you a file. You MUST ONLY OUTPUT YAML which follows the structure below:
+
+\`\`\`yaml
+path: <file path>
+mimeType: <mimetype>
+functionName: <functionName>
+\`\`\`
 "
-eval "ai chat -f test-files/code.js -- '${prompt}' | tee result.yaml" || error_code=$?
+error_code=0
+eval "ai -f tests/test-files/code.js -- '${prompt}' | tee result.yaml" || error_code=$?
 
 # Assert we have the expected output.
 echo "verifying output..."
@@ -43,15 +50,15 @@ mimeType=$(yq -e '.mimeType' result.yaml)
 functionName=$(yq -e '.functionName' result.yaml)
 echo "name: ${name}"
 echo "mimeType: ${mimeType}"
-echo "functionName: ${functioName}"
+echo "functionName: ${functionName}"
 echo "✅ done..."
 
 # Check for file contents
-check=0
 prompt="
 I have sent you files. Tell me exactly how many I sent, your output should be a single numeral.
 "
-eval "ai chat -f README.md -f package.json -f tsconfig.json -- '${prompt}' | tee output.txt" || error_code=$?
+error_code=0
+eval "ai -f README.md -f package.json -f tsconfig.json -- '${prompt}' | tee output.txt" || error_code=$?
 if [ "${error_code}" -ne 0 ]; then
   echo "❌ error: expected success on chat, got error code ${error_code}..."
 fi
@@ -65,8 +72,8 @@ else
   check=1
 fi
 
-if check -eq 1; then
-  "some tests resulted in warnings, manual verification needed"
+if [ "${check}" -eq 1 ]; then
+  echo "⚠️ complete: some tests resulted in warnings, manual verification needed"
 else
-  "all checks passed"
+  echo "✅ complete: all checks passed"
 fi

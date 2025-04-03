@@ -7,7 +7,8 @@ import {
   delimitFileInputForChat,
   loadFileInput,
 } from "../../input/file-input/delimit-file-input";
-const debug = dbg("ai:chat-pipeline:append-input-files");
+
+const debug = dbg("ai:chat:loadAndAppendInputFiles");
 
 export async function loadAndAppendInputFiles(
   stdin: StdStreamLike,
@@ -32,14 +33,13 @@ export async function loadAndAppendInputFiles(
   //  Create our new chat input - with the files added.
   const message = {
     ...inputMessage,
-    message: inputMessage + "\n" + filesMessages,
+    message: filesMessages + "\n" + inputMessage.message,
   };
-  debug(`new input: ${inputMessage.message}`);
 
   //  Clear the inbox, update the outbox, and we're done.
   chatContext.filePathsSent = chatContext.filePathsSent.concat(paths);
   chatContext.filesSent = chatContext.filesSent.concat(inputFiles);
   chatContext.filePathsOutbox = [];
-  console.log(`attached ${inputFiles.length} files`);
+  debug(message.message);
   return message;
 }
