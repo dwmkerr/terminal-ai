@@ -7,6 +7,9 @@ const debug = dbg("ai:error");
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export function translateError(err: any): TerminalAIError {
+  debug("translating error:");
+  debug(JSON.stringify(err, null, 2));
+
   //  If we're already translated, great.
   if (err instanceof TerminalAIError) {
     return err;
@@ -16,13 +19,14 @@ export function translateError(err: any): TerminalAIError {
   //  some cases such as menus we handle it, in other cases we let it bubble and
   //  close the app.
   if (err instanceof Error && err.name === "ExitPromptError") {
-    return new TerminalAIError(ErrorCode.ExitPrompt, "shutting down...");
+    return new TerminalAIError(ErrorCode.ExitPrompt, "shutting down...", err);
   }
 
   if (err instanceof OpenAI.PermissionDeniedError) {
     return new TerminalAIError(
       ErrorCode.OpenAIPermissionDeniedError,
       "api key or model may be invalid, try 'ai check' to check your config",
+      err,
     );
   }
 
@@ -34,6 +38,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.OpenAIAuthenticationError,
       "try 'ai check' to validate your config (API key may be invalid)",
+      err,
     );
   }
 
@@ -41,6 +46,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.OpenAIRateLimitError,
       "try 'ai check' and check your plan and billing details",
+      err,
     );
   }
 
@@ -53,6 +59,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.Connection,
       "check your internet connection",
+      err,
     );
   }
   //  - standard nodejs connection error...
@@ -60,6 +67,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.Connection,
       "address not found - check your internet connection",
+      err,
     );
   }
   //  - standard nodejs connection error...
@@ -67,6 +75,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.Connection,
       "connection refused - check your internet connection",
+      err,
     );
   }
   //  - tls error...
@@ -74,6 +83,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.Connection,
       "tls altname invalid - check your internet connection",
+      err,
     );
   }
   //  - invalid url error...
@@ -81,6 +91,7 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.InvalidConfiguration,
       "Invalid URL - check your configuration",
+      err,
     );
   }
 
@@ -89,12 +100,12 @@ export function translateError(err: any): TerminalAIError {
     return new TerminalAIError(
       ErrorCode.Unknown,
       `error code '${code}' - try 'ai check' to validate your config`,
+      err,
     );
   }
 
   //  ...we don't have a clue what the error is and it doesn't have a code.
   const preview = crop(`${err}`, 80);
-  debug(JSON.stringify(err, null, 2));
   return new TerminalAIError(
     ErrorCode.Unknown,
     `try 'ai check' or AI_DEBUG_ENABLE=1\n -> ${preview}`,

@@ -67,12 +67,6 @@ jobs:
         env:
           TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
 
-      # End to end tests.
-      - name: validate E2E tests
-        run: make test-e2e
-        env:
-          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
-
       # Upload the artifacts folder.
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -114,14 +108,43 @@ jobs:
           directory: ./artifacts/coverage
           token: ${{ secrets.CODECOV_TOKEN }}
 
+  test-e2e:
+    name: E2E Tests
+    needs: validate
+    runs-on: ubuntu-24.04
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Setup the right version of Node.js.
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_LTS_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Install dependencies, build, install.
+      - name: install
+        run: |
+          npm install
+          npm run build
+          npm install -g .
+
+      # Validate that we can install wiht 'npm install' and then run 'ai'.
+      - name: test-e2e
+        run: make test-e2e
+        env:
+          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
+
   release-please:
     name: Release PR/Deploy
     runs-on: ubuntu-24.04
 
     # The 'release please' job will only run if successfully complete the
-    # 'validate-main' job. The deployment steps only occur if this is a release
+    # 'e2e tests' job. The deployment steps only occur if this is a release
     # merge.
-    needs: validate
+    needs: test-e2e
 
     steps:
       - name: Release Please

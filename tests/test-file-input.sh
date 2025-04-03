@@ -14,6 +14,10 @@ if [ ! -f "${src_dir}/package.json" ]; then
   exit 1
 fi
 
+# Enable or disable debug.
+export AI_DEBUG_ENABLE=1
+export AI_DEBUG_NAMESPACE="ai*"
+
 # Using a provider that handles text, we should be able to answer a question
 # about a file.
 export AI_API_KEY="${TESTING_AI_API_KEY}"
