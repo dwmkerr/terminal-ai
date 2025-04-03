@@ -6,7 +6,7 @@ import {
   ConfigurationPaths,
   getDefaultConfiguration,
 } from "../configuration/configuration";
-import { ProcessLike } from "./execution-context";
+import { ExecutionContext, ProcessLike } from "./execution-context";
 
 describe("execution-context", () => {
   let tempTestFolder: string;
@@ -62,7 +62,8 @@ describe("execution-context", () => {
       );
 
       //  Check for the expected execution context.
-      expect(executionContext).toStrictEqual({
+      expect(executionContext).toStrictEqual<ExecutionContext>({
+        process,
         config: getDefaultConfiguration(),
         configFilePath: tempConfigFilePath,
         //  this is the 'root' provider, created from the root config fields
@@ -74,7 +75,6 @@ describe("execution-context", () => {
           name: "",
           type: "openai",
         },
-        stdinContent: undefined,
         isFirstRun: true,
         isTTYstdin: true,
         isTTYstdout: false,

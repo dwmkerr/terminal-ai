@@ -67,6 +67,12 @@ jobs:
         env:
           TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
 
+      # End to end tests.
+      - name: validate E2E tests
+        run: make test-e2e
+        env:
+          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
+
       # Upload the artifacts folder.
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4

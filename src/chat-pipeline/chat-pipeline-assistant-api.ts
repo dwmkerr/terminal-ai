@@ -12,7 +12,7 @@ import { nextInputOrAction } from "./stages/next-input-or-action";
 import { parseResponse } from "./stages/parse-response";
 import { translateError } from "../lib/translate-error";
 import { getProviderPrompt } from "../providers/get-provider-prompt";
-import { loadAndAppendInputFiles } from "./stages/append-input-files";
+import { loadAndAppendInputFiles } from "./stages/load-and-append-input-files";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.

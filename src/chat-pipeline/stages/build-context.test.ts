@@ -41,29 +41,4 @@ describe("buildContext", () => {
     const context = await buildContext(params, {});
     expect(context).toHaveLength(0);
   });
-
-  it("includes stdin content in the context when available", async () => {
-    const params: ChatPipelineParameters = {
-      chatContext: initialChatContext(),
-      inputMessage: "",
-      options: {
-        copy: false,
-        raw: false,
-        enableContextPrompts: true,
-        enableOutputPrompts: true,
-      },
-      executionContext: createTestExecutionContext(process),
-    };
-    // TODO
-    // params.executionContext.stdinContent = "This is stdin content";
-
-    const context = await buildContext(params, {});
-    expect(context).toHaveLength(1);
-    expect(context[0].context).toContain(
-      `<file name="stdin">
-This is stdin content
-</file>
-`,
-    );
-  });
 });

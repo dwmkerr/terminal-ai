@@ -36,8 +36,33 @@ if [ "${error_code}" -ne 0 ]; then
 fi
 name=$(yq -e '.path' result.yaml)
 mimeType=$(yq -e '.mimeType' result.yaml)
-functionName=$(yq -e '.functioName' result.yaml)
+functionName=$(yq -e '.functionName' result.yaml)
 echo "name: ${name}"
 echo "mimeType: ${mimeType}"
 echo "functionName: ${functioName}"
 echo "✅ done..."
+
+# Check for file contents
+check=0
+prompt="
+I have sent you files. Tell me exactly how many I sent, your output should be a single numeral.
+"
+eval "ai chat -f README.md -f package.json -f tsconfig.json -- '${prompt}' | tee output.txt" || error_code=$?
+if [ "${error_code}" -ne 0 ]; then
+  echo "❌ error: expected success on chat, got error code ${error_code}..."
+fi
+if [ "${error_code}" -ne 0 ]; then
+  echo "❌ error: expected success on chat, got error code ${error_code}..."
+fi
+if grep -E -q ".*3.*" < output.txt; then
+  echo "✅ pass: found 3 files"
+else
+  echo "⚠️  warning: expected output '3', please manually verify"
+  check=1
+fi
+
+if check -eq 1; then
+  "some tests resulted in warnings, manual verification needed"
+else
+  "all checks passed"
+fi

@@ -18,9 +18,7 @@ export async function loadAndAppendInputFiles(
   //  from stdin as well if it has data.
   const stdinFile = await loadStdinInput(stdin);
   const paths = chatContext.filePathsOutbox;
-  const files = await Promise.all(
-    paths.map((p) => (p === "-" ? loadStdinInput(stdin) : loadFileInput(p))),
-  );
+  const files = await Promise.all(paths.map(loadFileInput));
   const inputFiles = [...files, stdinFile].filter((f) => f !== undefined);
 
   //  No files means nothing to do.
@@ -38,9 +36,10 @@ export async function loadAndAppendInputFiles(
   };
   debug(`new input: ${inputMessage.message}`);
 
-  //  Clear the inbox and we're done.
-  chatContext.filePathsOutbox.forEach((f) => chatContext.filePathsSent.push(f));
+  //  Clear the inbox, update the outbox, and we're done.
+  chatContext.filePathsSent = chatContext.filePathsSent.concat(paths);
+  chatContext.filesSent = chatContext.filesSent.concat(inputFiles);
   chatContext.filePathsOutbox = [];
-  inputFiles.forEach((f) => chatContext.filesSent.push(f));
+  console.log(`attached ${inputFiles.length} files`);
   return message;
 }

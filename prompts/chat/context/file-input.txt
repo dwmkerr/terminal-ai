@@ -1,6 +1,6 @@
 For context:
 
-In our conversations I MAY send you files.
+In our conversations I MAY send you files. If I DON'T send you files assume we are just chatting, you do not need to mention files. Only talk about files if I send them to you.
 
 If I send you files then they ALWAYS be specified in the following format:
 

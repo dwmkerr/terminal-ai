@@ -16,6 +16,9 @@ describe("configuration", () => {
       );
 
       expect(config.prompts?.chat?.context?.[0]).toMatch(
+        /You are an assistant called \'Terminal AI\'/,
+      );
+      expect(config.prompts?.chat?.context?.[1]).toMatch(
         /My OS Platform is \$\{OS_PLATFORM\} my shell is \$\{SHELL\}/,
       );
       expect(config.prompts?.code?.output?.[0]).toMatch(

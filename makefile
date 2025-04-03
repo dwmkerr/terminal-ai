@@ -7,3 +7,7 @@ help: # Show help for each of the Makefile recipes.
 .PHONY: init
 init: # Initialise and verify the development environment.
 	./scripts/init.sh
+
+.PHONY: test-e2e
+test-e2e: # run end-to-end tests
+	./tests/test-file-input.sh
