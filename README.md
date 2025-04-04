@@ -48,6 +48,7 @@ Quick links:
 - [Simple Chat](#simple-chat)
 - [Multiline Input](#multiline-input)
 - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
+- [Attaching Files](#attaching-files)
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
 - [Piping Input](#piping-input)
@@ -91,6 +92,16 @@ ai -- "How can I programatically create a calendar invite?" > answer.txt
 To provide multiline input (or paste multiple lines input input) you can use the Actions Menu to select the 'Chat (Multiline)' action. Just press <code>Enter</code> at the prompt. Your `$EDITOR` will open:
 
 ![Demo Recording of Multiline Input](./docs/casts/ai-chat-multiline.svg)
+
+### Attaching Files
+
+Attach file to the chat with the `-f` or `--file` parameter:
+
+```bash
+ai -f package.json -f package-lock.json -- "what's my package version and most complex transitive dependency?"
+```
+
+![Demo Recording of Attaching Files](./docs/casts/attach-files/ai-files.svg)
 
 ### Copying to the Clipboard or Saving to a File
 
@@ -204,13 +215,14 @@ ai -- "How do I install NodeJS?"
 
 The following parameters are available:
 
-| Parameter              | Description                                                            |
-|------------------------|------------------------------------------------------------------------|
-| `-c, --copy`           | Copy response to the clipboard and exit.                               |
-| `-r, --raw`            | Do not format markdown or change the response in any way.              |
+| Parameter              | Description                                                             |
+|------------------------|-------------------------------------------------------------------------|
+| `-c, --copy`           | Copy response to the clipboard and exit.                                |
+| `-r, --raw`            | Do not format markdown or change the response in any way.               |
+| `-f, --file <path>`    | (Multiple allowed). Attach file to the chat.                            |
 | `--assistant`          | (Experimental). Use the Assistants API rather than the Completions API. |
-| `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash').                     |
-| `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').                        |
+| `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash').                      |
+| `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').                         |
 
 **`ai init`**
 
