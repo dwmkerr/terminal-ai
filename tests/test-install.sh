@@ -65,24 +65,5 @@ if [ "${error_code}" -ne 12 ]; then
 fi
 echo "✅ done..."
 
-# Set API key / base url / model with env vars and verify we can chat.
-export AI_API_KEY="${TESTING_AI_API_KEY}"
-export AI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
-export AI_MODEL="models/gemini-2.0-flash"
-echo "verifying ai chat..."
-eval "${ai_path} chat -- 'what is the time'" || error_code=$?
-if [ "${error_code}" -ne 0 ]; then
-  echo "❌ error: expected success on chat, got error code ${error_code}..."
-fi
-echo "✅ done..."
-
-# Verify that we can pipe data in.
-echo "verifying ai chat piping to stdin..."
-eval "echo 'what is the time' | ${ai_path}" || error_code=$?
-if [ "${error_code}" -ne 0 ]; then
-  echo "❌ error: expected success on chat, got error code ${error_code}..."
-fi
-echo "✅ done..."
-
 # Cleanup.
 rm -rf "${tmp_dir}"

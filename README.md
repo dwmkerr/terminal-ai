@@ -253,7 +253,7 @@ Shows the current configuration, which is loaded from the configuration files in
 
 **`ai config edit`**
 
-Open and edit the configuration file `~/.ai/config.yaml` in `$EDITOR`.
+Open the configuration file `~/.ai/config.yaml` in `$EDITOR`.
 
 ### Error Codes
 

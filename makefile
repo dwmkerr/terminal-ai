@@ -10,4 +10,5 @@ init: # Initialise and verify the development environment.
 
 .PHONY: test-e2e
 test-e2e: # run end-to-end tests
+	./tests/test-chat.sh
 	./tests/test-file-input.sh
