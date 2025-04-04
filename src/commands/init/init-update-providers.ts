@@ -26,6 +26,9 @@ export async function initUpdateProviders(executionContext: ExecutionContext) {
         message: "Set as current provider?",
         default: false,
       });
+    } else {
+      //  The provider *is* current, so update it in the execution context.
+      executionContext.provider = provider;
     }
 
     //  Update the provider, make current if we need to.

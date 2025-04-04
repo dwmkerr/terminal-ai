@@ -1,7 +1,6 @@
 import debug from "debug";
 import { ExecutionContext, ProcessLike } from "./execution-context";
 import { hydrateContextEnvironmentVariables } from "../lib/hydrate-context-environment-variables";
-import { readStdin } from "../lib/read-stdin";
 import { integrateLangfuse } from "../integrations/langfuse";
 import { loadConfiguration } from "../configuration/load-configuration";
 import { isFirstRun } from "./is-first-run";
@@ -14,9 +13,6 @@ export async function createExecutionContext(
   promptsFolder: string,
   configFilePath: string,
 ): Promise<ExecutionContext> {
-  //  If we have anything piped to stdin, read it.
-  const stdinContent = await readStdin(process.stdin);
-
   //  Create an initial execution context. This may evolve as we run various commands etc.
   //  Make a guess at the interactive mode based on whether the output is a TTY.
   //  The 'colors.js' force color we will also use.
@@ -40,6 +36,7 @@ export async function createExecutionContext(
   //  Create the execution context.
   const provider = buildProviderFromConfig(config);
   const executionContext: ExecutionContext = {
+    process,
     //  We've got the config file and it's path...
     configFilePath,
     config,
@@ -50,7 +47,6 @@ export async function createExecutionContext(
     //  ...and state from the stdin/stdout streams.
     isTTYstdin: process.stdin.isTTY || false,
     isTTYstdout: forceColor || process.stdout.isTTY || false,
-    stdinContent,
   };
 
   //  Enable any integrations.

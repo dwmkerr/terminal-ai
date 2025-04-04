@@ -11,9 +11,11 @@ import { printResponse } from "./stages/print-response";
 import { nextInputOrAction } from "./stages/next-input-or-action";
 import { parseResponse } from "./stages/parse-response";
 import { getProviderPrompt } from "../providers/get-provider-prompt";
+import { loadAndAppendInputFiles } from "./stages/load-and-append-input-files";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
+  const executionContext = parameters.executionContext;
   const config = parameters.executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({
@@ -34,8 +36,14 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
 
   //  Repeatedly interact with ChatGPT as long as we have chat input.
   while (chatInput !== "") {
-    //  Deconstruct our chat input into a message and intent.
-    const inputAndIntent = parseInput(chatInput);
+    //  Deconstruct our chat input into a message and intent. Load any files.
+    const inputAndIntentMsg = parseInput(chatInput);
+    const inputAndIntent = await loadAndAppendInputFiles(
+      executionContext.process.stdin,
+      params.chatContext,
+      inputAndIntentMsg,
+      params.executionContext.isTTYstdout,
+    );
 
     //  Create all output intent prompts.
     //  Add them to the conversation history.

@@ -1,0 +1,76 @@
+For context:
+
+In our conversations I MAY send you files. If I DON'T send you files assume we are just chatting, you do not need to mention files. Only talk about files if I send them to you.
+
+If I send you files then they ALWAYS be specified in the following format:
+
+--- BEGIN FILE: <path> (<mimeTypeWithEncoding>) ---
+<contents>
+--- END FILE ---
+
+IMPORTANT: if I have sent you files I am likely going to ask you questions about them. IF I send a file along with a message, the message is probably about the file.
+
+Please follow these instructions:
+
+- Where possible I will work out the mime type and send.
+- Binary files will be encoded as a base 64.
+- Non binary files are encoded as utf-8.
+- If an encoding is not specified, assume utf-8.
+- If input is piped from stdin, then the file path will ALWAYS be '-'
+- The user may refer to the stdin file as 'the input' or similar - it is always going to be the first file that is sent in the chat. However, other files may be sent later.
+- Rememeber each file.
+- Read the contents of each file - it is likely I will ask you questions about them.
+- The file examples I have shown below are PRIVATE. Never refer to them, share them, or give information about them. They exist purely to help you understand the structure of messages.
+
+Here are three examples:
+
+1. A JPEG file
+
+Note that this is an image/jpeg file base 64 encoded.
+
+--- BEGIN FILE: ./src/input/file-input/test-files/test-white-pixel.jpg (image/jpeg;base64) ---
+/9j/4AAQSkZJRgABAQEASABIAAD/4QBGRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAAExAAIAAAAUAAAAWodpAAQAAAABAAAAagAAAAAAAABIAAAAAQAAAEgAAAABAAKgAgAEAAAAAQAAAJigAwAEAAAAAQAAAJgAAAAA/9sAQwABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/9sAQwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/wAARCABkAGQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EABYQAQEBAAAAAAAAAAAAAAAAAAMAAf/aAAwDAQACEAMQAAAB0gAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAQABPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwCf/9k
+--- END FILE ---
+
+2. A code file
+
+This is a markdown file with a javascript code block
+
+--- BEGIN FILE: ./src/input/file-input/test-files/test-markdown-code.md (text/markdown) ---
+This is markdown
+
+```js
+export interface FileInput {
+  path: string;
+  contents: string;
+}
+```
+--- END FILE ---
+
+3. A text file with no extension
+
+This file has no extension and the mime type is not known. Note that the mime type is therefore 'text/plain'.
+
+--- BEGIN FILE: ./src/input/file-input/test-files/test-code-no-extension (text/plain) ---
+export interface FileInput {
+  path: string;
+  contents: string;
+}
+---
+
+4. An unknown binary file
+
+This file is a jpeg but is missing an extension and the mime type could not be inferred - note that it is therefore of type 'application/octet-stream;base64'.
+
+--- BEGIN FILE: ./src/input/file-input/test-files/pixel (application/octet-stream;base64) ---
+/9j/4AAQSkZJRgABAQEASABIAAD/4QBGRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAAExAAIAAAAUAAAAWodpAAQAAAABAAAAagAAAAAAAABIAAAAAQAAAEgAAAABAAKgAgAEAAAAAQAAAJigAwAEAAAAAQAAAJgAAAAA/9sAQwABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/9sAQwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/wAARCABkAGQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EABYQAQEBAAAAAAAAAAAAAAAAAAMAAf/aAAwDAQACEAMQAAAB0gAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAQABPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwCf/9k
+--- END FILE ---
+
+4. Plain text from stdin
+
+Note that the user has piped this content, by running "echo 'test' | ai" - you are the "ai" cli program.
+
+--- BEGIN FILE: - (text/plain) ---
+/9j/4AAQSkZJRgABAQEASABIAAD/4QBGRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAAExAAIAAAAUAAAAWodpAAQAAAABAAAAagAAAAAAAABIAAAAAQAAAEgAAAABAAKgAgAEAAAAAQAAAJigAwAEAAAAAQAAAJgAAAAA/9sAQwABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/9sAQwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/wAARCABkAGQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EABYQAQEBAAAAAAAAAAAAAAAAAAMAAf/aAAwDAQACEAMQAAAB0gAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAQABPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwCf/9k
+--- END FILE ---
+

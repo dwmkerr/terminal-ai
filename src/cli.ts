@@ -31,15 +31,15 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     .name("ai")
     .description("Effortless AI in the terminal")
     .version(packageJson.version)
+    .option("-c, --copy", "Copy output to clipboard and exit")
+    .option("-r, --raw", "Do not format or highlight markdown output")
     //  Note the '[]' - this option is an array.
     .option(
       "-f, --file <path>",
-      "File to upload (can be used multiple times",
+      "Path to file(s) to send (multiple files allowed)",
       collect,
       [],
     )
-    .option("-c, --copy", "Copy output to clipboard and exit")
-    .option("-r, --raw", "Do not format or highlight markdown output")
     .option("--assistant", "Experimental. Use the OpenAI Assistants API")
     .option("--no-context-prompts", "Disable context prompts")
     .option("--no-output-prompts", "Disable output prompts")

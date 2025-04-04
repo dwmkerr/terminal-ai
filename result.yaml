@@ -1,0 +1,3 @@
+path: tests/test-files/code.js
+mimeType: text/javascript
+functionName: sum

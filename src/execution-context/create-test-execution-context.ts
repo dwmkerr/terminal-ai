@@ -1,12 +1,17 @@
 import { getDefaultConfiguration } from "../configuration/configuration";
-import { ExecutionContext } from "../execution-context/execution-context";
+import {
+  ExecutionContext,
+  ProcessLike,
+} from "../execution-context/execution-context";
 
 export function createTestExecutionContext(
+  process: ProcessLike,
   overrides: Partial<ExecutionContext> = {},
 ): ExecutionContext {
   //  Create default configuration, common context, update, return.
   const config = getDefaultConfiguration();
   return {
+    process,
     configFilePath: "./config.test.yaml",
     config,
     isFirstRun: false,
@@ -18,7 +23,6 @@ export function createTestExecutionContext(
     },
     isTTYstdin: true,
     isTTYstdout: true,
-    stdinContent: undefined,
     ...overrides,
   };
 }

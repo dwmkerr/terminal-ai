@@ -4,6 +4,8 @@ import theme from "../../theme";
 import { nextAction } from "./next-action";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
+import { formatChatMenuHint } from "../../ui/format-chat-menu-hint";
+import { terminalWidth } from "../../ui/terminal";
 
 export async function nextInputOrAction(
   params: ChatPipelineParameters,
@@ -11,11 +13,15 @@ export async function nextInputOrAction(
   messages: OpenAIMessage[],
 ): Promise<string> {
   //  Give the user a hint that they need to reply or show actions.
-  // theme.printHint("(Reply below or press Enter for more options...)");
   const chatInputPrompt = theme.inputPrompt("chat");
   const chatInput = await advancedInput({
     message: chatInputPrompt,
-    hint: "<Enter> Menu",
+    hint: formatChatMenuHint(
+      terminalWidth(params.executionContext.process),
+      params.executionContext.config.ui.showProviderAndModel
+        ? params.executionContext.provider
+        : undefined,
+    ),
   });
 
   //  If the user gave us input, we can return it to the caller.

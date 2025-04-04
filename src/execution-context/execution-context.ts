@@ -22,6 +22,9 @@ export type ExecutionContext = {
   configFilePath: string;
   config: Configuration;
 
+  //  The process.
+  process: ProcessLike;
+
   //  Our current provider.
   provider: ProviderConfiguration;
 
@@ -31,9 +34,6 @@ export type ExecutionContext = {
   //  More explicity, do we believe we have a TTY?
   isTTYstdin: boolean;
   isTTYstdout: boolean;
-
-  //  If we have piped input to stdin, it'll be here.
-  stdinContent: string | undefined;
 
   //  Integrations which we might have enabled.
   integrations?: Integrations;
@@ -45,6 +45,7 @@ export type ExecutionContext = {
  * testing easier.
  */
 export interface StdStreamLike {
+  columns?: number;
   isTTY: boolean;
   on: (
     event: string,

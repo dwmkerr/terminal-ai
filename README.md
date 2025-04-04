@@ -251,6 +251,10 @@ $ ai check
 
 Shows the current configuration, which is loaded from the configuration files in the [`~/.ai`] folder, environment variables and the `prompts` folder.
 
+**`ai config edit`**
+
+Open the configuration file `~/.ai/config.yaml` in `$EDITOR`.
+
 ### Error Codes
 
 All error codes are documented at [`src/lib/errors.ts`](./src/lib/errors.ts).

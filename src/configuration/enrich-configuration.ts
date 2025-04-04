@@ -65,6 +65,9 @@ export function enrichConfiguration(
     enrichProperty(newConfig, "integrations.langfuse.traceName", lf.traceName);
   }
 
+  //  UI Configuration.
+  enrichProperty(newConfig, "ui", data.ui);
+
   //  Debug configuration.
   enrichProperty(newConfig, "debug.enable", data.debug?.enable);
   enrichProperty(newConfig, "debug.namespace", data.debug?.namespace);

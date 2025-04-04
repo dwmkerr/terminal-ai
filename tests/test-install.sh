@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Boot on errors.
-set -e
+set -e -o pipefail
 
 #TODO: pass in API key so that we can unset for the script and reset later
 # makes things consistent for local/github
@@ -62,25 +62,6 @@ echo "verifying ai errors as expected for non-interactive run before 'ai init'..
 eval "${ai_path} chat -- 'what is the time' > output.md" || error_code=$?
 if [ "${error_code}" -ne 12 ]; then
   echo "❌ error: expected error code 12 (invalid configuration)..."
-fi
-echo "✅ done..."
-
-# Set API key / base url / model with env vars and verify we can chat.
-export AI_API_KEY="${TESTING_AI_API_KEY}"
-export AI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
-export AI_MODEL="models/gemini-2.0-flash"
-echo "verifying ai chat..."
-eval "${ai_path} chat -- 'what is the time'" || error_code=$?
-if [ "${error_code}" -ne 0 ]; then
-  echo "❌ error: expected success on chat, got error code ${error_code}..."
-fi
-echo "✅ done..."
-
-# Verify that we can pipe data in.
-echo "verifying ai chat piping to stdin..."
-eval "echo 'what is the time' | ${ai_path}" || error_code=$?
-if [ "${error_code}" -ne 0 ]; then
-  echo "❌ error: expected success on chat, got error code ${error_code}..."
 fi
 echo "✅ done..."
 

@@ -47,10 +47,12 @@
     "colors": "^1.4.0",
     "commander": "^11.1.0",
     "debug": "^4.3.4",
+    "isbinaryfile": "^5.0.4",
     "js-yaml": "^4.1.0",
     "langfuse": "^3.36.0",
     "marked": "^15.0.6",
     "marked-terminal": "^7.3.0",
+    "mime-types": "^3.0.1",
     "open": "^9.1.0",
     "openai": "^4.83.0",
     "ora": "^8.2.0"
@@ -58,6 +60,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@types/jest": "^29.5.14",
+    "@types/mime-types": "^2.1.4",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.11.5",
     "@typescript-eslint/eslint-plugin": "^6.19.0",

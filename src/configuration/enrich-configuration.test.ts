@@ -66,6 +66,9 @@ describe("configuration", () => {
               output: [],
             },
           },
+          ui: {
+            showProviderAndModel: false,
+          },
           integrations: {
             langfuse: {
               secretKey: "sk",
