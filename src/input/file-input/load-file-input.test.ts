@@ -63,6 +63,11 @@ export interface FileInput {
         };
         expect(fileInput).toStrictEqual(expected);
       });
+
+      it("throws with a FileLoadError if file is missing", async () => {
+        const call = async () => await loadFileInput("missing.txt");
+        await expect(call).rejects.toThrow(/missing.txt/);
+      });
     });
   });
 });
