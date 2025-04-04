@@ -4,6 +4,8 @@ import theme from "../../theme";
 import { nextAction } from "./next-action";
 import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
+import { formatChatMenuHint } from "../../ui/format-chat-menu-hint";
+import { terminalWidth } from "../../ui/terminal";
 
 export async function nextInputOrAction(
   params: ChatPipelineParameters,
@@ -14,7 +16,12 @@ export async function nextInputOrAction(
   const chatInputPrompt = theme.inputPrompt("chat");
   const chatInput = await advancedInput({
     message: chatInputPrompt,
-    hint: "<Enter> Menu",
+    hint: formatChatMenuHint(
+      terminalWidth(params.executionContext.process),
+      params.executionContext.config.ui.showProviderAndModel
+        ? params.executionContext.provider
+        : undefined,
+    ),
   });
 
   //  If the user gave us input, we can return it to the caller.

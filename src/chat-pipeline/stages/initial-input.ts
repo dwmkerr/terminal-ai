@@ -3,6 +3,8 @@ import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import theme from "../../theme";
 import { nextAction } from "./next-action";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
+import { formatChatMenuHint } from "../../ui/format-chat-menu-hint";
+import { terminalWidth } from "../../ui/terminal";
 
 export async function initialInput(
   params: ChatPipelineParameters,
@@ -37,7 +39,12 @@ export async function initialInput(
   do {
     inputMessage = await advancedInput({
       message: chatInputPrompt,
-      hint: "<Enter> Menu",
+      hint: formatChatMenuHint(
+        terminalWidth(params.executionContext.process),
+        params.executionContext.config.ui.showProviderAndModel
+          ? params.executionContext.provider
+          : undefined,
+      ),
     });
 
     //  If the input message is empty then the user has just pressed 'enter' at

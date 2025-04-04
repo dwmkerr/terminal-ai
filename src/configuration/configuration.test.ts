@@ -17,6 +17,9 @@ describe("configuration", () => {
             output: [],
           },
         },
+        ui: {
+          showProviderAndModel: false,
+        },
         integrations: {},
         debug: {
           enable: false,

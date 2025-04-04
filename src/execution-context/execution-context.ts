@@ -45,6 +45,7 @@ export type ExecutionContext = {
  * testing easier.
  */
 export interface StdStreamLike {
+  columns?: number;
   isTTY: boolean;
   on: (
     event: string,

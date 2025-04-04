@@ -14,6 +14,41 @@ export type DeepPartial<T> = T extends object
     }
   : T;
 
+export interface Configuration {
+  apiKey: string;
+  baseURL: string;
+  model: string;
+
+  //  The provider name (optional, but when set must be valid) and the providers.
+  provider?: string;
+  providers: Record<string, ProviderConfiguration>;
+
+  //  The configured prompts.
+  prompts: {
+    chat: {
+      context: string[];
+    };
+    code: {
+      output: string[];
+    };
+  };
+
+  //  Configuration for the user interface.
+  ui: UIConfiguration;
+
+  integrations: {
+    langfuse?: LangfuseIntegrationConfiguration;
+  };
+  debug: {
+    enable: boolean;
+    namespace: string;
+  };
+}
+
+export interface UIConfiguration {
+  showProviderAndModel: boolean;
+}
+
 export interface LangfuseIntegrationConfiguration {
   secretKey: string;
   publicKey: string;
@@ -37,32 +72,6 @@ export interface ProviderConfiguration {
   prompt?: string;
 }
 
-export interface Configuration {
-  apiKey: string;
-  baseURL: string;
-  model: string;
-
-  //  The provider name (optional, but when set must be valid) and the providers.
-  provider?: string;
-  providers: Record<string, ProviderConfiguration>;
-
-  prompts: {
-    chat: {
-      context: string[];
-    };
-    code: {
-      output: string[];
-    };
-  };
-  integrations: {
-    langfuse?: LangfuseIntegrationConfiguration;
-  };
-  debug: {
-    enable: boolean;
-    namespace: string;
-  };
-}
-
 export function getDefaultConfiguration(): Configuration {
   return {
     apiKey: "",
@@ -76,6 +85,9 @@ export function getDefaultConfiguration(): Configuration {
       code: {
         output: [],
       },
+    },
+    ui: {
+      showProviderAndModel: false,
     },
     integrations: {},
     debug: {

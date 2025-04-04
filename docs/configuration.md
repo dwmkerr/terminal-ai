@@ -173,6 +173,9 @@ Each of the configuration values, the environment variables that can be used to 
 | `providers.[name].model`      |                      | (None).                      | The model for the provider.                                                                                     |
 | `providers.[name].providerId` |                      | (None).                      | (Optional). A provider id from [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). |
 | `providers.[name].prompt`     |                      | (None).                      | (Optional). The text to show as a prompt before provider chat output. Defaults to the provider name.            |
+| **UI Configuration**          |                      |                              |                                                                                                                 |
+| `ui.showProviderAndModel`     |                      | `false`                      | (Optional). Show the current provider an model on the chat prompt.                                              |
+| `debug.namespace`             | `AI_DEBUG_NAMESPACE` | `ai*`                        | (Optional). Mask for debug messages.                                                                            |
 | **Debug Configuration**       |                      |                              |                                                                                                                 |
 | `debug.enabled`               | `AI_DEBUG_ENABLE`    | `0`                          | (Optional). Whether to enable debug mode.                                                                       |
 | `debug.namespace`             | `AI_DEBUG_NAMESPACE` | `ai*`                        | (Optional). Mask for debug messages.                                                                            |
