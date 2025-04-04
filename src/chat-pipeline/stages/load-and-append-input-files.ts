@@ -3,11 +3,9 @@ import { InputMessage } from "./parse-input";
 import { ChatContext } from "../ChatContext";
 import { loadStdinInput } from "../../input/file-input/load-stdin-input";
 import { StdStreamLike } from "../../execution-context/execution-context";
-import {
-  delimitFileInputForChat,
-  loadFileInput,
-} from "../../input/file-input/delimit-file-input";
+import { delimitFileInputForChat } from "../../input/file-input/delimit-file-input";
 import { printHint } from "../../theme";
+import { loadFileInput } from "../../input/file-input/load-file-input";
 
 const debug = dbg("ai:chat:loadAndAppendInputFiles");
 

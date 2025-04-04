@@ -6,6 +6,7 @@ export const enum ErrorCode {
   InvalidConfiguration = 12,
   Connection = 13,
   InvalidOperation = 14,
+  FileLoadError = 15,
   OpenAIError = 20,
   OpenAIPermissionDeniedError = 21,
   OpenAIAuthenticationError = 22,
@@ -26,7 +27,9 @@ export function errorCodeName(errorCode: ErrorCode): string {
     case ErrorCode.Connection:
       return "Connection Error";
     case ErrorCode.InvalidOperation:
-      return "Invaoid Operation";
+      return "Invalid Operation";
+    case ErrorCode.FileLoadError:
+      return "File Load Error";
     case ErrorCode.OpenAIError:
       return "OpenAI Error";
     case ErrorCode.OpenAIPermissionDeniedError:
@@ -48,11 +51,11 @@ export function errorCodeName(errorCode: ErrorCode): string {
 //  When we call 'translateError' we will always transform into this error type.
 export class TerminalAIError extends Error {
   errorCode: ErrorCode;
-  innerError: Error | undefined;
+  innerError: Error | unknown | undefined;
   constructor(
     errorCode: ErrorCode,
     message: string,
-    innerError: Error | undefined = undefined,
+    innerError: Error | unknown | undefined = undefined,
   ) {
     super(message);
     this.name = errorCodeName(errorCode);
