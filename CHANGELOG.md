@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/dwmkerr/terminal-ai/compare/v0.12.2...v0.13.0) (2025-04-04)
+
+
+### Features
+
+* basic file upload ([#81](https://github.com/dwmkerr/terminal-ai/issues/81)) ([8c993ff](https://github.com/dwmkerr/terminal-ai/commit/8c993ff2988db190a2cbcd03ea2d1f2f63efbb9e))
+
+
+### Bug Fixes
+
+* better file upload errors ([#84](https://github.com/dwmkerr/terminal-ai/issues/84)) ([7e8bd35](https://github.com/dwmkerr/terminal-ai/commit/7e8bd353087a90ef872af86f639055a2c60c8a24))
+
 ## [0.12.2](https://github.com/dwmkerr/terminal-ai/compare/v0.12.1...v0.12.2) (2025-03-28)
 
 
