@@ -49,6 +49,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
         executionContext.process.stdin,
         params.chatContext,
         inputAndIntentMsg,
+        params.executionContext.isTTYstdout,
       );
 
       //  Create all output intent prompts.

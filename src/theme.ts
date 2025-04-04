@@ -28,15 +28,8 @@ export function inputPrompt(prompt: string): string {
   return colors.white(colors.bold(`${prompt}:`));
 }
 
-export function printHint(hint: string) {
-  // This needs to be configurable.
-
-  // Move cursor up using ANSI escape codes
-  console.log();
-  console.log(colors.gray(hint));
-  // process.stdout.write("\u001b[1A"); // Move cursor up by 1 line
-  // console.log("          " + colors.gray(hint));
-  // process.stdout.write("\u001b[1A"); // Move cursor up by 1 line
+export function printHint(hint: string, interactive: boolean) {
+  return interactive ? colors.gray(hint) : hint;
 }
 
 export async function startSpinner(_: boolean, text: string = "") {

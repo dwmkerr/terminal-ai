@@ -11,7 +11,6 @@ export async function nextInputOrAction(
   messages: OpenAIMessage[],
 ): Promise<string> {
   //  Give the user a hint that they need to reply or show actions.
-  // theme.printHint("(Reply below or press Enter for more options...)");
   const chatInputPrompt = theme.inputPrompt("chat");
   const chatInput = await advancedInput({
     message: chatInputPrompt,

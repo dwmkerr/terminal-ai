@@ -7,6 +7,7 @@ import {
   delimitFileInputForChat,
   loadFileInput,
 } from "../../input/file-input/delimit-file-input";
+import { printHint } from "../../theme";
 
 const debug = dbg("ai:chat:loadAndAppendInputFiles");
 
@@ -14,6 +15,7 @@ export async function loadAndAppendInputFiles(
   stdin: StdStreamLike,
   chatContext: ChatContext,
   inputMessage: InputMessage,
+  interactive: boolean,
 ): Promise<InputMessage> {
   //  Go through the file path inbox, load any files. We'll always try to load
   //  from stdin as well if it has data.
@@ -35,6 +37,13 @@ export async function loadAndAppendInputFiles(
     ...inputMessage,
     message: filesMessages + "\n" + inputMessage.message,
   };
+
+  //  If we're interactive, we can include a 'sending' message.
+  if (interactive) {
+    inputFiles.map((f) =>
+      console.log(printHint(`(uploading: ${f.path}...)`, interactive)),
+    );
+  }
 
   //  Clear the inbox, update the outbox, and we're done.
   chatContext.filePathsSent = chatContext.filePathsSent.concat(paths);

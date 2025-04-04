@@ -45,13 +45,22 @@ echo "verifying output..."
 if [ "${error_code}" -ne 0 ]; then
   echo "❌ error: expected success on chat, got error code ${error_code}..."
 fi
-name=$(yq -e '.path' result.yaml)
+path=$(yq -e '.path' result.yaml)
 mimeType=$(yq -e '.mimeType' result.yaml)
 functionName=$(yq -e '.functionName' result.yaml)
-echo "name: ${name}"
-echo "mimeType: ${mimeType}"
-echo "functionName: ${functionName}"
-echo "✅ done..."
+if [ "${path}" != "tests/test-files/code.js" ]; then
+  echo "⚠️  warning: unexpected path, please manually verify"
+  check=1
+fi
+if [ "${mimeType}" != "text/javascript" ]; then
+  echo "⚠️  warning: unexpected mime type, please manually verify"
+  check=1
+fi
+if [ "${functionName}" != "sum" ]; then
+  echo "⚠️  warning: unexpected function name, please manually verify"
+  check=1
+fi
+echo "✅ pass: validated that the path, mime-type and contents of a file can be read"
 
 # Check for file contents
 prompt="
