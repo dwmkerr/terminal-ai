@@ -1,8 +1,8 @@
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import advancedInput from "@dwmkerr/inquirer-advanced-input-prompt";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
 import theme from "../../theme";
 import { nextAction } from "./next-action";
-import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
 import { formatChatMenuHint } from "../../ui/format-chat-menu-hint";
 import { terminalWidth } from "../../ui/terminal";
@@ -10,7 +10,7 @@ import { terminalWidth } from "../../ui/terminal";
 export async function nextInputOrAction(
   params: ChatPipelineParameters,
   response: ChatResponse,
-  messages: OpenAIMessage[],
+  messages: ChatCompletionMessageParam[],
 ): Promise<string> {
   //  Give the user a hint that they need to reply or show actions.
   const chatInputPrompt = theme.inputPrompt("chat");

@@ -1,7 +1,7 @@
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { select } from "@inquirer/prompts";
 import theme, { deleteLinesAboveCursor } from "../../theme";
 import { ChatPipelineParameters } from "../ChatPipelineParameters";
-import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { ChatResponse } from "./parse-response";
 import { ChatActions } from "../../chat-actions";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
@@ -11,7 +11,7 @@ import { ErrorCode, TerminalAIError } from "../../lib/errors";
 export async function nextAction(
   params: ChatPipelineParameters,
   initialInputActions: boolean,
-  messages: OpenAIMessage[],
+  messages: ChatCompletionMessageParam[],
   response?: ChatResponse,
 ): Promise<string | undefined> {
   //  Create the input choices for the actions. This will likely later be a
