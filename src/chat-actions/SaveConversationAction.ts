@@ -1,7 +1,7 @@
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { input } from "@inquirer/prompts";
 import theme, { deleteLinesAboveCursor } from "../theme";
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
-import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
 import { saveAs } from "../lib/save-as";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
@@ -15,7 +15,7 @@ export const SaveConversationAction: ChatAction = {
   weight: 0,
   execute: async (
     _: ChatPipelineParameters,
-    messages: OpenAIMessage[],
+    messages: ChatCompletionMessageParam[],
   ): Promise<string | undefined> => {
     //  Get the path. If nothing is provided, try again.
     let path = await input({ message: theme.inputPrompt("Save As") });

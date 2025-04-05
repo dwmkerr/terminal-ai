@@ -1,6 +1,6 @@
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
 import { ChatResponse } from "../chat-pipeline/stages/parse-response";
-import { OpenAIMessage } from "../lib/openai/openai-message";
 import { ChatAction } from "./ChatAction";
 import { writeClipboard } from "../lib/clipboard";
 import { ErrorCode, TerminalAIError } from "../lib/errors";
@@ -14,7 +14,7 @@ export const CopyResponseAction: ChatAction = {
   weight: 1,
   execute: async (
     _: ChatPipelineParameters,
-    __: OpenAIMessage[],
+    __: ChatCompletionMessageParam[],
     response?: ChatResponse,
   ): Promise<string | undefined> => {
     if (response === undefined) {

@@ -1,10 +1,10 @@
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { ChatPipelineParameters } from "../chat-pipeline/ChatPipelineParameters";
 import { ChatResponse } from "../chat-pipeline/stages/parse-response";
-import { OpenAIMessage } from "../lib/openai/openai-message";
 
 export type ExecuteActionHandler = (
   params: ChatPipelineParameters,
-  messages: OpenAIMessage[],
+  messages: ChatCompletionMessageParam[],
   response?: ChatResponse,
 ) => Promise<string | undefined>;
 

@@ -1,6 +1,5 @@
 import OpenAI from "openai";
 import { parseInput } from "./stages/parse-input";
-import { OpenAIChatRoles } from "../lib/openai/openai-roles";
 import { ChatPipelineParameters } from "./ChatPipelineParameters";
 import { initialInput } from "./stages/initial-input";
 import { buildContext } from "./stages/build-context";
@@ -15,7 +14,7 @@ import { loadAndAppendInputFiles } from "./stages/load-and-append-input-files";
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
-  const executionContext = parameters.executionContext;
+  const { executionContext, chatContext } = parameters;
   const config = parameters.executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({
@@ -25,8 +24,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
 
   //  Get all context prompts and add them to a new conversation.
   const contextPrompts = await buildContext(params, process.env);
-  const conversationHistory: { role: OpenAIChatRoles; content: string }[] = [];
-  conversationHistory.push(
+  chatContext.messages.push(
     ...contextPrompts.map((c) => ({ role: c.role, content: c.context })),
   );
 
@@ -52,18 +50,22 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       process.env,
       inputAndIntent.outputIntent,
     );
-    conversationHistory.push(
+    chatContext.messages.push(
       ...outputPrompts.map((p) => ({ role: p.role, content: p.context })),
     );
 
     //  Add the user's message and get the response. The prompt will be
     //  something like 'chatgpt' or 'gemini'.
     const prompt = getProviderPrompt(params.executionContext.provider);
-    conversationHistory.push({ role: "user", content: inputAndIntent.message });
+    chatContext.messages.push({
+      role: "user",
+      content: inputAndIntent.message,
+    });
+
     const rawMarkdownResponse = await getCompletionsResponse(
       params,
       openai,
-      conversationHistory,
+      chatContext.messages,
     );
     const response = parseResponse(prompt, rawMarkdownResponse);
 
@@ -85,7 +87,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     }
 
     //  Add the response to the chat history.
-    conversationHistory.push({
+    chatContext.messages.push({
       role: "assistant",
       content: response.rawMarkdownResponse,
     });
@@ -98,7 +100,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       chatInput = await nextInputOrAction(
         params,
         response,
-        conversationHistory,
+        chatContext.messages,
       );
     }
   }
