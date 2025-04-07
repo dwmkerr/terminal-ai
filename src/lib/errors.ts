@@ -12,6 +12,7 @@ export const enum ErrorCode {
   OpenAIPermissionDeniedError = 21,
   OpenAIAuthenticationError = 22,
   OpenAIRateLimitError = 23,
+  OpenAIBadRequestError = 24,
 
   //  Integrations.
   LangfuseError = 30,
@@ -41,6 +42,8 @@ export function errorCodeName(errorCode: ErrorCode): string {
       return "OpenAI Authentication Error";
     case ErrorCode.OpenAIRateLimitError:
       return "OpenAI Rate Limit Error";
+    case ErrorCode.OpenAIBadRequestError:
+      return "OpenAI Bad Request Error";
 
     //  Integrations.
     case ErrorCode.LangfuseError:
