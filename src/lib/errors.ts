@@ -7,6 +7,7 @@ export const enum ErrorCode {
   Connection = 13,
   InvalidOperation = 14,
   FileLoadError = 15,
+  CompatibilityError = 16,
   OpenAIError = 20,
   OpenAIPermissionDeniedError = 21,
   OpenAIAuthenticationError = 22,
@@ -30,6 +31,8 @@ export function errorCodeName(errorCode: ErrorCode): string {
       return "Invalid Operation";
     case ErrorCode.FileLoadError:
       return "File Load Error";
+    case ErrorCode.CompatibilityError:
+      return "Compatibility Error";
     case ErrorCode.OpenAIError:
       return "OpenAI Error";
     case ErrorCode.OpenAIPermissionDeniedError:

@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import dbg from "debug";
 import { parseInput } from "./stages/parse-input";
 import { createAssistant } from "./stages/create-assistant";
 import { ChatPipelineParameters } from "./ChatPipelineParameters";
@@ -13,10 +14,13 @@ import { parseResponse } from "./stages/parse-response";
 import { translateError } from "../lib/translate-error";
 import { getProviderPrompt } from "../providers/get-provider-prompt";
 import { loadAndAppendInputFiles } from "./stages/load-and-append-input-files";
+import { convertChatCompletionToAssistantMessages } from "../lib/openai/openai-message";
+
+const debug = dbg("ai:chat-pipeline-assistant");
 
 export async function executeChatPipeline(parameters: ChatPipelineParameters) {
   //  Ensure we have the required configuration.
-  const executionContext = parameters.executionContext;
+  const { executionContext, chatContext } = parameters;
   const config = executionContext.config;
   const params = { ...parameters, config };
   const openai = new OpenAI({
@@ -24,18 +28,18 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
     baseURL: parameters.executionContext.provider.baseURL,
   });
 
-  //  Create the assistant.
+  //  Create the assistant and thread. We must also track how many of our chat
+  //  context messages have been sent (as we only send new ones).
   try {
     const assistant = await createAssistant(openai, params.executionContext);
+    const thread = await openai.beta.threads.create();
+    let currentMessageIndex = 0; // how many of our chat context messages sent.
 
-    //  Get all context prompts and add them to a new thread.
+    //  Get all context prompts and add them to a new conversation.
     const contextPrompts = await buildContext(params, process.env);
-    const thread = await openai.beta.threads.create({
-      messages: contextPrompts.map((c) => ({
-        role: "user",
-        content: c.context,
-      })),
-    });
+    chatContext.messages.push(
+      ...contextPrompts.map((c) => ({ role: c.role, content: c.context })),
+    );
 
     //  Determine our initial input. Might be from the command line params, user
     //  entry, stdin, etc...
@@ -43,39 +47,41 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
 
     //  Repeatedly interact with ChatGPT as long as we have chat input.
     while (chatInput !== "") {
-      //  Deconstruct our chat input into a message and intent. Load any files.
-      const inputAndIntentMsg = parseInput(chatInput);
-      const inputAndIntent = await loadAndAppendInputFiles(
-        executionContext.process.stdin,
+      //  Load files into convo, deconstruct chat input into message and intent.
+      await loadAndAppendInputFiles(
         params.chatContext,
-        inputAndIntentMsg,
+        executionContext.process.stdin,
         params.executionContext.isTTYstdout,
       );
+      const inputAndIntent = parseInput(chatInput);
 
       //  Create all output intent prompts.
-      //  Add them as messages to the thread.
+      //  Add them to the conversation history.
       const outputPrompts = await buildOutputIntentContext(
         params,
         process.env,
         inputAndIntent.outputIntent,
       );
-      if (outputPrompts.length > 0) {
-        await openai.beta.threads.messages.create(thread.id, {
-          role: "user",
-          content: outputPrompts.map((p) => ({
-            type: "text",
-            text: p.context,
-          })),
-        });
-      }
+      chatContext.messages.push(
+        ...outputPrompts.map((p) => ({ role: p.role, content: p.context })),
+      );
 
       //  Add the user's message and get the response. The prompt will be
       //  something like 'chatgpt' or 'gemini'.
       const prompt = getProviderPrompt(params.executionContext.provider);
-      await openai.beta.threads.messages.create(thread.id, {
+      chatContext.messages.push({
         role: "user",
         content: inputAndIntent.message,
       });
+
+      //  Update the thread and get the response from the completion api.
+      const messagesToSend = chatContext.messages.slice(currentMessageIndex);
+      debug(`sending ${messagesToSend.length} messages...`);
+      const threadMessages =
+        convertChatCompletionToAssistantMessages(messagesToSend);
+      for (const message of threadMessages) {
+        await openai.beta.threads.messages.create(thread.id, message);
+      }
       const { response: rawMarkdownResponse, messages } =
         await getAssistantResponse(params, openai, assistant.id, thread.id);
       const response = parseResponse(prompt, rawMarkdownResponse);
@@ -98,7 +104,13 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       }
 
       //  Note that we do not need to add the response to the thread - openai
-      //  handles this for us.
+      //  handles this for us. But we do need to add the response to the chat
+      //  history. Update our conversation messages position.
+      chatContext.messages.push({
+        role: "assistant",
+        content: response.rawMarkdownResponse,
+      });
+      currentMessageIndex = chatContext.messages.length;
 
       //  We continue the conversation - asking for input or performing actions.
       //  This loop will end when the user hits Ctrl+C or performs an action

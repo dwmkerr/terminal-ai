@@ -34,14 +34,13 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
 
   //  Repeatedly interact with ChatGPT as long as we have chat input.
   while (chatInput !== "") {
-    //  Deconstruct our chat input into a message and intent. Load any files.
-    const inputAndIntentMsg = parseInput(chatInput);
-    const inputAndIntent = await loadAndAppendInputFiles(
-      executionContext.process.stdin,
+    //  Load files into convo, deconstruct chat input into message and intent.
+    await loadAndAppendInputFiles(
       params.chatContext,
-      inputAndIntentMsg,
+      executionContext.process.stdin,
       params.executionContext.isTTYstdout,
     );
+    const inputAndIntent = parseInput(chatInput);
 
     //  Create all output intent prompts.
     //  Add them to the conversation history.
@@ -62,6 +61,7 @@ export async function executeChatPipeline(parameters: ChatPipelineParameters) {
       content: inputAndIntent.message,
     });
 
+    //  Get the response from the completion api.
     const rawMarkdownResponse = await getCompletionsResponse(
       params,
       openai,

@@ -1,6 +1,6 @@
 export enum FileInputType {
   File,
-  Stdin,
+  ImageFile,
 }
 
 export interface FileInput {

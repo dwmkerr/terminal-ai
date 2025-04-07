@@ -12,3 +12,8 @@ init: # Initialise and verify the development environment.
 test-e2e: # run end-to-end tests
 	./tests/test-chat.sh
 	./tests/test-file-input.sh
+
+.PHONY: test-e2e-assistants
+test-e2e-assistants: # run end-to-end tests with the assistants api
+	./tests/test-chat.sh ai '--assistant'
+	./tests/test-file-input.sh ai '--assistant'

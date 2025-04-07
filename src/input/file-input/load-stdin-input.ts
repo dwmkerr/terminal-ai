@@ -22,7 +22,7 @@ export async function loadStdinInput(
       const mimeType = isBinary ? "application/octet-stream" : "text/plain";
       const encoding = isBinary ? "base64" : "utf-8";
       const fileInput: FileInput = {
-        type: FileInputType.Stdin,
+        type: FileInputType.File, // assume a standard file
         path: "-", // i.e. stdin
         content: buffer.toString(isBinary ? "base64" : "utf-8"),
         isBinary,
