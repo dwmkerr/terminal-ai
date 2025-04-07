@@ -47,6 +47,7 @@
     "colors": "^1.4.0",
     "commander": "^11.1.0",
     "debug": "^4.3.4",
+    "inquirer-file-selector": "^0.6.2",
     "isbinaryfile": "^5.0.4",
     "js-yaml": "^4.1.0",
     "langfuse": "^3.36.0",
