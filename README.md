@@ -188,7 +188,7 @@ When you press `Enter` in the chat prompt, the Actions menu will pop up. These a
 
 The 'Attach File' action allows you to interactively attach files to a chat message. Files can be processed as text or images (if supported by the currently selected model):
 
-[Recording of the Attach File action](./docs/casts/attach-file-action/attach-file-action.svg)
+![Recording of the Attach File action](./docs/casts/attach-file-action/attach-file-action.svg)
 
 ### Change Model
 
