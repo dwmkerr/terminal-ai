@@ -12,7 +12,10 @@ describe("input", () => {
   describe("fileInput", () => {
     describe("loadFileInput", () => {
       it("can load a test markdown code file", async () => {
-        const fileInput = await loadFileInput(testMarkdownCodePath);
+        const fileInput = await loadFileInput(
+          testMarkdownCodePath,
+          FileInputType.File,
+        );
         const expected: FileInput = {
           type: FileInputType.File,
           path: "./src/input/file-input/test-files/test-markdown-code.md",
@@ -32,7 +35,10 @@ export interface FileInput {
       });
 
       it("can load a test test code file with no extension", async () => {
-        const fileInput = await loadFileInput(testCodeNoExtensionPath);
+        const fileInput = await loadFileInput(
+          testCodeNoExtensionPath,
+          FileInputType.File,
+        );
         const expected: FileInput = {
           type: FileInputType.File,
           path: "./src/input/file-input/test-files/test-code-no-extension",
@@ -50,9 +56,12 @@ export interface FileInput {
       });
 
       it("can load a test binary image file", async () => {
-        const fileInput = await loadFileInput(testWhitePixelPath);
+        const fileInput = await loadFileInput(
+          testWhitePixelPath,
+          FileInputType.ImageFile,
+        );
         const expected: FileInput = {
-          type: FileInputType.File,
+          type: FileInputType.ImageFile,
           path: "./src/input/file-input/test-files/test-white-pixel.jpg",
           encoding: "base64",
           isBinary: true,
@@ -65,7 +74,8 @@ export interface FileInput {
       });
 
       it("throws with a FileLoadError if file is missing", async () => {
-        const call = async () => await loadFileInput("missing.txt");
+        const call = async () =>
+          await loadFileInput("missing.txt", FileInputType.File);
         await expect(call).rejects.toThrow(/missing.txt/);
       });
     });

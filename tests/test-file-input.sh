@@ -71,13 +71,28 @@ eval "ai -f README.md -f package.json -f tsconfig.json -- '${prompt}' | tee outp
 if [ "${error_code}" -ne 0 ]; then
   echo "❌ error: expected success on chat, got error code ${error_code}..."
 fi
-if [ "${error_code}" -ne 0 ]; then
-  echo "❌ error: expected success on chat, got error code ${error_code}..."
-fi
 if grep -E -q ".*3.*" < output.txt; then
   echo "✅ pass: found 3 files"
 else
-  echo "⚠️  warning: expected output '3', please manually verify"
+  echo "⚠️  warning: didn't find the expected 3 files, please manually verify - output below"
+  cat output.txt
+  check=1
+fi
+
+# Check image file recognition.
+prompt="
+I have sent you an image file. Tell me in one line only what is in this image.
+"
+error_code=0
+eval "ai --image-file tests/test-files/animal.jpg -- '${prompt}' | tee output.txt" || error_code=$?
+if [ "${error_code}" -ne 0 ]; then
+  echo "❌ error: expected success on chat, got error code ${error_code}..."
+fi
+if grep -i -E -q ".*(salmon|fish).*" < output.txt; then
+  echo "✅ pass: recognised the 'fish / salmon' image"
+else
+  echo "⚠️  warning: didn't get the expected response 'salmon' or 'fish', please manually verify - output below"
+  cat output.txt
   check=1
 fi
 

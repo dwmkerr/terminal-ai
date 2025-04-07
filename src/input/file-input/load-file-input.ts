@@ -4,7 +4,10 @@ import mime from "mime-types";
 import { FileInput, FileInputType } from "./file-input";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
 
-export async function loadFileInput(path: string): Promise<FileInput> {
+export async function loadFileInput(
+  path: string,
+  type: FileInputType,
+): Promise<FileInput> {
   try {
     //  First, determine whether we're dealing with a binary file.
     const isBinary = await isBinaryFile(path);
@@ -26,10 +29,10 @@ export async function loadFileInput(path: string): Promise<FileInput> {
       ? `${mimeType};${encoding}`
       : mimeType;
 
-    //  The fthe file contents and return the full input file.
+    //  Grab the file contents and return the full input file.
     const content = await fs.readFile(path, { encoding });
     return {
-      type: FileInputType.File,
+      type,
       path,
       content,
       isBinary,

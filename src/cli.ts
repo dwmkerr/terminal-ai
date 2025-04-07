@@ -33,10 +33,15 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     .version(packageJson.version)
     .option("-c, --copy", "Copy output to clipboard and exit")
     .option("-r, --raw", "Do not format or highlight markdown output")
-    //  Note the '[]' - this option is an array.
     .option(
       "-f, --file <path>",
       "Path to file(s) to send (multiple files allowed)",
+      collect,
+      [],
+    )
+    .option(
+      "--image-file <path>",
+      "Path to images(s) to send (multiple files allowed)",
       collect,
       [],
     )
@@ -48,7 +53,15 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     .action(
       async (
         input,
-        { contextPrompts, outputPrompts, copy, raw, assistant, file },
+        {
+          contextPrompts,
+          outputPrompts,
+          copy,
+          raw,
+          assistant,
+          file,
+          imageFile,
+        },
       ) => {
         return chat(
           executionContext,
@@ -59,6 +72,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
           raw,
           assistant,
           file,
+          imageFile,
         );
       },
     );
@@ -78,6 +92,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
           false,
           false,
           false,
+          [],
           [],
         );
       }

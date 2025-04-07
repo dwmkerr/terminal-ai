@@ -16,6 +16,7 @@ export async function chat(
   raw: boolean,
   assistant: boolean,
   files: string[],
+  imageFiles: string[],
 ) {
   //  Ensure we are configured sufficiently.
   await ensureApiKey(executionContext);
@@ -24,6 +25,7 @@ export async function chat(
   const chatContext: ChatContext = {
     ...initialChatContext(),
     filePathsOutbox: files,
+    imageFilePathsOutbox: imageFiles,
   };
 
   if (!assistant) {
