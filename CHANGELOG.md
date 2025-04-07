@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.13.1](https://github.com/dwmkerr/terminal-ai/compare/v0.13.0...v0.13.1) (2025-04-07)
+
+
+### Features
+
+* attach files action ([#89](https://github.com/dwmkerr/terminal-ai/issues/89)) ([9668f50](https://github.com/dwmkerr/terminal-ai/commit/9668f50007aa7b118ffd94486a3100bd6680f037))
+* compatibility errors are raised if images not supported by model ([#88](https://github.com/dwmkerr/terminal-ai/issues/88)) ([0b9b6b9](https://github.com/dwmkerr/terminal-ai/commit/0b9b6b9b4573b7b5b7fe0acab57a337d3d68a372))
+* support for image files / vision modality ([#86](https://github.com/dwmkerr/terminal-ai/issues/86)) ([4d79ae6](https://github.com/dwmkerr/terminal-ai/commit/4d79ae606d79dcb2afeb56a1faf1855d24d368e6))
+
+
+### Bug Fixes
+
+* **docs:** image path ([d04148a](https://github.com/dwmkerr/terminal-ai/commit/d04148a2b77ab44474a48588db5aa9d048a7b70c))
+
+
+### Miscellaneous Chores
+
+* release 0.13.1 ([3bd684b](https://github.com/dwmkerr/terminal-ai/commit/3bd684bc1dc48c30706ed487c398ee72d36275d4))
+
 ## [0.13.0](https://github.com/dwmkerr/terminal-ai/compare/v0.12.2...v0.13.0) (2025-04-04)
 
 
