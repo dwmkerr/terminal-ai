@@ -47,6 +47,7 @@ Quick links:
 - [Simple Chat](#simple-chat)
 - [Multiline Input](#multiline-input)
 - [Attaching Files](#attaching-files)
+- [Attaching Images](#attaching-images)
 - [Copying to the Clipboard or Saving to a File](#copying-to-the-clipboard-or-saving-to-a-file)
 - [Writing Code](#writing-code)
 - [Executing Scripts](#executing-scripts)
@@ -101,6 +102,20 @@ ai -f package.json -f package-lock.json -- "what's my package version and most c
 ```
 
 ![Demo Recording of Attaching Files](./docs/casts/attach-files/ai-files.svg)
+
+### Attaching Images
+
+Attach images to the chat with the `--image-file` parameter:
+
+```bash
+ai -f --image-file fish.jpg -- "what is this a picture of?"
+```
+
+When you use `--image-file` rather than `--file`, the model's vision APIs will be used, meaning that in the chat you can ask questions about the content of the images.
+
+![Demo Recording of Attaching Files](./docs/casts/attach-files/ai-files.svg)
+
+Note that vision processing is required for the model which is being used. A reference is at [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). If the model doesn't support vision a Compatibility Error will be raised.
 
 ### Copying to the Clipboard or Saving to a File
 

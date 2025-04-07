@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import OpenAI, { BadRequestError } from "openai";
 import dbg from "debug";
 import { ErrorCode, TerminalAIError } from "./errors";
 import { crop } from "../print/crop";
@@ -20,6 +20,27 @@ export function translateError(err: any): TerminalAIError {
   //  close the app.
   if (err instanceof Error && err.name === "ExitPromptError") {
     return new TerminalAIError(ErrorCode.ExitPrompt, "shutting down...", err);
+  }
+
+  //  We have a few different bad request types.
+  //  - uploading image content for a model that doesn't support image input
+  if (err instanceof BadRequestError) {
+    //  Deconstruct the error.
+    const error = err as BadRequestError;
+    const msg =
+      (error.error as Record<string, string>)?.["message"] || "bad request";
+
+    //  Handle specific error scenarios.
+    if (/image_url is only supported by certain models/.test(msg)) {
+      return new TerminalAIError(
+        ErrorCode.CompatibilityError,
+        "this model does not support image processing",
+        err,
+      );
+    }
+
+    //  Handle generic 400 errors.
+    return new TerminalAIError(ErrorCode.OpenAIBadRequestError, msg, err);
   }
 
   if (err instanceof OpenAI.PermissionDeniedError) {
