@@ -101,6 +101,8 @@ Attach file to the chat with the `-f` or `--file` parameter:
 ai -f package.json -f package-lock.json -- "what's my package version and most complex transitive dependency?"
 ```
 
+You can also attach files interactively with the [Attach File Action](#attach-file-action).
+
 ![Demo Recording of Attaching Files](./docs/casts/attach-files/ai-files.svg)
 
 ### Attaching Images
@@ -111,11 +113,14 @@ Attach images to the chat with the `--image-file` parameter:
 ai -f --image-file fish.jpg -- "what is this a picture of?"
 ```
 
-When you use `--image-file` rather than `--file`, the model's vision APIs will be used, meaning that in the chat you can ask questions about the content of the images.
+When you use `--image-file` rather than `--file`, the model's vision APIs will be used, meaning that in the chat you can ask questions about the content of the images. You can also attach files interactively with the [Attach File Action](#attach-file-action).
 
-![Demo Recording of Attaching Files](./docs/casts/attach-files/ai-files.svg)
+![Demo Recording of Attaching Images](./docs/casts/image-files/image-file.svg)
 
-Note that vision processing is required for the model which is being used. A reference is at [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). If the model doesn't support vision a Compatibility Error will be raised.
+Notes:
+
+- Vision processing is required for the model which is being used. A reference is at [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models). If the model doesn't support vision a Compatibility Error will be raised.
+- You can also upload images using the `--file` parameter. In this case images are base 64 encoded and will be uploaded as text in the chat - meaning that although the provider will not be able to recognise the image, it could still answer questions such as what type of file does it appear to be, what is its size and so on.
 
 ### Copying to the Clipboard or Saving to a File
 
@@ -175,29 +180,15 @@ Tips:
 
 - Suggested models and descriptions are loaded from [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models)
 
-### Advanced
-
-Advanced or experimental features.
-
-Force color output (useful if you are piping and need color codes):
-
-```bash
-# Force color output:
-# - set FORCE_COLOR=1
-# - ascii formatting will be applied even if stdout is not a tty
-# - use 'less -r' (-r = raw, render color codes) as a way to quickly test.
-FORCE_COLOR=1 ai 'show me some markdown features' | less -r
-```
-
-Example of how to interactively stage, generate a conventional commit:
-
-- [`aigac.sh`](./docs/casts/aigac.sh) - AI Git Add Commit shell script
-
-<a href="./docs/casts/aigac.svg"><img width="480px" src="./docs/casts/aigac.svg" /></a>
-
 ## Actions
 
 When you press `Enter` in the chat prompt, the Actions menu will pop up. These actions offer additional features to work with AI.
+
+### Attach File Action
+
+The 'Attach File' action allows you to interactively attach files to a chat message. Files can be processed as text or images (if supported by the currently selected model):
+
+[Recording of the Attach File action](./docs/casts/attach-file-action/attach-file-action.svg)
 
 ### Change Model
 
