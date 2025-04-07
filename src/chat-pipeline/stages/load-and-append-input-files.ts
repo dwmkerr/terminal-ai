@@ -77,11 +77,12 @@ export async function loadAndAppendInputFiles(
   ]);
   chatContext.filesSent = chatContext.filesSent.concat(inputFiles);
   chatContext.filePathsOutbox = [];
-  chatContext.imageFilePathsSent = chatContext.imageFilePathsSent.concat(paths);
+  chatContext.imageFilePathsSent =
+    chatContext.imageFilePathsSent.concat(imagePaths);
   chatContext.imageFilesSent = chatContext.imageFilesSent.concat(inputFiles);
   chatContext.imageFilePathsOutbox = [];
 
   //  Debug the file output but crop the file message itself.
-  debug(`attached ${inputFiles} messages:`);
+  debug(`attached ${paths.length + imagePaths.length} messages:`);
   debug(cropLines(filesMessage, 10));
 }

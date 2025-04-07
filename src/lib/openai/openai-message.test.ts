@@ -67,12 +67,12 @@ describe("lib/openai/openai-message", () => {
 
     it("should throw an error for unsupported roles", () => {
       const inputMessages: ChatCompletionMessageParam[] = [
-        { role: "system", content: "System message" },
+        { role: "developer", content: "Developer message" },
       ];
 
       expect(() =>
         convertChatCompletionToAssistantMessages(inputMessages),
-      ).toThrow(/unknown role 'system'/);
+      ).toThrow(/unknown role 'developer'/);
     });
   });
 });
