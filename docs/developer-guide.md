@@ -97,3 +97,32 @@ When expanding context prompts (e.g. ./prompts/chat/context/context.txt) environ
 Required secrets:
 
 - `TESTING_AI_API_KEY` - required to run end to end tests
+
+## UI Components
+
+UI components should be placed in the `src/ui` directory and follow these principles:
+
+1. **Single Responsibility**: Each component should handle one specific interaction
+2. **Type Safety**: Components should return typed data
+3. **Stateless**: Components should not modify state directly
+4. **Documentation**: Components should be documented with JSDoc
+5. **Reusability**: Components should be designed for reuse across the application
+
+Example:
+```typescript
+/**
+ * selectProvider - presents a simple selection menu for available providers.
+ *
+ * @param {ProviderConfiguration} currentProvider - the currently selected provider
+ * @param {ProviderConfiguration[]} availableProviders - all available providers
+ * @returns {Promise<ProviderConfiguration | null>} the selected provider or null if cancelled
+ */
+export async function selectProvider(
+  currentProvider: ProviderConfiguration,
+  availableProviders: ProviderConfiguration[],
+): Promise<ProviderConfiguration | null> {
+  // Implementation...
+}
+```
+
+State changes should be handled by separate functions in the appropriate domain (e.g., configuration updates in the configuration module).
