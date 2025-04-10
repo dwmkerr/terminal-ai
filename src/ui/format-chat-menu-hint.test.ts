@@ -8,7 +8,7 @@ describe("ui", () => {
       expect(hint).toBe(`${colors.grey("<Enter> Menu")}`);
     });
 
-    it("should show the model only for a root provider", () => {
+    it("should show the model only for a root provider in white text", () => {
       const provider: ProviderConfiguration = {
         name: "", // i.e. root
         apiKey: "",
@@ -17,11 +17,11 @@ describe("ui", () => {
       };
       const hint = formatChatMenuHint(80, provider);
       expect(hint).toBe(
-        `${colors.grey("<Enter> Menu                                                     gpt-4.5-preview")}`,
+        `${colors.grey("<Enter> Menu                                                     ")}gpt-4.5-preview`,
       );
     });
 
-    it("should show the model and provider name for a non root provider", () => {
+    it("should show the model and provider name with no space after colon and model in white text", () => {
       const provider: ProviderConfiguration = {
         name: "openai",
         apiKey: "",
@@ -30,7 +30,7 @@ describe("ui", () => {
       };
       const hint = formatChatMenuHint(80, provider);
       expect(hint).toBe(
-        `${colors.grey("<Enter> Menu                                             openai: gpt-4.5-preview")}`,
+        `${colors.grey("<Enter> Menu                                              openai:")}gpt-4.5-preview`,
       );
     });
 

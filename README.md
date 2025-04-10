@@ -190,17 +190,21 @@ The 'Attach File' action allows you to interactively attach files to a chat mess
 
 ![Recording of the Attach File action](./docs/casts/attach-file-action/attach-file-action.svg)
 
-### Change Model
+### Change Provider and Model
 
-The 'Change Model' action allows you to change the model that is in use:
+The 'Change Provider/Model' action allows you to change the provider and model that is in use:
 
-![Cast: The 'Change Model' Action](./docs/casts/actions-select-model.cast.svg)
+![Cast: The 'Change Provider/Model' Action](./docs/casts/actions-change-provider-model/actions-change-provider-model.svg)
 
-Models which have been extensively tested and verified to work with Terminal AI are shown in the list first, along with a short description of the model and its capabilities. Models which are offered by AI APIs but have not been extensively tested are shown next.
+If multiple providers are configured you will be given the option to change the current provider.
+
+For model selection, models which have been extensively tested and verified to work with Terminal AI are shown in the list first, along with a short description of the model and its capabilities. Models which are offered by AI APIs but have not been extensively tested are shown next.
 
 You can also provide the ID of any model that is _not_ in the list by changing the `model` setting in the [Configuration](#configuration).
 
 Verified models are provided by the [`ai-providers-and-models`](https://github.com/dwmkerr/ai-providers-and-models) project.
+
+To configure providers run `ai init` or check the [Configuration Documentation](./docs/configuration.md).
 
 ## Commands
 

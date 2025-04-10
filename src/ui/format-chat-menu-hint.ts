@@ -1,10 +1,13 @@
 import colors from "colors/safe";
 import { ProviderConfiguration } from "../configuration/configuration";
 
-function providerAndModel(provider: ProviderConfiguration): string {
-  const providerPart = provider.name === "" ? "" : provider.name + ": ";
+function providerAndModel(provider: ProviderConfiguration): {
+  providerPart: string;
+  modelPart: string;
+} {
+  const providerPart = provider.name === "" ? "" : provider.name + ":";
   const modelPart = provider.model;
-  return providerPart + modelPart;
+  return { providerPart, modelPart };
 }
 
 export function formatChatMenuHint(
@@ -21,20 +24,28 @@ export function formatChatMenuHint(
 
   //  Get the provider details. Work out the maximum amount of space this can
   //  take up, trim the details if needed.
-  const providerDetails = providerAndModel(provider);
+  const { providerPart, modelPart } = providerAndModel(provider);
+  const providerDetails = providerPart + modelPart;
 
   //  Limit the length of the provider hint. Work out how much space we need.
   const maxProviderWidth = terminalWidth - menuHint.length - 1;
-  // We could crop the provider details, but it looks weird, so instead if we
-  // can't fit it in just use elipses:
-  // const trimmedProviderHint =
-  //   providerDetails.length > maxProviderWidth
-  //     ? "..." + providerDetails.slice(-maxProviderWidth + 3)
-  //     : providerDetails;
-  const trimmedProviderHint =
-    providerDetails.length > maxProviderWidth ? "..." : providerDetails;
-  const spaces = terminalWidth - menuHint.length - trimmedProviderHint.length;
+  //  We could crop the provider details, but it looks weird, so instead if we
+  //  can't fit it in just use elipses:
+  //  const trimmedProviderHint =
+  //    providerDetails.length > maxProviderWidth
+  //      ? "..." + providerDetails.slice(-maxProviderWidth + 3)
+  //      : providerDetails;
 
-  //  Return the final hint - menu, space, provider (trimmed).
-  return colors.grey(menuHint + " ".repeat(spaces) + trimmedProviderHint);
+  //  If we can't fit the provider details, just show ellipsis
+  if (providerDetails.length > maxProviderWidth) {
+    const trimmedProviderHint = "...";
+    const spaces = terminalWidth - menuHint.length - trimmedProviderHint.length;
+    return colors.grey(menuHint + " ".repeat(spaces) + trimmedProviderHint);
+  }
+
+  //  Calculate spaces needed to right-align the provider details
+  const spaces = terminalWidth - menuHint.length - providerDetails.length;
+
+  //  Return the final hint - menu, space, provider (with model in white)
+  return colors.grey(menuHint + " ".repeat(spaces) + providerPart) + modelPart;
 }
