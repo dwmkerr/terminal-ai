@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.2](https://github.com/dwmkerr/terminal-ai/compare/v0.13.1...v0.13.2) (2025-04-11)
+
+
+### Features
+
+* change current provider ([#90](https://github.com/dwmkerr/terminal-ai/issues/90)) ([794ede1](https://github.com/dwmkerr/terminal-ai/commit/794ede1fc433638719bfbc6f5c95bfc43ceadfc3))
+* latest aipam ([#92](https://github.com/dwmkerr/terminal-ai/issues/92)) ([960537a](https://github.com/dwmkerr/terminal-ai/commit/960537a4f8641ec72db27e5f295e351a457731d8))
+
 ## [0.13.1](https://github.com/dwmkerr/terminal-ai/compare/v0.13.0...v0.13.1) (2025-04-07)
 
 
