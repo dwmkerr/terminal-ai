@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.2](https://github.com/dwmkerr/terminal-ai/compare/v0.13.1...v0.13.2) (2025-05-01)
+
+
+### Features
+
+* atest aipam ([#94](https://github.com/dwmkerr/terminal-ai/issues/94)) ([b513719](https://github.com/dwmkerr/terminal-ai/commit/b51371992761ded5d7fb2e8954869dfc61e116ab))
+* change current provider ([#90](https://github.com/dwmkerr/terminal-ai/issues/90)) ([794ede1](https://github.com/dwmkerr/terminal-ai/commit/794ede1fc433638719bfbc6f5c95bfc43ceadfc3))
+* **docs:** ollama configuration guide ([#95](https://github.com/dwmkerr/terminal-ai/issues/95)) ([0f37ba7](https://github.com/dwmkerr/terminal-ai/commit/0f37ba70b87f7c18bb17f763a2e230bcaf4053cd))
+* latest aipam ([#92](https://github.com/dwmkerr/terminal-ai/issues/92)) ([960537a](https://github.com/dwmkerr/terminal-ai/commit/960537a4f8641ec72db27e5f295e351a457731d8))
+
 ## [0.13.1](https://github.com/dwmkerr/terminal-ai/compare/v0.13.0...v0.13.1) (2025-04-07)
 
 
