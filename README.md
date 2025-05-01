@@ -12,6 +12,7 @@
     <a href="#commands">Commands</a> |
     <a href="#configuration">Configuration</a> |
     <a href="#api-key">API Key</a> |
+    <a href="#integration">Integrations</a> |
     <a href="#documentation">Documentation</a> |
   </p>
   <p align="center">
@@ -333,9 +334,14 @@ export AI_MODEL="gpt-3.5-turbo"                 # Optional.
 
 To configure multiple providers or advanced options, check the [Configuration Documentation](./docs/configuration.md).
 
+## Integrations
+
+Integration is available out-of-the-box for [Langfuse](https://langfuse.com/). See the [Integrations Guide](./docs/integrations.md) for details.
+
 ## Documentation
 
 - [Configuration](./docs/configuration.md)
 - [Developer Guide](./docs/developer-guide.md)
-- [Experimental Features](./docs/experimental-features.md)
+- [Integrations Guide](./docs/integrations.md)
 - [Providers: Setting Up Ollama](./docs/providers/ollama.md)
+- [Experimental Features](./docs/experimental-features.md)

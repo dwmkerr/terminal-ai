@@ -214,3 +214,5 @@ providers:
     model: claude-3-opus-20240229
     apiKey: '123'
 ```
+
+Additional configuration options can be set for [Integrations](./integrations.md).
