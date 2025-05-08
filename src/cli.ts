@@ -81,7 +81,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     .command("init")
     .description("Set or update configuration")
     .action(async () => {
-      const nextCommand = await init(executionContext, true);
+      const nextCommand = await init(executionContext);
       //  The only possible next action is chat or quit.
       if (nextCommand === Commands.Chat) {
         return chat(

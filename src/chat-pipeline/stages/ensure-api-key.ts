@@ -20,5 +20,5 @@ export async function ensureApiKey(executionContext: ExecutionContext) {
 
   //  Initialise, this will mutate execution context to set the key, or die
   //  trying.
-  return await init(executionContext, true);
+  return await init(executionContext);
 }

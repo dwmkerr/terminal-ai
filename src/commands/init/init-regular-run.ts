@@ -6,81 +6,105 @@ import { check } from "../../commands/check/check";
 import { initUpdateProviders } from "./init-update-providers";
 import { selectProvider } from "../../ui/select-provider";
 import { updateConfigurationFile } from "../../configuration/update-configuration-file";
+import { selectModel } from "./select/select-model";
 
 export async function initRegularRun(
   executionContext: ExecutionContext,
-  enableUpdateProvider: boolean,
-  askNextAction: boolean,
 ): Promise<Commands> {
-  //  If we have multiple providers, directly show the provider selection
-  const providers = Object.values(executionContext.config.providers);
-  if (providers.length > 1) {
-    // Use the enhanced selectProvider with params object, passing current provider name as default
-    const selectedProvider = await selectProvider({
-      message: "Current Provider:",
-      currentProvider: executionContext.provider,
-      availableProviders: providers,
-      default: executionContext.provider.name,
+  let mainOption = "";
+
+  // Create a loop to return to the main menu after actions
+  while (mainOption !== "exit" && mainOption !== "chat") {
+    // Start with a select menu for the main options
+    mainOption = await select({
+      message: inputPrompt("Terminal AI Configuration"),
+      choices: [
+        {
+          name: "1. Select current provider / model",
+          value: "select_provider",
+        },
+        {
+          name: "2. Configure or add provider",
+          value: "reconfigure_provider",
+        },
+        {
+          name: "3. Chat",
+          value: "chat",
+        },
+        {
+          name: "4. Exit",
+          value: "exit",
+        },
+      ],
     });
 
-    // Only update if the selected provider is different from current
-    if (
-      selectedProvider &&
-      selectedProvider.name !== executionContext.provider.name
-    ) {
-      // Update the current provider directly in the execution context
-      executionContext.provider = selectedProvider;
-      // Update the configuration file
-      updateConfigurationFile(executionContext.configFilePath, {
-        provider: selectedProvider.name,
-      });
+    if (mainOption === "exit") {
+      return Commands.Quit;
     }
-  }
 
-  //  If we are going to let the user update their provider, do so now.
-  //  The only reason we don't do this is if this function is coming
-  //  directly after the first-run init.
-  if (enableUpdateProvider) {
-    //  Offer advanced options.
-    const updateProvider = await confirm({
-      message: "Reconfigure (key/model/etc) or add new Provider?",
-      default: false,
-    });
-    if (updateProvider) {
+    if (mainOption === "chat") {
+      return Commands.Chat;
+    }
+
+    if (mainOption === "select_provider") {
+      // Select provider/model functionality
+      const providers = Object.values(executionContext.config.providers);
+      if (providers.length > 0) {
+        const selectedProvider = await selectProvider({
+          message: "Current Provider:",
+          currentProvider: executionContext.provider,
+          availableProviders: providers,
+          default: executionContext.provider.name,
+        });
+
+        if (
+          selectedProvider &&
+          selectedProvider.name !== executionContext.provider.name
+        ) {
+          executionContext.provider = selectedProvider;
+          updateConfigurationFile(executionContext.configFilePath, {
+            provider: selectedProvider.name,
+          });
+        }
+
+        // Now allow selecting a model for the chosen provider
+        const provider = executionContext.provider;
+        const model = await selectModel(provider.model, provider.type);
+
+        if (model && model !== provider.model) {
+          provider.model = model;
+
+          // Save the model. It's either a named provider or the root provider.
+          if (provider.name !== "") {
+            updateConfigurationFile(executionContext.configFilePath, {
+              [`providers.${provider.name}.model`]: model,
+            });
+          } else {
+            updateConfigurationFile(executionContext.configFilePath, {
+              [`model`]: model,
+            });
+          }
+        }
+      } else {
+        console.log("No providers configured. Use option 2 to add a provider.");
+      }
+    } else if (mainOption === "reconfigure_provider") {
+      // Configure provider functionality
       await initUpdateProviders(executionContext);
     }
+
+    // Offer to validate configuration
+    if (mainOption !== "exit" && mainOption !== "chat") {
+      const validate = await confirm({
+        message: "Test API Key & Configuration?",
+        default: false,
+      });
+      if (validate) {
+        await check(executionContext);
+      }
+    }
   }
 
-  //  Offer to validate.
-  const validate = await confirm({
-    message: "Test API Key & Configuration?",
-    default: false,
-  });
-  if (validate) {
-    await check(executionContext);
-  }
-
-  //  Ask for the next action if we have chosen this option.
-  if (!askNextAction) {
-    return Commands.Unknown;
-  }
-  const answer = await select({
-    message: inputPrompt("What next?"),
-    default: "chat",
-    choices: [
-      {
-        name: "Chat",
-        value: "chat",
-      },
-      {
-        name: "Quit",
-        value: "quit",
-      },
-    ],
-  });
-  if (answer === "chat") {
-    return Commands.Chat;
-  }
-
-  return Commands.Quit;
+  // This point is reached if chat was selected
+  return Commands.Chat;
 }
