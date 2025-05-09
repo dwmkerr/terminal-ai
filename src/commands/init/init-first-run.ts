@@ -14,7 +14,6 @@ import { initSetProviderApiKey } from "./init-set-provider-api-key";
  */
 export async function initFirstRun(
   executionContext: ExecutionContext,
-  askNextAction: boolean,
 ): Promise<Commands> {
   const interactive = executionContext.isTTYstdin;
 
@@ -33,8 +32,6 @@ To get a free key follow the guide at:`,
   );
   await initSetProviderApiKey(executionContext);
 
-  //  We now continue with a regular init run (which'll offer the option to
-  //  update the model, whatever). However, we don't ask the user if they want
-  //  to change their API key.
-  return await initRegularRun(executionContext, false, askNextAction);
+  //  We now continue with a regular init run.
+  return await initRegularRun(executionContext);
 }
