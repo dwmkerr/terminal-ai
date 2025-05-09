@@ -226,3 +226,5 @@ providers:
     model: gemma3:1b
     apiKey: 'notused'
 ```
+
+Additional configuration options can be set for [Integrations](./integrations.md).

@@ -2,9 +2,11 @@
 
 Terminal AI works out of the box with Msty.
 
-To get started, first install Msty: https://msty.app/
+To get started, first install: https://msty.app/
 
 Once Msty is installed and running, you'll have access to various models through its local API server. Msty will automatically start an API server on port 10000 by default.
+
+Run Msty and configure a model. As an example we'll use Ollama as a local provider.
 
 Then run `ai init` to configure your provider, using the following details:
 
