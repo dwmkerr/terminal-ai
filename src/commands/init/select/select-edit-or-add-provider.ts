@@ -21,19 +21,19 @@ export async function selectEditOrAddProvider(
   //  Add the current provider, which might be the root.
   const currentChoice: ProviderChoice = {
     name: isRoot
-      ? "Update Provider"
-      : `Update ${currentProvider.name} (current)`,
+      ? "Configure Provider"
+      : `Configure ${currentProvider.name} (current)`,
     value: isRoot ? "update_root" : `update_${currentProvider.name}`,
-    description: `Update configuration for ${isRoot ? "current provider" : currentProvider.name}`,
+    description: `Configure settings for ${isRoot ? "current provider" : currentProvider.name}`,
   };
   //  Then the other providers.
   const nextChoices = [
     ...allProviders
       .filter((p) => p !== currentProvider)
       .map((p) => ({
-        name: `Update ${p.name}`,
+        name: `Configure ${p.name}`,
         value: `update_${p.name}`,
-        description: `Update configuration for ${p.name}`,
+        description: `Configure settings for ${p.name}`,
       })),
   ];
   const addChoice: ProviderChoice = {
@@ -45,7 +45,7 @@ export async function selectEditOrAddProvider(
   const choices = [currentChoice, ...nextChoices, new Separator(), addChoice];
 
   const answer = await select({
-    message: "Update / Add Provider:",
+    message: "Configure / Add Provider:",
     choices,
   });
 

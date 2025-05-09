@@ -7,7 +7,7 @@ describe("commands", () => {
       const executionContext = createTestExecutionContext(process, {
         isTTYstdin: false,
       });
-      await expect(() => init(executionContext, false)).rejects.toThrow(
+      await expect(() => init(executionContext)).rejects.toThrow(
         /must be run interactively/,
       );
     });

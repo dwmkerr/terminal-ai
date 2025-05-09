@@ -1,7 +1,7 @@
 <p align="center">
   <h2 align="center"><code>🧠 terminal-ai</code></h2>
       <h3 align="center">Effortless AI in the shell. Maintain your flow and be more effective.</h3>
-      <h5 align="center">Supports OpenAI, Gemini, Claude, Ollama and many more</h5>
+      <h5 align="center">Supports OpenAI, Gemini, Claude, Ollama, MSTY and many more.</h5>
   <p align="center">
       <img src="./docs/casts/terminal-ai-homepage.svg" alt="Demo Recording of Terminal AI" style="max-width: 100%;">
   </p>
@@ -345,3 +345,5 @@ Integration is available out-of-the-box for [Langfuse](https://langfuse.com/). S
 - [Integrations Guide](./docs/integrations.md)
 - [Providers: Setting Up Ollama](./docs/providers/ollama.md)
 - [Experimental Features](./docs/experimental-features.md)
+- [Providers: Setting Up Ollama](./docs/providers/ollama.md)
+- [Providers: Setting Up MSTY](./docs/providers/msty.md)

@@ -8,7 +8,6 @@ import { initRegularRun } from "./init-regular-run";
 
 export async function init(
   executionContext: ExecutionContext,
-  askNextAction: boolean,
 ): Promise<Commands> {
   const interactive = executionContext.isTTYstdin;
 
@@ -26,6 +25,6 @@ export async function init(
   //  run (e.g. fresh install, or config blatted to the point we're
   //  fresh-install-like).
   return executionContext.isFirstRun
-    ? await initFirstRun(executionContext, askNextAction)
-    : await initRegularRun(executionContext, true, askNextAction);
+    ? await initFirstRun(executionContext)
+    : await initRegularRun(executionContext);
 }
