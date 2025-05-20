@@ -13,7 +13,7 @@
     <a href="#configuration">Configuration</a> |
     <a href="#api-key">API Key</a> |
     <a href="#integration">Integrations</a> |
-    <a href="#documentation">Documentation</a> |
+    <a href="#documentation">Documentation</a>
   </p>
   <p align="center">
     <a href="https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml"><img src="https://github.com/dwmkerr/terminal-ai/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
