@@ -12,7 +12,7 @@
     <a href="#commands">Commands</a> |
     <a href="#configuration">Configuration</a> |
     <a href="#api-key">API Key</a> |
-    <a href="#integration">Integrations</a> |
+    <a href="#integrations">Integrations</a> |
     <a href="#documentation">Documentation</a>
   </p>
   <p align="center">
