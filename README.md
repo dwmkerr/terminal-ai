@@ -1,7 +1,7 @@
 <p align="center">
   <h2 align="center"><code>🧠 terminal-ai</code></h2>
       <h3 align="center">Effortless AI in the shell. Maintain your flow and be more effective.</h3>
-      <h5 align="center">Supports OpenAI, Gemini, Claude, Ollama, MSTY and many more</h5>
+      <h5 align="center">Supports OpenAI, Gemini, Claude, Ollama, MSTY and many more.</h5>
   <p align="center">
       <img src="./docs/casts/terminal-ai-homepage.svg" alt="Demo Recording of Terminal AI" style="max-width: 100%;">
   </p>
@@ -12,6 +12,7 @@
     <a href="#commands">Commands</a> |
     <a href="#configuration">Configuration</a> |
     <a href="#api-key">API Key</a> |
+    <a href="#integration">Integrations</a> |
     <a href="#documentation">Documentation</a> |
   </p>
   <p align="center">
@@ -333,10 +334,16 @@ export AI_MODEL="gpt-3.5-turbo"                 # Optional.
 
 To configure multiple providers or advanced options, check the [Configuration Documentation](./docs/configuration.md).
 
+## Integrations
+
+Integration is available out-of-the-box for [Langfuse](https://langfuse.com/). See the [Integrations Guide](./docs/integrations.md) for details.
+
 ## Documentation
 
 - [Configuration](./docs/configuration.md)
 - [Developer Guide](./docs/developer-guide.md)
+- [Integrations Guide](./docs/integrations.md)
+- [Providers: Setting Up Ollama](./docs/providers/ollama.md)
 - [Experimental Features](./docs/experimental-features.md)
 - [Providers: Setting Up Ollama](./docs/providers/ollama.md)
 - [Providers: Setting Up MSTY](./docs/providers/msty.md)
