@@ -1,6 +1,8 @@
 # litellm
 
-[LiteLLM](https://www.litellm.ai/) can be used to proxy requests to many different inference providers.
+[LiteLLM](https://www.litellm.ai/) can be used to proxy requests to many different inference providers, track LLM spend, manage keys and more:
+
+<img src="../images/litellm.png" width="600px" alt="LiteLLM Screenshot" />
 
 LiteLLM exposes providers using the [OpenAI API specification](https://docs.litellm.ai/docs/#call-100-llms-using-the-openai-inputoutput-format). This means that it can be used to proxy Terminal AI requests from OpenAI format to non-OpenAI compatible providers.
 

@@ -5,8 +5,8 @@ Terminal AI can integrate with various external services to enhance its capabili
 <!-- vim-markdown-toc GFM -->
 
 - [Langfuse](#langfuse)
-  - [Setup](#setup)
-  - [Configuration Options](#configuration-options)
+    - [Setup](#setup)
+    - [Configuration Options](#configuration-options)
 
 <!-- vim-markdown-toc -->
 
