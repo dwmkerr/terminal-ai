@@ -225,6 +225,12 @@ providers:
     baseURL: http://localhost:11434/v1/
     model: gemma3:1b
     apiKey: 'notused'
+  litellm:
+    name: litellm
+    type: openai_compatible
+    baseURL: http://localhost:4000/
+    model: claude-3.7
+    apiKey: 'notused'
 ```
 
 Additional configuration options can be set for [Integrations](./integrations.md).
