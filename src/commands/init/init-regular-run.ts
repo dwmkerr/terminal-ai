@@ -28,11 +28,15 @@ export async function initRegularRun(
           value: "reconfigure_provider",
         },
         {
-          name: "3. Chat",
+          name: "3. Check configuration",
+          value: "check",
+        },
+        {
+          name: "4. Chat",
           value: "chat",
         },
         {
-          name: "4. Exit",
+          name: "0. Exit",
           value: "exit",
         },
       ],
@@ -44,6 +48,11 @@ export async function initRegularRun(
 
     if (mainOption === "chat") {
       return Commands.Chat;
+    }
+
+    if (mainOption === "check") {
+      await check(executionContext);
+      continue; // skip the 'check configuration' question
     }
 
     if (mainOption === "select_provider") {
