@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.14.0](https://github.com/dwmkerr/terminal-ai/compare/v0.13.2...v0.14.0) (2025-05-24)
+
+
+### Features
+
+* **config:** improve provider/model setup ([#99](https://github.com/dwmkerr/terminal-ai/issues/99)) ([8cd60bf](https://github.com/dwmkerr/terminal-ai/commit/8cd60bfe709a3c810ea3f8badef8e0138d6b7c08))
+* **docs:** langfuse integration ([#96](https://github.com/dwmkerr/terminal-ai/issues/96)) ([2471b63](https://github.com/dwmkerr/terminal-ai/commit/2471b63fde611d32ae9e0ec07382f62bbc620bd0))
+* **docs:** msty config guide ([#97](https://github.com/dwmkerr/terminal-ai/issues/97)) ([1e0c9de](https://github.com/dwmkerr/terminal-ai/commit/1e0c9de3c6a59979416b80b7cbee48ed7460aa47))
+* **providers:** add LiteLLM integration ([#103](https://github.com/dwmkerr/terminal-ai/issues/103)) ([8dc9f8f](https://github.com/dwmkerr/terminal-ai/commit/8dc9f8ff6aae4ab47d31305b4a5bff4d22faad62))
+
 ## [0.13.2](https://github.com/dwmkerr/terminal-ai/compare/v0.13.1...v0.13.2) (2025-05-01)
 
 
