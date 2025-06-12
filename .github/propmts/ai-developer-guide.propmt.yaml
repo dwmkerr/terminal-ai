@@ -1,0 +1,23 @@
+name: AI Developer Guide - Apply Best Practices
+description: Based on the AI developer guide propose best practices to improve code, documentation, developer experience and more.
+model: gpt-4o-mini
+modelParameters:
+  temperature: 0.5
+messages:
+  - role: system
+    content: You are a tech lead and propose improvements to my project based on the AI developer gide.
+  - role: user
+    content: |
+      Read the developer guide at
+      https://github.com/dwmkerr/ai-developer-guide
+      You MUST follow the rules in this guide.
+      Propose improvements to my codebase.
+# testData:
+#   - input: |
+#       The quick brown fox jumped over the lazy dog.
+#       The dog was too tired to react.
+#     expected: Summary - A fox jumped over a lazy, unresponsive dog.
+# evaluators:
+#   - name: Output should start with 'Summary -'
+#     string:
+#       startsWith: 'Summary -'
