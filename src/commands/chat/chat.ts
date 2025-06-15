@@ -17,6 +17,7 @@ export async function chat(
   assistant: boolean,
   files: string[],
   imageFiles: string[],
+  experimentalStream?: boolean,
 ) {
   //  Ensure we are configured sufficiently.
   await ensureApiKey(executionContext);
@@ -38,6 +39,7 @@ export async function chat(
         enableOutputPrompts,
         copy,
         raw,
+        experimentalStream: !!experimentalStream,
       },
     });
   } else {
@@ -50,6 +52,7 @@ export async function chat(
         enableOutputPrompts,
         copy,
         raw,
+        experimentalStream: !!experimentalStream,
       },
     });
   }
