@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.15.0](https://github.com/dwmkerr/terminal-ai/compare/v0.14.0...v0.15.0) (2025-06-12)
+
+
+### Features
+
+* **devx:** ai developer guide integrated to GitHub AI ([#104](https://github.com/dwmkerr/terminal-ai/issues/104)) ([b2e127a](https://github.com/dwmkerr/terminal-ai/commit/b2e127a1701be188be49ad64f5d9bc5800e958d6))
+
+
+### Bug Fixes
+
+* **devx:** correct prompt path ([c1b06e0](https://github.com/dwmkerr/terminal-ai/commit/c1b06e0197c002b2ec762bff3752512f40d589f6))
+
 ## [0.14.0](https://github.com/dwmkerr/terminal-ai/compare/v0.13.2...v0.14.0) (2025-05-24)
 
 
