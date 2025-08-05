@@ -92,6 +92,149 @@ When expanding context prompts (e.g. ./prompts/chat/context/context.txt) environ
 | `TTY_WIDTH`          | The terminal width (or 80 if not set)  |
 | `TTY_HEIGHT`         | The terminal height (or 24 if not set) |
 
+## Security & Safety
+
+**Critical security considerations for AI applications:**
+
+### Prompt Injection Prevention
+
+User input must be sanitized to prevent prompt injection attacks. Implement these safeguards:
+
+```typescript
+/**
+ * sanitizeUserInput - removes potential prompt injection patterns
+ * @param input - raw user input
+ * @returns sanitized input safe for AI processing
+ */
+export function sanitizeUserInput(input: string): string {
+  // Remove potential instruction delimiters
+  const dangerous = [
+    /ignore\s+previous\s+instructions/gi,
+    /forget\s+everything/gi,
+    /you\s+are\s+now/gi,
+    /system\s*[:]\s*/gi,
+    /assistant\s*[:]\s*/gi,
+    /human\s*[:]\s*/gi,
+    /<\|.*?\|>/g, // Remove potential special tokens
+    /```[\s\S]*?```/g, // Remove code blocks in user input
+  ];
+  
+  let sanitized = input;
+  dangerous.forEach(pattern => {
+    sanitized = sanitized.replace(pattern, '[FILTERED]');
+  });
+  
+  // Truncate excessively long inputs
+  if (sanitized.length > 4000) {
+    sanitized = sanitized.substring(0, 4000) + '...[TRUNCATED]';
+  }
+  
+  return sanitized;
+}
+```
+
+### Input Validation
+
+Validate all user inputs before processing:
+
+```typescript
+/**
+ * validateUserInput - validates input meets safety requirements
+ * @param input - user input to validate
+ * @throws Error if input is unsafe
+ */
+export function validateUserInput(input: string): void {
+  if (!input || input.trim().length === 0) {
+    throw new Error('Input cannot be empty');
+  }
+  
+  if (input.length > 10000) {
+    throw new Error('Input too long (max 10,000 characters)');
+  }
+  
+  // Check for excessive repeated characters (potential DoS)
+  const repeatedChar = /(.)\1{100,}/;
+  if (repeatedChar.test(input)) {
+    throw new Error('Input contains excessive repeated characters');
+  }
+}
+```
+
+### Rate Limiting
+
+Implement rate limiting to prevent abuse:
+
+```typescript
+/**
+ * Simple rate limiter for AI requests
+ */
+export class RateLimiter {
+  private requests: Map<string, number[]> = new Map();
+  
+  constructor(
+    private maxRequests: number = 10,
+    private windowMs: number = 60000 // 1 minute
+  ) {}
+  
+  isAllowed(identifier: string): boolean {
+    const now = Date.now();
+    const requests = this.requests.get(identifier) || [];
+    
+    // Remove old requests outside the window
+    const validRequests = requests.filter(time => now - time < this.windowMs);
+    
+    if (validRequests.length >= this.maxRequests) {
+      return false;
+    }
+    
+    validRequests.push(now);
+    this.requests.set(identifier, validRequests);
+    return true;
+  }
+}
+```
+
+### Data Privacy Guidelines
+
+**Never send sensitive data to AI providers:**
+
+- **Environment variables** - Filter out API keys, tokens, passwords
+- **File paths** - Avoid absolute paths that reveal system information  
+- **Personal information** - Strip PII before sending to AI models
+- **Proprietary code** - Be cautious with sending complete codebases
+
+```typescript
+// Example: sanitize environment variables
+export function sanitizeEnvironment(env: Record<string, string>): Record<string, string> {
+  const sensitiveKeys = ['API_KEY', 'TOKEN', 'PASSWORD', 'SECRET', 'PRIVATE'];
+  const sanitized: Record<string, string> = {};
+  
+  for (const [key, value] of Object.entries(env)) {
+    if (sensitiveKeys.some(sensitive => key.toUpperCase().includes(sensitive))) {
+      sanitized[key] = '[REDACTED]';
+    } else {
+      sanitized[key] = value;
+    }
+  }
+  
+  return sanitized;
+}
+```
+
+### Error Handling
+
+Never expose internal errors to users that could reveal system information:
+
+```typescript
+export function sanitizeError(error: Error): string {
+  // Log the full error internally
+  console.error('Internal error:', error);
+  
+  // Return a generic message to the user
+  return 'An error occurred while processing your request. Please try again.';
+}
+```
+
 ## CI/CD
 
 Required secrets:
