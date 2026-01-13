@@ -1,0 +1,10 @@
+# Placeholder - full workflow in PR
+name: Evaluations
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Evaluations workflow placeholder"
