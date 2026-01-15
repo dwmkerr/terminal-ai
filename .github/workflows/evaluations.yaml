@@ -42,6 +42,10 @@ jobs:
         if: github.event.action != 'closed'
         run: npm run build
 
+      - name: Install ai command
+        if: github.event.action != 'closed'
+        run: npm install -g .
+
       - name: Install eval tools
         if: github.event.action != 'closed'
         run: |
