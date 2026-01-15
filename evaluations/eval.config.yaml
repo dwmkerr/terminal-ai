@@ -1,0 +1,18 @@
+# Evaluation configuration for Terminal AI
+# Used by: make eval, CI workflows
+#
+# Reads standard environment variables: OPENAI_API_KEY, etc.
+
+# Default endpoint for evaluations
+endpoint:
+  url: https://api.openai.com/v1
+  model: gpt-4o-mini
+
+# Evaluation settings
+settings:
+  # Default trials per task
+  trials: 1
+  # Timeout per task (seconds)
+  timeout: 60
+  # Output directory for results
+  output_dir: ./evaluations/output

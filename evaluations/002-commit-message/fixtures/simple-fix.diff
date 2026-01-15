@@ -1,0 +1,13 @@
+diff --git a/src/utils.ts b/src/utils.ts
+index 1234567..abcdefg 100644
+--- a/src/utils.ts
++++ b/src/utils.ts
+@@ -15,7 +15,7 @@ export function parseConfig(path: string): Config {
+   const content = fs.readFileSync(path, 'utf-8');
+   try {
+     return JSON.parse(content);
+-  } catch (e) {
++  } catch (error) {
+     throw new ConfigError(`Invalid JSON in ${path}: ${error.message}`);
+   }
+ }
