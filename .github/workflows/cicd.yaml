@@ -131,11 +131,13 @@ jobs:
           npm run build
           npm install -g .
 
-      # Validate that we can install wiht 'npm install' and then run 'ai'.
+      # Validate that we can install with 'npm install' and then run 'ai'.
       - name: test-e2e
         run: make test-e2e
         env:
-          TESTING_AI_API_KEY: ${{ secrets.TESTING_AI_API_KEY }}
+          TESTING_AI_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TESTING_AI_BASE_URL: https://api.anthropic.com/v1
+          TESTING_AI_MODEL: claude-3-5-haiku-20241022
 
   release-please:
     name: Release PR/Deploy
