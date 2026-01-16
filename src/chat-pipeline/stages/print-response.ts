@@ -10,6 +10,7 @@ export async function printResponse(
   //  If we are writing raw output, dump it now and we're done.
   if (params.options.raw) {
     console.log(response.rawMarkdownResponse);
+    return;
   }
 
   //  If our output intent is code, then we will write the code block only and

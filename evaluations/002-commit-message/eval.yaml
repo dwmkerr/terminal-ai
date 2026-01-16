@@ -1,0 +1,59 @@
+# Evaluation: Commit Message Generation
+# Tests: git diff | ai "write a commit message" > message.txt
+#
+# Grader type: LLM-as-judge (rubric scoring)
+# Uses AI to evaluate quality across multiple dimensions
+
+name: commit-message
+description: |
+  Verify AI generates quality commit messages from diffs. Tests the model's
+  ability to summarize changes concisely using conventional commit format.
+
+capability: summarization
+tags:
+  - pipe-mode
+  - summarization
+  - llm-judge
+
+grader:
+  type: llm_rubric
+  method: rubric-scoring
+  script: ./grader.sh
+  rubric: ./rubric.md
+
+scoring:
+  strategy: weighted
+  threshold: 0.7  # 70% weighted score to pass
+  dimensions:
+    - name: format
+      weight: 0.3
+      description: Uses conventional commit format (type: description)
+    - name: conciseness
+      weight: 0.3
+      description: Single line, under 72 characters
+    - name: accuracy
+      weight: 0.4
+      description: Message accurately reflects the changes
+
+tasks:
+  - id: simple-fix
+    input: fixtures/simple-fix.diff
+    prompt: "write a conventional commit message for this diff"
+
+  - id: feature-add
+    input: fixtures/feature-add.diff
+    prompt: "write a conventional commit message for this diff"
+
+  - id: refactor
+    input: fixtures/refactor.diff
+    prompt: "write a conventional commit message for this diff"
+
+run_command: |
+  cat {{input}} | ai --raw "{{prompt}}" > {{output}}
+
+trials: 3
+
+metrics:
+  - weighted_score
+  - dimension_scores
+  - output_tokens

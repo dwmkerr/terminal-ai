@@ -1,0 +1,70 @@
+# Evaluation: JSON to YAML Conversion
+# Tests: cat data.json | ai "convert to yaml" > output.yaml
+#
+# Grader type: Code-based (outcome verification)
+# No LLM-as-judge needed - we verify structural equivalence
+
+name: json-to-yaml
+description: |
+  Verify AI can convert JSON to valid, equivalent YAML. Assets that basic
+  non-interactive commands that are composed into pipelines do not contain
+  and messages from the LLM and only the output or results of the request.
+
+# What we're testing
+capability: basic-completions
+tags:
+  - pipe-mode
+  - transformation
+  - deterministic
+
+# Grader configuration
+grader:
+  type: code
+  method: outcome-verification
+  script: ./grader.sh
+
+# Success criteria
+scoring:
+  strategy: binary  # all checks must pass
+  checks:
+    - name: valid-yaml
+      description: Output is valid YAML syntax
+    - name: structural-equivalence
+      description: YAML converts back to identical JSON structure
+    - name: no-preamble
+      description: Output contains only YAML, no explanatory text
+
+# Test cases
+tasks:
+  - id: simple-object
+    input: fixtures/simple-object.json
+    prompt: "convert to yaml"
+
+  - id: nested-object
+    input: fixtures/nested-object.json
+    prompt: "convert to yaml"
+
+  - id: array-of-objects
+    input: fixtures/array-of-objects.json
+    prompt: "convert to yaml"
+
+  - id: mixed-types
+    input: fixtures/mixed-types.json
+    prompt: "convert to yaml"
+
+  - id: special-characters
+    input: fixtures/special-characters.json
+    prompt: "convert to yaml"
+
+# How to run a single task
+run_command: |
+  cat {{input}} | ai --raw "{{prompt}}" > {{output}}
+
+# Trials per task (for consistency measurement)
+trials: 3
+
+# Metrics to track
+metrics:
+  - pass_rate        # % of trials that pass all checks
+  - output_tokens    # verbosity measure
+  - latency_ms       # response time

@@ -1,0 +1,40 @@
+diff --git a/src/api/client.ts b/src/api/client.ts
+index 1234567..abcdefg 100644
+--- a/src/api/client.ts
++++ b/src/api/client.ts
+@@ -1,30 +1,20 @@
+-import fetch from 'node-fetch';
++import { createHttpClient, HttpClient } from '../lib/http';
+
+ export class ApiClient {
+-  private baseUrl: string;
+-  private apiKey: string;
++  private http: HttpClient;
+
+   constructor(baseUrl: string, apiKey: string) {
+-    this.baseUrl = baseUrl;
+-    this.apiKey = apiKey;
++    this.http = createHttpClient({ baseUrl, apiKey });
+   }
+
+   async get<T>(path: string): Promise<T> {
+-    const response = await fetch(`${this.baseUrl}${path}`, {
+-      headers: { Authorization: `Bearer ${this.apiKey}` },
+-    });
+-    return response.json() as Promise<T>;
++    return this.http.get<T>(path);
+   }
+
+   async post<T>(path: string, body: unknown): Promise<T> {
+-    const response = await fetch(`${this.baseUrl}${path}`, {
+-      method: 'POST',
+-      headers: {
+-        Authorization: `Bearer ${this.apiKey}`,
+-        'Content-Type': 'application/json',
+-      },
+-      body: JSON.stringify(body),
+-    });
+-    return response.json() as Promise<T>;
++    return this.http.post<T>(path, body);
+   }
+ }

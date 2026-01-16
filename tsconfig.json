@@ -16,5 +16,5 @@
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "types": ["jest", "marked-terminal"]
   },
-  "exclude": ["jest.config.ts"]
+  "exclude": ["jest.config.ts", "evaluations"]
 }
