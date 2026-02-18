@@ -27,7 +27,7 @@
 Install Terminal AI:
 
 ```bash
-npm install @dwmkerr/terminal-ai
+npm install -g @dwmkerr/terminal-ai
 ```
 
 Run the tool to configure your environment and start interactively interfacing with AI:
