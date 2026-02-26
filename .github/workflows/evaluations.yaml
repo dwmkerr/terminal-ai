@@ -1,10 +1,89 @@
-# Placeholder - full workflow in PR
 name: Evaluations
+
 on:
   pull_request:
+    types: [opened, reopened, synchronize, closed]
   workflow_dispatch:
+
+concurrency:
+  group: eval-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  placeholder:
+  evaluate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      # AI under test (simple model)
+      AI_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      AI_BASE_URL: https://api.anthropic.com/v1
+      AI_MODEL: claude-3-5-haiku-20241022
+      # Grader AI (powerful model for LLM-as-judge)
+      GRADER_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GRADER_BASE_URL: https://api.anthropic.com/v1
+      GRADER_MODEL: claude-opus-4-5-20251101
     steps:
-      - run: echo "Evaluations workflow placeholder"
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: github.event.action != 'closed'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        if: github.event.action != 'closed'
+        run: npm ci
+
+      - name: Build
+        if: github.event.action != 'closed'
+        run: npm run build
+
+      - name: Install ai command
+        if: github.event.action != 'closed'
+        run: npm install -g .
+
+      - name: Install eval tools
+        if: github.event.action != 'closed'
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Run evaluations
+        if: github.event.action != 'closed'
+        run: ./evaluations/run-all.sh
+
+      - name: Generate HTML report
+        if: github.event.action != 'closed'
+        run: ./evaluations/generate-report.sh
+
+      - name: Deploy results to GitHub Pages
+        uses: rossjrw/pr-preview-action@v1
+        id: preview
+        with:
+          source-dir: ./evaluations/output
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: auto
+          comment: false
+
+      - name: Comment with results
+        if: github.event.action != 'closed'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: evaluations
+          message: |
+            ## Evaluations
+
+            **[View evaluation results](${{ steps.preview.outputs.preview-url }})**
+
+      - name: Upload results
+        if: github.event.action != 'closed'
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results
+          path: evaluations/output/
+          if-no-files-found: warn
