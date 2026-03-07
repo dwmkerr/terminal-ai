@@ -234,6 +234,7 @@ The following parameters are available:
 | `--assistant`          | ([Experimental](docs/experimental-features.md)). Use the Assistants API rather than the Completions API. |
 | `--no-context-prompts` | Disable context prompts (e.g. 'my shell is bash').                      |
 | `--no-output-prompts`  | Disable output prompts (e.g. 'show code only').                         |
+| `--experimental-stream`| ([Experimental](docs/experimental-features.md)). Stream responses as they are generated. |
 
 **`ai init`**
 

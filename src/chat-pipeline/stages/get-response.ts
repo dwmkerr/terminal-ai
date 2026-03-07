@@ -6,6 +6,8 @@ import { OpenAIMessage } from "../../lib/openai/openai-message";
 import { startSpinner } from "../../theme";
 import { translateError } from "../../lib/translate-error";
 import { ErrorCode, TerminalAIError } from "../../lib/errors";
+import { printStreamResponse } from "./print-response";
+import { getProviderPrompt } from "../../providers/get-provider-prompt";
 
 const debug = dbg("ai:chat-pipeline:get-response");
 
@@ -19,39 +21,82 @@ export async function getCompletionsResponse(
   openai: OpenAI,
   messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
 ): Promise<string> {
-  //  Send the input to ChatGPT and read the response.
-  const spinner = await startSpinner(params.executionContext.isTTYstdout);
-  try {
-    const lf = params.executionContext.integrations?.langfuse;
-    let generation = null;
-    if (lf) {
-      generation = lf.trace.generation({
-        name: "chat-completion",
+  const lf = params.executionContext.integrations?.langfuse;
+  let generation = null;
+
+  // Check if streaming is enabled and stdout is interactive
+  const shouldStream =
+    params.options.experimentalStream && params.executionContext.isTTYstdout;
+
+  if (shouldStream) {
+    // Streaming mode - no spinner, stream directly to terminal
+    try {
+      if (lf) {
+        generation = lf.trace.generation({
+          name: "chat-completion-stream",
+          model: params.executionContext.provider.model,
+          input: messages,
+        });
+      }
+
+      const stream = await openai.chat.completions.create({
+        messages,
         model: params.executionContext.provider.model,
-        input: messages,
+        stream: true,
       });
-    }
-    const completion = await openai.chat.completions.create({
-      messages,
-      model: params.executionContext.provider.model,
-    });
-    generation?.end({ output: completion });
-    spinner.stop();
 
-    //  Read the response. If we didn't get one, show an error. Otherwise
-    //  print the response and add to the conversation history.
-    const response = completion.choices[0]?.message?.content;
-    if (!response) {
-      throw new TerminalAIError(
-        ErrorCode.InvalidOperation,
-        "no OpenAI response received - try 'ai check' to validate your config",
-      );
-    }
+      // Get the provider prompt for display
+      const prompt = getProviderPrompt(params.executionContext.provider);
 
-    return response;
-  } catch (err) {
-    spinner.stop();
-    throw translateError(err);
+      // Use printStreamResponse to handle the streaming
+      const response = await printStreamResponse(stream, true, prompt);
+
+      generation?.end({ output: response });
+
+      if (!response) {
+        throw new TerminalAIError(
+          ErrorCode.InvalidOperation,
+          "no OpenAI response received - try 'ai check' to validate your config",
+        );
+      }
+
+      return response;
+    } catch (err) {
+      throw translateError(err);
+    }
+  } else {
+    // Non-streaming mode - existing behavior
+    const spinner = await startSpinner(params.executionContext.isTTYstdout);
+    try {
+      if (lf) {
+        generation = lf.trace.generation({
+          name: "chat-completion",
+          model: params.executionContext.provider.model,
+          input: messages,
+        });
+      }
+      const completion = await openai.chat.completions.create({
+        messages,
+        model: params.executionContext.provider.model,
+      });
+      generation?.end({ output: completion });
+      spinner.stop();
+
+      //  Read the response. If we didn't get one, show an error. Otherwise
+      //  print the response and add to the conversation history.
+      const response = completion.choices[0]?.message?.content;
+      if (!response) {
+        throw new TerminalAIError(
+          ErrorCode.InvalidOperation,
+          "no OpenAI response received - try 'ai check' to validate your config",
+        );
+      }
+
+      return response;
+    } catch (err) {
+      spinner.stop();
+      throw translateError(err);
+    }
   }
 }
 

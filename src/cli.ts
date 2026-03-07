@@ -48,6 +48,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
     .option("--assistant", "Experimental. Use the OpenAI Assistants API")
     .option("--no-context-prompts", "Disable context prompts")
     .option("--no-output-prompts", "Disable output prompts")
+    .option("--experimental-stream", "Experimental. Stream responses as they are generated")
     .argument("[input]", "Chat input")
     //  'chat' is the default action when no command is specified.
     .action(
@@ -61,6 +62,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
           assistant,
           file,
           imageFile,
+          experimentalStream,
         },
       ) => {
         return chat(
@@ -73,6 +75,7 @@ const cli = async (program: Command, executionContext: ExecutionContext) => {
           assistant,
           file,
           imageFile,
+          experimentalStream,
         );
       },
     );
