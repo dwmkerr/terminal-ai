@@ -4,6 +4,8 @@
 title: terminal-ai
 description: Effortless AI in the shell. Maintain your flow and be more effective.
 theme: jekyll-theme-cayman
+# The shared "dwmkerr github pages" GA4 property; the theme emits the gtag.
+google_analytics: G-WFTE4NBDQ1
 
 # Keep the published site to the docs; everything else is source.
 exclude:
