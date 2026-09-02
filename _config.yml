@@ -1,0 +1,34 @@
+# GitHub Pages site for terminal-ai: the README is the home page and the
+# markdown under docs/ renders as pages, so there is no separate site to
+# maintain. GitHub builds this with Jekyll on every push to main.
+title: terminal-ai
+description: Effortless AI in the shell. Maintain your flow and be more effective.
+theme: jekyll-theme-cayman
+
+# Keep the published site to the docs; everything else is source.
+exclude:
+  - node_modules
+  - src
+  - tests
+  - scripts
+  - prompts
+  - evaluations
+  - dist
+  - artifacts
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - jest.config.ts
+  - codecov.yaml
+  - result.yaml
+  - makefile
+  - LICENSE
+
+# Both plugins are on by default for GitHub Pages; listed so local builds
+# (bundle exec jekyll serve) behave the same way.
+plugins:
+  - jekyll-readme-index
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: false
