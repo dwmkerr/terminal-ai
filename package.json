@@ -74,5 +74,9 @@
     "ts-jest": "^29.2.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/dwmkerr"
   }
 }
